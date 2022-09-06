@@ -43,11 +43,3 @@ echo -e "Ходы Endure Return Quick Attack Jump Kick Baton\nPass Agility Dizzy
 echo -e "Ходы Bullet Seed Earth Power Giga Drain Grass Pledge\nIron Tail Mud-Slap Natural Gift Rock Climb Secret Power Seed Bomb\nSleep Talk Snore Stealth Rock Superpower Synthesis Worry\nSeed" > mothim1/turtwig
 echo -e "satk=8 sdef=10 spd=4" > mothim1/vespiquen
 
-# CHAPTER II. CHMOD
-
-bash ./scripts/chmod.sh
-
-# CHAPTER III. MVLNCP
-
-bash ./scripts/p3.sh
-
