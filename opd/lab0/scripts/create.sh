@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # CHAPTER I. MKDIR & ECHO
+# Ключ -p для создания всех папок на пути
 mkdir -p accelgor3/lampent/shroomish/spheal
+# Ключ -e для обработки \n
 echo -e "Способности Poison Sting Bite Glare Screech Acid Crunch Spit\nUp Stockpile Swallow Acid Spray Mud Bomb Gastro Acid Haze Coil Gunk\nShot" > accelgor3/lampent/shroomish/arbok
 mkdir -p accelgor3/lampent/muk/smoochum
 echo -e "Ходы Aqua Tail Bounce Brine Dive Double-Edge Heal Bell\nIcy Wind Shock Wave Signal Beam Snore Sucker Punch Water\nPulse" > accelgor3/lampent/muk/lanturn

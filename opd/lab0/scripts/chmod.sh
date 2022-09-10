@@ -2,6 +2,7 @@
 
 chmod u=rx,g=wx,o=rwx accelgor3/lampent/shroomish/spheal
 chmod 062 accelgor3/lampent/shroomish/arbok
+# Сначала устанавливаем права для всех поддиректорий и файлов в директории, а затем уже самой директории
 chmod 700 accelgor3/lampent/shroomish
 
 chmod 400 accelgor3/lampent/muk/lanturn
@@ -32,7 +33,7 @@ chmod 444 accelgor3/roserade/paras
 chmod u=rx,g=rwx,o=rw accelgor3/roserade
 
 chmod 400 accelgor3/gible
-chmod u=rwx,g=wx,o=rw accelgor3 # для вложенных прав
+chmod u=rwx,g=wx,o=rw accelgor3 
 
 chmod ug=r,o-rwx charizard3
 

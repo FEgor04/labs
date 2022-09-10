@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+echo "TASK 10:"
 wc -m \
   ./accelgor3/roserade/snubbull \
 ./accelgor3/lampent/sudowoodo/accelgor3/roserade/snubbull \

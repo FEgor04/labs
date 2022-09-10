@@ -1,3 +1,4 @@
+echo "TASK 3:"
 grep -in "r$" \
   ./golem8/nidorino/numel \
   ./golem8/nidorino/grimer \

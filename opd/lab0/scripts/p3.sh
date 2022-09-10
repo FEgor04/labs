@@ -1,8 +1,12 @@
 #!/bin/bash
 cp karrablast9 accelgor3/lampent/braviarykarrablast
+# Так как cp не дает скопировать папку в саму себя, сначала копируем ее во временную папку,
+# а затем перемещаем ее в место назначения
+# Ключ -r для рекурсивного копирования директории
 cp -r accelgor3 accelgor3_temp
 mv accelgor3_temp accelgor3/lampent/sudowoodo/murkrow/accelgor3
 ln -s karrablast9 accelgor3/lampent/shroomish/arbokkarrablast
+# Сначала записываем весь файл в charizard3_90, а затем добавляем в конец остальные файлы
 cat golem8/nidorino/chingling/haxorus > charizard3_90
 cat golem8/nidorino/grimer >> charizard_90
 cat golem8/nidorino/cleffa >> charizard_90
@@ -14,6 +18,7 @@ ln charizard3 mothim1/vespiquencharizard
 
 cp machoke2 accelgor3/lampent/sudowoodo/murkrow
 
+# Создание символической ссылки с помощью ключа -s
 ln -s mothim1 Copy_76
 
 ln -s machoke2 golem8/nidorino/scyther/kricketotmachoke
