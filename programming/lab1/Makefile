@@ -1,5 +1,5 @@
 run:
-	javac -d build/ Main.java && cd build && java Main
+	javac -d build/ src/main/java/lab1/Main.java && cd build && java Main
 
 build:
-	javac -d build/ Main.java && cd build && jar -cvfm ../main.jar MANIFEST.MF .
+	javac -d build/ src/main/java/lab1/Main.java && cd build && jar -cvfm ../main.jar MANIFEST.MF .
