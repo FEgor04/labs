@@ -10,11 +10,11 @@ wc -m \
 ./accelgor3/lampent/sudowoodo/accelgor3/gible \
 ./accelgor3/lampent/sudowoodo/murkrow/accelgor3/gible \
 ./accelgor3/gible \
-./golem8/gallade \
-./golem8/nidorino/numel \
-./golem8/nidorino/grimer \
-./golem8/nidorino/scyther/alakazam \
-./golem8/nidorino/scyther/kricketot \
-./golem8/nidorino/chingling/sudowoodo \
-./golem8/nidorino/chingling/musharna 2>/tmp/errors \
+./golem7/gallade \
+./golem7/nidorino/numel \
+./golem7/nidorino/grimer \
+./golem7/nidorino/scyther/alakazam \
+./golem7/nidorino/scyther/kricketot \
+./golem7/nidorino/chingling/sudowoodo \
+./golem7/nidorino/chingling/musharna 2>/tmp/errors \
 | grep -v "total" | sort -k1

@@ -1,2 +1,2 @@
 echo "TASK 15:"
-cat karrablast9 | wc -m >> karrablast9
+cat karrablast5 | wc -m >> karrablast5

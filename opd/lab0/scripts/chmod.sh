@@ -35,30 +35,30 @@ chmod u=rx,g=rwx,o=rw accelgor3/roserade
 chmod 400 accelgor3/gible
 chmod u=rwx,g=wx,o=rw accelgor3 
 
-chmod ug=r,o-rwx charizard3
+chmod ug=r,o-rwx charizard6
 
-chmod u=rw,go=w golem8/gallade
+chmod u=rw,go=w golem7/gallade
 
-chmod 600 golem8/nidorino/numel
+chmod 600 golem7/nidorino/numel
 
-chmod 771 golem8/nidorino/scyther/floatzel
-chmod 062 golem8/nidorino/scyther/alakazam
-chmod 046 golem8/nidorino/scyther/kricketot
-chmod u=rwx,g=rx,o=wx golem8/nidorino/scyther/
+chmod 771 golem7/nidorino/scyther/floatzel
+chmod 062 golem7/nidorino/scyther/alakazam
+chmod 046 golem7/nidorino/scyther/kricketot
+chmod u=rwx,g=rx,o=wx golem7/nidorino/scyther/
 
-chmod 600 golem8/nidorino/chingling/musharna
-chmod 062 golem8/nidorino/chingling/haxorus
-chmod 755 golem8/nidorino/chingling
+chmod 600 golem7/nidorino/chingling/musharna
+chmod 062 golem7/nidorino/chingling/haxorus
+chmod 755 golem7/nidorino/chingling
 
-chmod 640 golem8/nidorino/cleffa
-chmod 577 golem8/nidorino
+chmod 640 golem7/nidorino/cleffa
+chmod 577 golem7/nidorino
 
-chmod 444 golem8/budew
-chmod 337 golem8
+chmod 444 golem7/budew
+chmod 337 golem7
 
 
-chmod 620 karrablast9
-chmod 440 machoke2
+chmod 620 karrablast5
+chmod 440 machoke8
 chmod 046 mothim1/lopunny
 chmod 404 mothim1/turtwig
 chmod 440 mothim1/vespiquen

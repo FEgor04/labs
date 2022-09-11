@@ -22,24 +22,24 @@ mkdir -p accelgor3/roserade
 echo -e "Возможности Overland=6\nSurface=4 Jump=2 Power=1 Intelligence=4 Tracker=0" > accelgor3/roserade/snubbull
 echo -e "Развитые\nспособности Damp" > accelgor3/roserade/paras
 echo -e "weight=45.2 height=28.0 atk=7\ndef=5" > accelgor3/gible
-echo -e "Ходы Air Cutter AIr Slash Blast Burn Body Slam\nCounter Defense Curl Double-Edge Dragon Claw Dragon Pulse\nDynamicpunch Fire Pledge Fire Punch Focus Punch Fury Cutter Gorlw Heat\nWave Iron Tail Mega Kick Mega Punch Metal Claw Mud-Slap Ominous Wind\nOutrage Rage Roost Seismic Toss Shadow Class Sleep Talk Snore Steel\nWing Swift Tailwind Thunderpunch Twister" > charizard3
+echo -e "Ходы Air Cutter AIr Slash Blast Burn Body Slam\nCounter Defense Curl Double-Edge Dragon Claw Dragon Pulse\nDynamicpunch Fire Pledge Fire Punch Focus Punch Fury Cutter Gorlw Heat\nWave Iron Tail Mega Kick Mega Punch Metal Claw Mud-Slap Ominous Wind\nOutrage Rage Roost Seismic Toss Shadow Class Sleep Talk Snore Steel\nWing Swift Tailwind Thunderpunch Twister" > charizard6
 
-mkdir -p golem8 
-echo -e "Тип покемона\nPSYCHIC FIGHTING" > golem8/gallade
-mkdir -p golem8/nidorino
-echo -e "Развитые способности Own\nTempo" > golem8/nidorino/numel
-echo -e "Развитые способности Poison Touch" > golem8/nidorino/grimer
-mkdir -p golem8/nidorino/scyther/floatzel
-echo -e "satk=14\nsdef=9 spd=12" > golem8/nidorino/scyther/alakazam
-echo -e "Способности Swarm Shed Skin\nOblivious" > golem8/nidorino/scyther/kricketot
-mkdir -p golem8/nidorino/chingling
-echo -e "Способности Mountain Peka Sturdy Rock\nHead" > golem8/nidorino/chingling/sudowoodo
-echo -e "Ходы After You Defense Curl Gravity Heal Bell Helping\nHand Hypnosis Lucky Chant Magic Coat Pain Split Psybeam Signal Beam\nSkill Swap Sleep Talk Snore Trick WOnder Room Worry Seed Zen\nHeadbutt" > golem8/nidorino/chingling/musharna
-echo -e "Тип диеты Omnivore" > golem8/nidorino/chingling/haxorus
-echo -e "Тип покемона NORMAL\nNONE" > golem8/nidorino/cleffa
-echo -e "weight=2.6\nheight=8.0 atk=3 def=4" > golem8/budew
-echo -e "Развитые\nспособности No Guard" > karrablast9
-echo -e "Ходы Body Slam Counter Double-Edge\nDual Chop Fire Punch Focus Punch Helping Hand Ice Punch Knock Off Low\nKick Magic Coat Mega Kick Mega Punch Metronome Mud-Slap Role Play\nSleep Talk Snore Superpower Thunderpunch Vacuum\nWave" > machoke2
+mkdir -p golem7 
+echo -e "Тип покемона\nPSYCHIC FIGHTING" > golem7/gallade
+mkdir -p golem7/nidorino
+echo -e "Развитые способности Own\nTempo" > golem7/nidorino/numel
+echo -e "Развитые способности Poison Touch" > golem7/nidorino/grimer
+mkdir -p golem7/nidorino/scyther/floatzel
+echo -e "satk=14\nsdef=9 spd=12" > golem7/nidorino/scyther/alakazam
+echo -e "Способности Swarm Shed Skin\nOblivious" > golem7/nidorino/scyther/kricketot
+mkdir -p golem7/nidorino/chingling
+echo -e "Способности Mountain Peka Sturdy Rock\nHead" > golem7/nidorino/chingling/sudowoodo
+echo -e "Ходы After You Defense Curl Gravity Heal Bell Helping\nHand Hypnosis Lucky Chant Magic Coat Pain Split Psybeam Signal Beam\nSkill Swap Sleep Talk Snore Trick WOnder Room Worry Seed Zen\nHeadbutt" > golem7/nidorino/chingling/musharna
+echo -e "Тип диеты Omnivore" > golem7/nidorino/chingling/haxorus
+echo -e "Тип покемона NORMAL\nNONE" > golem7/nidorino/cleffa
+echo -e "weight=2.6\nheight=8.0 atk=3 def=4" > golem7/budew
+echo -e "Развитые\nспособности No Guard" > karrablast5
+echo -e "Ходы Body Slam Counter Double-Edge\nDual Chop Fire Punch Focus Punch Helping Hand Ice Punch Knock Off Low\nKick Magic Coat Mega Kick Mega Punch Metronome Mud-Slap Role Play\nSleep Talk Snore Superpower Thunderpunch Vacuum\nWave" > machoke8
 mkdir -p mothim1
 echo -e "Ходы Endure Return Quick Attack Jump Kick Baton\nPass Agility Dizzy Punch After You Charm Bounce Healing\nWish" > mothim1/lopunny
 echo -e "Ходы Bullet Seed Earth Power Giga Drain Grass Pledge\nIron Tail Mud-Slap Natural Gift Rock Climb Secret Power Seed Bomb\nSleep Talk Snore Stealth Rock Superpower Synthesis Worry\nSeed" > mothim1/turtwig
