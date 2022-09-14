@@ -20,11 +20,13 @@ public class Main {
   private static float[] x;
 
   /* Количество столбцов в третьем массиве */
-  private static final int THIRD_ARRAY_COLUMNS_NUMBER = 6;
+  private static final int THIRD_ARRAY_COLUMNS_NUMBER = 12;
   /* Количество строк в третьем массиве */
-  private static final int THIRD_ARRAY_ROWS_NUMBER = 12;
+  private static final int THIRD_ARRAY_ROWS_NUMBER = 6;
   /* Третий массив */
-  private static float[][] n = new float[THIRD_ARRAY_COLUMNS_NUMBER][THIRD_ARRAY_ROWS_NUMBER];
+  private static float[][] n = new float[THIRD_ARRAY_ROWS_NUMBER][THIRD_ARRAY_COLUMNS_NUMBER];
+
+  private static final int TABLE_CELL_WIDTH = 14;
 
   /**
    * Входная точка программы
@@ -56,7 +58,7 @@ public class Main {
   private static void printFirstArray() {
     System.out.println("First array:");
     for(int i = 0; i < a.length; i++) {
-      System.out.format("%10d", a[i]);
+      System.out.format("%-12d", a[i]);
     }
     System.out.print("\n\n");
   }
@@ -86,7 +88,7 @@ public class Main {
   private static void printSecondArray() {
     System.out.println("Second array:");
     for(int i = 0; i < x.length; i++) {
-      System.out.format("%10.4f", x[i]);
+      System.out.format("%-12.4f", x[i]);
     }
     System.out.print("\n\n");
   }
@@ -95,8 +97,8 @@ public class Main {
    * Метод, заполняющий третий массив
    */
   private static void createThirdArray() {
-    for(int i = 0; i < THIRD_ARRAY_COLUMNS_NUMBER; i++) {
-      for(int j = 0; j < THIRD_ARRAY_ROWS_NUMBER; j++) {
+    for(int i = 0; i < THIRD_ARRAY_ROWS_NUMBER; i++) {
+      for(int j = 0; j < THIRD_ARRAY_COLUMNS_NUMBER; j++) {
         n[i][j] = (float)(calculateThirdArrayValue(a[i], x[j])); 
       }
     }
@@ -106,12 +108,33 @@ public class Main {
    * Метод, выводящий третий массив в виде таблицы
    */
   private static void printThirdArray() {
-    for(int i = 0; i < THIRD_ARRAY_COLUMNS_NUMBER; i++) {
-      for(int j = 0; j < THIRD_ARRAY_ROWS_NUMBER; j++) {
-        System.out.format("%10.4f ", n[i][j]);
+    int maxElementLength = 0;
+    for(int i = 0; i < THIRD_ARRAY_ROWS_NUMBER; i++) {
+      for(int j = 0; j < THIRD_ARRAY_COLUMNS_NUMBER; j++) {
+        maxElementLength = Math.max(maxElementLength, String.format("%.4f", n[i][j]).length());
       }
-      System.out.print("\n");
     }
+
+    printTableSeparator(maxElementLength + 2, THIRD_ARRAY_COLUMNS_NUMBER, "+\n");
+    for(int i = 0; i < THIRD_ARRAY_ROWS_NUMBER; i++) {
+      for(int j = 0; j < THIRD_ARRAY_COLUMNS_NUMBER; j++) {
+        System.out.format("|%" + String.valueOf(maxElementLength) + ".4f ", n[i][j]);
+      }
+      System.out.print("|\n");
+      printTableSeparator(maxElementLength + 2, THIRD_ARRAY_COLUMNS_NUMBER, "+\n");
+    }
+  }
+
+  private static void printTableSeparator(int width, int elementsCount, String end) {
+    for(int i = 0; i < elementsCount * width; i++) {
+      if(i % width == 0) {
+        System.out.print("+");
+      }
+      else {
+        System.out.print("-");
+      }
+    }
+    System.out.print(end);
   }
 
   /**
@@ -130,4 +153,5 @@ public class Main {
     }
     return value;
   }
+
 }
