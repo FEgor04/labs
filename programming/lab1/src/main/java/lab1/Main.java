@@ -26,8 +26,6 @@ public class Main {
   /* Третий массив */
   private static float[][] n = new float[THIRD_ARRAY_ROWS_NUMBER][THIRD_ARRAY_COLUMNS_NUMBER];
 
-  private static final int TABLE_CELL_WIDTH = 14;
-
   /**
    * Входная точка программы
    */
@@ -43,6 +41,8 @@ public class Main {
 
   /**
    * Метод, инициализирующий и заполняюищй первый массив нечетными числами с start до end
+   * @param start - первое нечетное число
+   * @param end - последнее нечетное число
    */
   private static void createFirstArray(int start, int end) {
     int size = (end - start + 1) / 2 + 1;
@@ -65,6 +65,7 @@ public class Main {
 
   /**
    * Метод, инициализирующий и заполняюищй второй массив 
+   * @return второй массив, заполненный согласно заданию
    */
   private static float[] createSecondArray() {
     float[] secondArray = new float[SECOND_ARRAY_SIZE];
@@ -77,6 +78,11 @@ public class Main {
 
   /**
    * Метод, переводящий данное число rnd [0; 1] в отрезок [leftLimit; rightLimit]
+   * При заданных leftLimit и rightLimit данная функция будет монотонной
+   * @param rnd - значение, которуное нужно перевести в отрезок
+   * @param leftLimit - левая граница отрезка
+   * @param rightLimit - правая граница отрезка
+   * @return значение из отрезка [leftLimit; rightLimit]
    */
   private static float randomInLimits(float rnd, float leftLimit, float rightLimit) {
     return rnd * (rightLimit - leftLimit) + leftLimit;
@@ -111,20 +117,26 @@ public class Main {
     int maxElementLength = 0;
     for(int i = 0; i < THIRD_ARRAY_ROWS_NUMBER; i++) {
       for(int j = 0; j < THIRD_ARRAY_COLUMNS_NUMBER; j++) {
-        maxElementLength = Math.max(maxElementLength, String.format("%.4f", n[i][j]).length());
+        maxElementLength = Math.max(maxElementLength, String.format("%.4f", n[i][j]).length()); // определение максимальной длины столбца
       }
     }
 
-    printTableSeparator(maxElementLength + 2, THIRD_ARRAY_COLUMNS_NUMBER, "+\n");
+    printTableSeparator(maxElementLength + 1, THIRD_ARRAY_COLUMNS_NUMBER, "+\n"); // добавляем +1 на символ |
     for(int i = 0; i < THIRD_ARRAY_ROWS_NUMBER; i++) {
       for(int j = 0; j < THIRD_ARRAY_COLUMNS_NUMBER; j++) {
-        System.out.format("|%" + String.valueOf(maxElementLength) + ".4f ", n[i][j]);
+        System.out.format("|%-" + String.valueOf(maxElementLength) + ".4f", n[i][j]);
       }
       System.out.print("|\n");
-      printTableSeparator(maxElementLength + 2, THIRD_ARRAY_COLUMNS_NUMBER, "+\n");
+      printTableSeparator(maxElementLength + 1, THIRD_ARRAY_COLUMNS_NUMBER, "+\n");
     }
   }
 
+  /**
+   * Метод, выводящий разделительную строчку у таблицы
+   * @param width - ширина каждого элемента
+   * @param elementsCount - количество элементов в каждой строчке
+   * @param end - что выводить после разделителя
+   */
   private static void printTableSeparator(int width, int elementsCount, String end) {
     for(int i = 0; i < elementsCount * width; i++) {
       if(i % width == 0) {
@@ -139,6 +151,9 @@ public class Main {
 
   /**
    * Метод, вычисляющий значение элемента массива по заданным a и x
+   * @param a - значение a для формулы
+   * @param x - значение x для формулы
+   * @return вычисленное значение ячейки
    */
   private static double calculateThirdArrayValue(long a, float x) {
     double value;
