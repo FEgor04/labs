@@ -1,8 +1,23 @@
+#!/bin/python3
+from sys import exit
+
 n, iCnt = (7, 4) # общее количество разрядов, количество информационных разрядов
 rCnt = n - iCnt
 
 data = [int(x) for x in input()]
 
+def verifyData(data):
+    if len(data) != n:
+        return f"Некорректное сообщение. Ожидалось {n} символов, получено: {len(data)}"
+    for i in data:
+        if i not in [0, 1]:
+            return f"Сообщение не должно содержать символов, отличных от [0, 1]."
+    return ""
+
+err = verifyData(data)
+if err != "":
+    print(err)
+    exit()
 
 def calcCheckPositions(n):
     ans = []
@@ -25,15 +40,15 @@ def calcSyndrom(n, iCnt, data):
         ans += [now]
     return ans
 
-badBitId = ""
+syndrom = ""
 for i in calcSyndrom(n, iCnt, data):
-    badBitId = str(i) + badBitId
+    syndrom = str(i) + syndrom
 
-print(f"Синдром: {badBitId[::-1]}")
+print(f"Синдром: {syndrom[::-1]}")
 
-if badBitId != "000":
-    print(f"Ошибка в бите #{int(badBitId, 2)}")
-    data[int(badBitId, 2) - 1] ^= data[int(badBitId, 2) - 1] 
+if syndrom != "000":
+    print(f"Ошибка в бите #{int(syndrom, 2)}")
+    data[int(syndrom, 2) - 1] ^= data[int(syndrom, 2) - 1] 
 else:
     print(f"Либо ошибок нет, либо они везде")
 
