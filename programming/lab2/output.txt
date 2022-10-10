@@ -1,0 +1,296 @@
+Jirachi Cool Jirachi from the team White enters the battle!
+Sewaddle Predator from the team Blue enters the battle!
+Jirachi Cool Jirachi использует Thunder Wave. 
+Sewaddle Predator is paralyzed
+
+Sewaddle Predator struggles. 
+Jirachi Cool Jirachi loses 5 hit points.
+Sewaddle Predator loses 1 hit points.
+
+Jirachi Cool Jirachi использует атаку Dazzling Gleam. 
+Sewaddle Predator loses 9 hit points.
+
+Sewaddle Predator пошел отдохнуть). 
+Sewaddle Predator is sleeping
+
+Jirachi Cool Jirachi использует атаку Dazzling Gleam. 
+Critical hit!
+Sewaddle Predator loses 16 hit points.
+
+Sewaddle Predator struggles. 
+Jirachi Cool Jirachi loses 3 hit points.
+Sewaddle Predator loses 1 hit points.
+
+Jirachi Cool Jirachi использует Refresh. 
+
+Sewaddle Predator использует String Shot. 
+
+Jirachi Cool Jirachi использует Calm Mind. 
+
+Sewaddle Predator использует String Shot. 
+
+Jirachi Cool Jirachi использует Thunder Wave. 
+Sewaddle Predator is paralyzed
+
+Sewaddle Predator использует String Shot. 
+
+Jirachi Cool Jirachi использует атаку Dazzling Gleam. 
+Sewaddle Predator loses 7 hit points.
+Sewaddle Predator faints.
+Swadloon Predator from the team Blue enters the battle!
+Jirachi Cool Jirachi использует Thunder Wave. 
+Swadloon Predator is paralyzed
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Jirachi Cool Jirachi использует Calm Mind. 
+
+Swadloon Predator использует Grass Whistle. 
+Jirachi Cool Jirachi is sleeping
+
+Jirachi Cool Jirachi использует Calm Mind. 
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Jirachi Cool Jirachi использует Calm Mind. 
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Jirachi Cool Jirachi использует атаку Dazzling Gleam. 
+Swadloon Predator loses 9 hit points.
+
+Swadloon Predator struggles. 
+Jirachi Cool Jirachi loses 4 hit points.
+Swadloon Predator loses 1 hit points.
+
+Jirachi Cool Jirachi использует Refresh. 
+
+Swadloon Predator использует String Shot. 
+
+Jirachi Cool Jirachi использует Calm Mind. 
+
+Swadloon Predator использует Grass Whistle. 
+Jirachi Cool Jirachi is sleeping
+
+Jirachi Cool Jirachi использует атаку Dazzling Gleam. 
+Swadloon Predator loses 9 hit points.
+
+Swadloon Predator struggles. 
+Jirachi Cool Jirachi loses 4 hit points.
+Swadloon Predator loses 1 hit points.
+
+Jirachi Cool Jirachi использует Refresh. 
+
+Swadloon Predator использует String Shot. 
+
+Jirachi Cool Jirachi использует Thunder Wave. 
+Swadloon Predator is paralyzed
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Jirachi Cool Jirachi использует атаку Dazzling Gleam. 
+Swadloon Predator loses 8 hit points.
+
+Swadloon Predator использует String Shot. 
+
+Jirachi Cool Jirachi использует Thunder Wave. 
+Swadloon Predator is paralyzed
+
+Swadloon Predator использует String Shot. 
+
+Jirachi Cool Jirachi использует Calm Mind. 
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Jirachi Cool Jirachi использует атаку Dazzling Gleam. 
+Swadloon Predator loses 7 hit points.
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Jirachi Cool Jirachi использует Thunder Wave. 
+Swadloon Predator is paralyzed
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Jirachi Cool Jirachi использует Thunder Wave. 
+Swadloon Predator is paralyzed
+
+Swadloon Predator использует Grass Whistle. 
+Jirachi Cool Jirachi is sleeping
+
+Jirachi Cool Jirachi использует атаку Dazzling Gleam. 
+Swadloon Predator loses 8 hit points.
+
+Swadloon Predator struggles. 
+Jirachi Cool Jirachi loses 3 hit points.
+Swadloon Predator loses 1 hit points.
+
+Jirachi Cool Jirachi использует Thunder Wave. 
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Jirachi Cool Jirachi использует Thunder Wave. 
+Swadloon Predator is paralyzed
+
+Swadloon Predator struggles. 
+Jirachi Cool Jirachi loses 5 hit points.
+Swadloon Predator loses 1 hit points.
+
+Jirachi Cool Jirachi использует Thunder Wave. 
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Jirachi Cool Jirachi использует Calm Mind. 
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Jirachi Cool Jirachi использует атаку Dazzling Gleam. 
+Swadloon Predator loses 7 hit points.
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Jirachi Cool Jirachi использует Thunder Wave. 
+Swadloon Predator is paralyzed
+
+Swadloon Predator struggles. 
+Jirachi Cool Jirachi loses 6 hit points.
+Swadloon Predator loses 2 hit points.
+Jirachi Cool Jirachi faints.
+Snubbull Predator from the team White enters the battle!
+Swadloon Predator использует Grass Whistle. 
+Snubbull Predator is sleeping
+
+Snubbull Predator использует Charm. 
+Swadloon Predator 
+
+Swadloon Predator struggles. 
+Snubbull Predator restores 1 hit points.
+
+Snubbull Predator struggles. 
+Swadloon Predator loses 4 hit points.
+Snubbull Predator loses 1 hit points.
+
+Swadloon Predator использует String Shot. 
+
+Snubbull Predator struggles. 
+Critical hit!
+Swadloon Predator loses 7 hit points.
+Snubbull Predator loses 2 hit points.
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Snubbull Predator использует Shadow Ball. 
+Swadloon Predator loses 7 hit points.
+
+Swadloon Predator использует Grass Whistle. 
+Snubbull Predator is sleeping
+
+Snubbull Predator struggles. 
+Swadloon Predator loses 5 hit points.
+Snubbull Predator loses 1 hit points.
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Snubbull Predator использует Thunder Wave. 
+Swadloon Predator is paralyzed
+
+Swadloon Predator использует Grass Whistle. 
+Snubbull Predator is sleeping
+
+Snubbull Predator использует Shadow Ball. 
+Swadloon Predator loses 6 hit points.
+
+Swadloon Predator использует Grass Whistle. 
+
+Snubbull Predator struggles. 
+Swadloon Predator loses 5 hit points.
+Snubbull Predator loses 1 hit points.
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Snubbull Predator использует Thunder Wave. 
+Swadloon Predator is paralyzed
+
+Swadloon Predator использует Grass Whistle. 
+Snubbull Predator is sleeping
+
+Snubbull Predator struggles. 
+Swadloon Predator loses 5 hit points.
+Snubbull Predator loses 1 hit points.
+
+Swadloon Predator struggles. 
+Snubbull Predator loses 5 hit points.
+Swadloon Predator loses 1 hit points.
+
+Snubbull Predator struggles. 
+Swadloon Predator loses 5 hit points.
+Snubbull Predator loses 1 hit points.
+
+Swadloon Predator использует Grass Whistle. 
+Snubbull Predator is sleeping
+
+Snubbull Predator struggles. 
+Swadloon Predator loses 5 hit points.
+Snubbull Predator loses 1 hit points.
+
+Swadloon Predator пошел отдохнуть). 
+Swadloon Predator is sleeping
+
+Snubbull Predator использует Thunder Wave. 
+Swadloon Predator is paralyzed
+
+Swadloon Predator использует Grass Whistle. 
+Snubbull Predator is sleeping
+
+Snubbull Predator struggles. 
+Swadloon Predator loses 5 hit points.
+Snubbull Predator loses 1 hit points.
+
+Swadloon Predator использует String Shot. 
+Snubbull Predator 
+
+Snubbull Predator использует Shadow Ball. 
+Critical hit!
+Swadloon Predator loses 12 hit points.
+
+Snubbull Predator struggles. 
+Critical hit!
+Swadloon Predator loses 13 hit points.
+Snubbull Predator loses 3 hit points.
+Swadloon Predator faints.
+Leavanny Predator from the team Blue enters the battle!
+Snubbull Predator использует Shadow Ball. 
+Critical hit!
+Leavanny Predator loses 15 hit points.
+
+Leavanny Predator использует String Shot. 
+
+Snubbull Predator использует Charm. 
+
+Leavanny Predator использует String Shot. 
+
+Snubbull Predator использует Thunder Wave. 
+Leavanny Predator is paralyzed
+
+Leavanny Predator использует Swords Dance. 
+
+Snubbull Predator использует Shadow Ball. 
+Critical hit!
+Leavanny Predator loses 10 hit points.
+Leavanny Predator faints.
+Team Blue loses its last Pokemon.
+The team White wins the battle!

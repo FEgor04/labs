@@ -1,0 +1,6 @@
+build/
+.idea
+.gradle
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+!libs/Pokemon.jar
