@@ -17,6 +17,7 @@ public class Charm extends StatusMove {
 
     @Override
     protected void applyOppEffects(Pokemon pokemon) {
-        pokemon.setCondition(new Effect().stat(Stat.ATTACK, -2));
+        Effect charmMoveEffect = new Effect().stat(Stat.ATTACK, -2);
+        pokemon.setCondition(charmMoveEffect);
     }
 }
