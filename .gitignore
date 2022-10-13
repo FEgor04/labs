@@ -6,4 +6,5 @@
 *.bcf
 *.synctex.gz
 *.out
-
+__pycache__
+.vscode
