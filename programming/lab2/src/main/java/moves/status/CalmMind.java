@@ -11,6 +11,11 @@ public class CalmMind extends StatusMove {
     }
 
     @Override
+    protected boolean checkAccuracy(Pokemon pokemon, Pokemon pokemon1) {
+        return true;
+    }
+
+    @Override
     protected String describe() {
         return "использует Calm Mind";
     }
@@ -18,9 +23,9 @@ public class CalmMind extends StatusMove {
     @Override
     protected void applySelfEffects(Pokemon pokemon) {
         Effect calmMindEffect = new Effect().
-                stat(Stat.SPECIAL_ATTACK, 1).
-                stat(Stat.SPECIAL_DEFENSE, 1).
-                condition(pokemon.getCondition()); // необходимо для сохранения статуса горения, паралича, etc
-        pokemon.setCondition(calmMindEffect);
+                stat(Stat.SPECIAL_ATTACK, +1).
+                stat(Stat.SPECIAL_DEFENSE, +1).
+                turns(-1);
+        pokemon.addEffect(calmMindEffect);
     }
 }

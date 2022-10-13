@@ -7,7 +7,20 @@ import ru.ifmo.se.pokemon.*;
  */
 public class GrassWhistle extends StatusMove {
     public GrassWhistle() {
-        super(Type.GRASS, 100, 55);
+        this(55);
+    }
+
+    /**
+     * Конструктор с указанием точности, необходим для тестов
+     * @param acc точность
+     */
+    public GrassWhistle(double acc) {
+        super(Type.GRASS, 100, acc);
+    }
+
+    @Override
+    protected boolean checkAccuracy(Pokemon pokemon, Pokemon pokemon1) {
+        return (accuracy == 1) || super.checkAccuracy(pokemon, pokemon1);
     }
 
     @Override

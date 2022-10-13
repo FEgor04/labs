@@ -13,6 +13,11 @@ public class DazzlingGleam extends SpecialMove {
     }
 
     @Override
+    protected boolean checkAccuracy(Pokemon pokemon, Pokemon pokemon1) {
+        return true;
+    }
+
+    @Override
     protected String describe() {
         return "использует атаку Dazzling Gleam";
     }

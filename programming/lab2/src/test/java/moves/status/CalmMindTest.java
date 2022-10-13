@@ -12,11 +12,13 @@ public class CalmMindTest extends MoveTest {
     @DisplayName("Test Attack Effects")
     @Tag("status_move")
     public void testAttack() {
+        double oldSpecialAttack = attacker.getStat(Stat.SPECIAL_ATTACK);
+        double oldSpecialDefense = attacker.getStat(Stat.SPECIAL_DEFENSE);
         StatusMove calmMindAttack = new CalmMind();
         calmMindAttack.attack(attacker, defender);
-        assertTrue(100 > attacker.getStat(Stat.SPECIAL_ATTACK),
-                "old special attack should be less than current");
-        assertTrue(100 > attacker.getStat(Stat.SPECIAL_DEFENSE),
+        assertTrue(oldSpecialAttack < attacker.getStat(Stat.SPECIAL_ATTACK),
+                "old special attack (" + oldSpecialAttack + ") should be less or equal current" + "(" + attacker.getStat(Stat.SPECIAL_ATTACK) + ")");
+        assertTrue(oldSpecialDefense < attacker.getStat(Stat.SPECIAL_DEFENSE),
                 "old special defense should be less than current");
     }
 }

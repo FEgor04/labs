@@ -14,10 +14,14 @@ public class SwordsDance extends StatusMove {
     protected String describe() {
         return "использует Swords Dance";
     }
+    @Override
+    protected boolean checkAccuracy(Pokemon pokemon, Pokemon pokemon1) {
+        return true;
+    }
 
     @Override
     protected void applySelfEffects(Pokemon pokemon) {
-        pokemon.addEffect(new Effect().stat(Stat.ATTACK, 2));
+        pokemon.addEffect(new Effect().stat(Stat.ATTACK, 2).turns(-1));
     }
 
 

@@ -26,7 +26,10 @@ test {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'Main'
+        attributes (
+                'Main-Class': 'Main',
+                'Class-Path': 'Pokemon.jar'
+        )
     }
 }
 

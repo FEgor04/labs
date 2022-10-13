@@ -11,9 +11,14 @@ public class Rest extends StatusMove {
     }
 
     @Override
+    protected boolean checkAccuracy(Pokemon pokemon, Pokemon pokemon1) {
+        return true;
+    }
+
+    @Override
     protected void applySelfEffects(Pokemon pokemon) {
+        pokemon.setMod(Stat.HP, (int)(pokemon.getHP() - pokemon.getStat(Stat.HP)));
         Effect restEffect = new Effect().turns(2).condition(Status.SLEEP);
-        pokemon.restore();
         pokemon.setCondition(restEffect);
     }
 

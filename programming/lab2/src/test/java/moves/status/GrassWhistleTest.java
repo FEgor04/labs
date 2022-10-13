@@ -14,9 +14,9 @@ public class GrassWhistleTest extends MoveTest {
     @DisplayName("Test Grass Whistle Attack Effects")
     @Tag("status_move")
     public void testAttack() {
-        StatusMove grassWhistleAttack = new GrassWhistle();
+        StatusMove grassWhistleAttack = new GrassWhistle(1);
         grassWhistleAttack.attack(attacker, defender);
-        assertEquals(defender.getCondition(), Status.SLEEP);
+        assertEquals(Status.SLEEP, defender.getCondition());
     }
 
 }
