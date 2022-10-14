@@ -4,3 +4,6 @@ build/
 !gradle-wrapper.jar
 !gradle-wrapper.properties
 !libs/Pokemon.jar
+
+# Ignore Gradle build output directory
+build
