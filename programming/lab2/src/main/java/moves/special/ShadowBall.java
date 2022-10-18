@@ -11,6 +11,7 @@ public class ShadowBall extends SpecialMove {
      * Необходим для тестов
      */
     private double specialDefenseLowerChance = 0.2;
+
     public ShadowBall() {
         super(Type.GHOST, 80, 100);
     }
@@ -32,9 +33,7 @@ public class ShadowBall extends SpecialMove {
 
     @Override
     protected void applyOppEffects(Pokemon pokemon) {
-//        if(Math.random() < specialDefenseLowerChance) {
-            System.out.println(specialDefenseLowerChance);
-            pokemon.addEffect(new Effect().chance(specialDefenseLowerChance).stat(Stat.SPECIAL_DEFENSE, -1));
-//        }
+        System.out.println(specialDefenseLowerChance);
+        pokemon.addEffect(new Effect().chance(specialDefenseLowerChance).stat(Stat.SPECIAL_DEFENSE, -1));
     }
 }

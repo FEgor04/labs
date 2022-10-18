@@ -12,8 +12,7 @@ public class CharmTest extends MoveTest {
     @Test
     @DisplayName("Charm")
     @Tag("status_move")
-    @Tag("broken")
-    @Disabled
+    @Disabled("broken")
     public void testAttack() {
         double oldAttack = defender.getStat(Stat.ATTACK);
         logger.info("oldAttack: " + oldAttack);

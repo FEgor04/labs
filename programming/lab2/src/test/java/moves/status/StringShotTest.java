@@ -13,8 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class StringShotTest extends MoveTest {
     @Test
     @Tag("status_move")
-    @Tag("broken")
-    @Disabled
+    @Disabled("broken")
     public void testAttack() {
         double oldSpeed = defender.getStat(Stat.SPEED);
         StatusMove stringShotAttack = new StringShot(100);

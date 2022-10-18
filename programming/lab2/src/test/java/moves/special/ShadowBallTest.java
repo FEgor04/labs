@@ -14,10 +14,9 @@ public class ShadowBallTest extends MoveTest {
     @Test
     @DisplayName("ShadowBall")
     @Tag("special_move")
-    @Tag("broken")
-    @Disabled
+    @Disabled("broken")
     public void testAttack() {
-        SpecialMove shadowBallAttack = new ShadowBall(100);
+        SpecialMove shadowBallAttack = new ShadowBall(1);
         double oldHp = defender.getHP();
         double oldSpecialDefense = defender.getStat(Stat.SPECIAL_DEFENSE);
 
@@ -26,7 +25,7 @@ public class ShadowBallTest extends MoveTest {
         double currentHp = defender.getHP();
 
         assertTrue(oldHp > currentHp, "old hp should be greater than current");
-        assertTrue(oldSpecialDefense >= currentDefense,
+        assertTrue(oldSpecialDefense > currentDefense,
                 String.format("old special defense (%.2f) should be greater or equal than current (%.2f)", oldSpecialDefense, currentDefense)
         );
     }
