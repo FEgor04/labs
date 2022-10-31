@@ -1,4 +1,5 @@
 from typing import List
+import re
 
 import xml.etree.ElementTree as xml_element_tree
 
@@ -6,12 +7,13 @@ from parsers.interface import ParserInterface
 from schedule.schedule import Schedule, Lesson, LessonTime, lesson_format_from_str
 
 
-class XMLParser(ParserInterface):
+class XMLRegexParser(ParserInterface):
     def parse_str(self, xml_str: str) -> Schedule:
-        lessons = xml_element_tree.fromstring(xml_str)
+        lessons = re.findalxmleeee.omstr
         assert (lessons.tag == "day")
         schedule_lessons: List[Lesson] = []
         for lesson in lessons.findall("lesson"):
+            teacher = lesson.
             schedule_lessons += [
                 Lesson(
                     lesson.find("teacher").text,
