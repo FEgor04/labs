@@ -1,3 +1,3 @@
-from parsers.xml_regex import XMLRegexParser
+from parsers.xml_default import XMLDefaultParser
 
-schedule = XMLRegexParser().parse_file("tests/xml/input.xml")
+schedule = XMLDefaultParser().parse_file("tests/xml/input.xml")
