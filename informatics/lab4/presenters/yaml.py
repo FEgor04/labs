@@ -36,7 +36,6 @@ def present_lesson(lesson: Lesson) -> str:
 class YAMLPresenter(Presenter):
     def present(self, schedule: Schedule) -> str:
         presented = "day:\n" + 1 * indent + "lessons:\n"
-        print(present_lesson(schedule.lessons[0]))
         if len(schedule.lessons) == 1:
             return presented + 3 * indent + present_lesson(schedule.lessons[0])
         for i in schedule.lessons:

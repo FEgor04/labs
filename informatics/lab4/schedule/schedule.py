@@ -26,6 +26,9 @@ class LessonTime:
     def __eq__(self, other: 'LessonTime'):
         return self.start == other.start and self.end == other.end
 
+    def __repr__(self):
+        return f"{self.start=} {self.end=}"
+
 
 class Lesson:
     def __init__(self, teacher: str, room: str, name: str, lesson_time: LessonTime, week_day: str, lesson_format: LessonFormat,

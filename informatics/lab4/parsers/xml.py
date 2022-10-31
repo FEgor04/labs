@@ -25,7 +25,6 @@ class XMLParser(ParserInterface):
                     [int(x) for x in lesson.find("weeks").text.split(", ")]
                 )
             ]
-            print(schedule_lessons[-1])
 
         return Schedule(schedule_lessons)
 
