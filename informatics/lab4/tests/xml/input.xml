@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<day>
+  <lesson>
+    <week-day>Вторник</week-day>
+    <name>Информатика (Лек): Zoom</name>
+    <teacher>Балакшин Павел Валерьевич</teacher>
+    <lesson-format>Дистанционный</lesson-format>
+    <room/>
+    <time>08:20-09:50</time>
+    <weeks>
+      5
+    </weeks>
+  </lesson>
+  <lesson>
+    <week-day>Вторник</week-day>
+    <name>Информатика (Лек): Актовый зал</name>
+    <teacher>Балакшин Павел Валерьевич</teacher>
+    <lesson-format>Очно-дистанционный</lesson-format>
+    <room>ул. Ломоносова, д.9, лит. М</room>
+    <time>08:20-09:50</time>
+    <weeks>
+      3, 7, 9, 11, 13, 15, 17
+    </weeks>
+  </lesson>
+  <lesson>
+    <week-day>Вторник</week-day>
+    <name>ОСНОВЫ ПРОФЕССИОНАЛЬНОЙ ДЕЯТЕЛЬНОСТИ(ЛЕК): АКТОВЫЙ ЗАЛ</name>
+    <teacher>Клименков Сергей Викторович</teacher>
+    <lesson-format>Очно-дистанционный</lesson-format>
+    <room>ул. Ломоносова, д.9, лит. М</room>
+    <time>10:00-11:30</time>
+    <weeks>
+      3, 7, 9, 11, 13, 15, 17
+    </weeks>
+  </lesson>
+  <lesson>
+    <week-day>Вторник</week-day>
+    <name>ОСНОВЫ ПРОФЕССИОНАЛЬНОЙ ДЕЯТЕЛЬНОСТИ(ЛЕК): ZOOM</name>
+    <teacher>Клименков Сергей Викторович</teacher>
+    <lesson-format>Дистанционный</lesson-format>
+    <room/>
+    <time>10:00-11:30</time>
+    <weeks>
+      5
+    </weeks>
+  </lesson>
+
+  <lesson>
+    <week-day>Вторник</week-day>
+    <name>Программирование (Лек): Zoom</name>
+    <teacher>Письмак Алексей Евгеньевич</teacher>
+    <lesson-format>Дистанционный</lesson-format>
+    <room/>
+    <time>11:40-13:10</time>
+    <weeks>
+      5
+    </weeks>
+  </lesson>
+  <lesson>
+    <week-day>Вторник</week-day>
+    <name>Программирование (Лек): Актовый зал</name>
+    <teacher>Письмак Алексей Евгеньевич</teacher>
+    <lesson-format>Очно-дистанционный</lesson-format>
+    <room>ул. Ломоносова, д.9, лит. М</room>
+    <time>11:40-13:10</time>
+    <weeks>
+      3, 7, 9, 11, 13, 15, 17
+    </weeks>
+  </lesson>
+</day>
