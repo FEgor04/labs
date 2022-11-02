@@ -1,0 +1,32 @@
+syntax = "proto2";
+
+
+enum LessonFormat {
+  REMOTE=0;
+  ON_PLACE=1;
+  BOTH=2;
+}
+
+message Time {
+  required int32 hour = 1;
+  required int32 minute = 2;
+}
+
+message LessonTime {
+  required Time start = 1;
+  required Time end = 2;
+}
+
+message Lesson {
+  required string name = 1;
+  required string teacher = 2;
+  required string week_day = 3;
+  repeated int32 weeks = 4 [packed=true];
+  required LessonFormat format = 5;
+  required LessonTime time = 6;
+  optional string room = 7;
+}
+
+message Schedule {
+  repeated Lesson lessons = 1;
+}

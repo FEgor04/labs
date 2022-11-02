@@ -1,14 +1,28 @@
-from enum import Enum
+from enum import Enum, IntEnum
 from datetime import time
 
 from typing import List
 
 
-class LessonFormat(Enum):
+class LessonFormat(IntEnum):
     REMOTELY = 0
     ON_PLACE = 1
     BOTH = 2
 
+    @classmethod
+    def __repr__(self):
+        if self == LessonFormat.REMOTELY:
+            return "Дистанционный"
+        elif self == LessonFormat.BOTH:
+            return "Очно - дистанционный"
+        return "Очный"
+
+def present_lesson_format(lesson_format: LessonFormat):
+    if lesson_format == LessonFormat.REMOTELY:
+        return "Дистанционный"
+    if lesson_format == LessonFormat.BOTH:
+        return "Очно - дистанционный"
+    return "Очный"
 
 def lesson_format_from_str(lesson_format: str) -> LessonFormat:
     if lesson_format.lower() == "дистанционный":
@@ -27,7 +41,7 @@ class LessonTime:
         return self.start == other.start and self.end == other.end
 
     def __repr__(self):
-        return f"{self.start=} {self.end=}"
+        return f"{self.start.strftime('%H:%M')}-{self.end.strftime('%H:%M')}"
 
 
 class Lesson:
@@ -47,6 +61,17 @@ class Lesson:
     def __str__(self):
         return f"{self.teacher=} {self.room=} {self.name=} {self.format=} {self.weeks=} {self.time=} {self.week_day=}"
 
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "teacher": self.teacher,
+            "room": self.room,
+            "time": str(self.time),
+            "week_day": self.week_day,
+            "format": present_lesson_format(self.format),
+            "weeks": str(self.weeks)[1:-1]
+        }
+
 
 class Schedule:
     def __init__(self, lessons: List[Lesson]):
@@ -57,3 +82,8 @@ class Schedule:
 
     def __repr__(self):
         return map(lambda x: x.__repr__, self.lessons).__repr__()
+
+    def to_dict(self):
+        return {
+            "lessons": [x.to_dict() for x in self.lessons]
+        }

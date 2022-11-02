@@ -1,8 +1,7 @@
-from functools import reduce
 from typing import List
 
 from presenters.interface import Presenter
-from schedule.schedule import Schedule, Lesson, LessonTime, LessonFormat
+from schedule.schedule import Schedule, Lesson, LessonTime, LessonFormat, present_lesson_format
 
 indent = "  "
 
@@ -15,12 +14,7 @@ def present_lesson_time(lesson_time: LessonTime) -> str:
     return f"{lesson_time.start.strftime('%H:%M')}-{lesson_time.end.strftime('%H:%M')}"
 
 
-def present_lesson_format(lesson_format: LessonFormat):
-    if lesson_format == LessonFormat.REMOTELY:
-        return "Дистанционный"
-    if lesson_format == LessonFormat.BOTH:
-        return "Очно - дистанционный"
-    return "Очный"
+
 
 
 def present_room(room: str):
@@ -30,7 +24,7 @@ def present_room(room: str):
 
 
 def present_lesson(lesson: Lesson) -> str:
-    return f'week-day: "{lesson.week_day}"\n{indent * 3}name: "{lesson.name}"\n{indent * 3}teacher: "{lesson.teacher}"\n{indent * 3}lesson-format: "{present_lesson_format(lesson.format)}"\n{indent * 3}room: "{present_room(lesson.room)}"\n{indent * 3}time: "{present_lesson_time(lesson.time)}"\n{indent * 3}weeks: "{present_weeks(lesson.weeks)}"'
+    return f'week-day: "{lesson.week_day}"\n{indent * 3}name: "{lesson.name}"\n{indent * 3}teacher: "{lesson.teacher}"\n{indent * 3}lesson-format: "{present_lesson_format(lesson.format)}"\n{indent * 3}room: "{present_room(lesson.room)}"\n{indent * 3}time: "{lesson.time.__repr__()}"\n{indent * 3}weeks: "{present_weeks(lesson.weeks)}"'
 
 
 class YAMLPresenter(Presenter):

@@ -1,6 +1,5 @@
-from typing import List
-
 import xml.etree.ElementTree as xml_element_tree
+from typing import List
 
 from parsers.interface import ParserInterface
 from schedule.schedule import Schedule, Lesson, LessonTime, lesson_format_from_str

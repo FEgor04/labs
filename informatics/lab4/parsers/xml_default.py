@@ -8,17 +8,15 @@ class XMLDefaultParser(ParserInterface):
     def parse_str(self, xml_str: str) -> Schedule:
         lessons: List[Lesson] = []
         lesson_tags = self.__find_tag_contains(xml_str, "lesson")
-        print(lesson_tags)
         for lesson_str in lesson_tags:
-            name = self.__find_tag_contains(lesson_str, "name")
-            week_day = self.__find_tag_contains(lesson_str, "week-day")
-            teacher = self.__find_tag_contains(lesson_str, "teacher")
-            lesson_format = self.__find_tag_contains(lesson_str, "lesson-format")
+            name = self.__find_tag_contains(lesson_str, "name")[0]
+            week_day = self.__find_tag_contains(lesson_str, "week-day")[0]
+            teacher = self.__find_tag_contains(lesson_str, "teacher")[0]
+            lesson_format = self.__find_tag_contains(lesson_str, "lesson-format")[0]
             room = self.__find_tag_contains(lesson_str, "room")
-            room = room if len(room) > 0 else None
-            time = self.__find_tag_contains(lesson_str, "time")
-            weeks = self.__find_tag_contains(lesson_str, "weeks")
-            print(name, week_day, teacher, lesson_format, room, time, weeks)
+            room = room[0] if len(room) > 0 else None
+            time = self.__find_tag_contains(lesson_str, "time")[0]
+            weeks = self.__find_tag_contains(lesson_str, "weeks")[0]
             lessons += [
                 Lesson(
                     teacher, room, name, LessonTime(time), week_day, lesson_format_from_str(lesson_format), [int(x) for x in weeks.split(", ")]
@@ -31,10 +29,7 @@ class XMLDefaultParser(ParserInterface):
         start, end = self.__find_substr(xml_str, f"<{tag}>", True), self.__find_substr(xml_str, f"</{tag}>")
         assert len(start) == len(end)
         ans = [xml_str[start[i]:end[i]] for i in range(len(start))]
-        if len(ans) == 1:
-            return ans[0]
-        else:
-            return ans
+        return ans
 
     def __find_substr(self, xml_str: str, substr: str, get_end = False):
         pos = []

@@ -1,0 +1,61 @@
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{empheq}
+\usepackage{mdframed}
+\usepackage{booktabs}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{psfrag}
+\usepackage{pgfplots}
+\usepackage{bm}
+\usepackage{caption}
+\usepackage{subcaption}
+\everymath{\displaystyle}
+\usepackage[htt]{hyphenat}
+% \DisableLigatures{encoding = T1, family = tt* }
+% \usepackage{lmodern} % for bold teletype font
+
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  top=25mm, 
+  right=1cm,
+  bottom=25mm, 
+  left=1cm
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{listings}
+
+
+\fancyhead{}
+\fancyfoot[C]{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{firststyle}
+{
+   \fancyhead{}
+   \fancyfoot[C]{г. Санкт-Петербург\\2022 г.}
+}
+
+\lstset{
+    % inputencoding=utf8,
+    extendedchars=\true,
+    literate={-}{-}1,
+    breaklines=true,
+    basicstyle=\ttfamily,
+    columns=fullflexible,
+    frame=single,
+    breaklines=true,
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
