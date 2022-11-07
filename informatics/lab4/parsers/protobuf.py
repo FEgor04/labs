@@ -6,9 +6,9 @@ import schedule.schedule
 
 
 class ProtobufParser(ParserInterface):
-    def parse_str(self, xml_str: str) -> schedule.schedule.Schedule:
+    def parse_str(self, proto_str: str) -> schedule.schedule.Schedule:
         schedule_proto = schedule.schedule_pb2.Schedule()
-        schedule_proto.ParseFromString(xml_str)
+        schedule_proto.ParseFromString(proto_str)
         # print(schedule_proto)
         lessons: List[schedule.schedule.Lesson] = []
         for lesson in schedule_proto.lessons:
@@ -31,5 +31,5 @@ class ProtobufParser(ParserInterface):
 
     def parse_file(self, full_file_name: str) -> schedule.schedule.Schedule:
         with open(full_file_name, "rb") as file:
-            xml_str = file.read()
-        return self.parse_str(xml_str)
+            proto_str = file.read()
+        return self.parse_str(proto_str)

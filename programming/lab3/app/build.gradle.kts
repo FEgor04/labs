@@ -35,6 +35,8 @@ dependencies {
 
     val mockkVersion = "1.13.2"
     testImplementation("io.mockk:mockk:${mockkVersion}")
+
+    implementation("org.kodein.di:kodein-di:7.15.1")
 }
 
 testing {

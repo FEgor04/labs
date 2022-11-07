@@ -5,10 +5,14 @@ package org.itmo.lab3
 
 import org.itmo.lab3.characters.Donut
 import org.itmo.lab3.characters.Dunno
+import org.itmo.lab3.look.looker.Illuminator
 import org.itmo.lab3.planets.Earth
 import org.itmo.lab3.planets.Moon
 import org.itmo.lab3.spaceships.Spaceship
 import org.itmo.lab3.spaceships.rocket.Rocket
+import org.kodein.di.DI
+import org.kodein.di.bindSingleton
+import org.kodein.di.instance
 
 /**
   * Незнайка поднялся под потолок кабины и, прильнув к верхнему иллюминатору, принялся разглядывать поверхность Луны.
@@ -25,8 +29,19 @@ import org.itmo.lab3.spaceships.rocket.Rocket
  * и можно потрогать верхушку какой-нибудь лунной горы.
   */
 fun main() {
-    val rocket: Spaceship = Rocket(arrayOf(Dunno(), Donut()), 1500.0)
-    val moon = Moon()
+    val kodein = DI {
+        bindSingleton<Moon> { Moon() }
+        bindSingleton<Dunno> { Dunno() }
+        bindSingleton<Donut> { Donut() }
+        bindSingleton<Illuminator> { Illuminator() }
+    }
+
+    val moon: Moon by kodein.instance()
+    val dunno: Dunno by kodein.instance()
+    val donut: Donut by kodein.instance()
+    val illuminator: Illuminator by kodein.instance()
+
+    val rocket: Spaceship = Rocket(arrayOf(dunno, donut), 1500.0, illuminator)
 
     rocket.getCrewMember(0).getUp()
     rocket.getCrewMember(0).look(rocket.getIlluminator(), moon)
