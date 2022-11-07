@@ -7,5 +7,5 @@ interface Surface {
     /**
      * Возвращает объекты на поверхности
      */
-    fun getObjects(): Array<Any>
+    fun getObjects(): List<Any>
 }

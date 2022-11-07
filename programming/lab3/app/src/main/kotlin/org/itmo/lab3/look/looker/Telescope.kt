@@ -1,11 +1,28 @@
 package org.itmo.lab3.look.looker
 
+import org.itmo.lab3.look.lookable.Lookable
+import org.itmo.lab3.planets.Moon
+
 class Telescope: Looker {
-    override fun getSeenObjects(): String {
-        return "Просто дефолтная Луна"
+    override fun getSeenObjects(lookable: Lookable): String {
+        if(lookable is Moon) {
+            return "Просто дефолтная Луна"
+        }
+        return "wtf"
     }
 
     override fun toString(): String {
         return "телескоп"
+    }
+
+    override fun hashCode(): Int {
+        return toString().hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if(other is Looker) {
+            return other.toString() == this.toString()
+        }
+        return false
     }
 }

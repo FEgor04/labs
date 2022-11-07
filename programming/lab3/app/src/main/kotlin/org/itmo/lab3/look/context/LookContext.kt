@@ -15,7 +15,7 @@ class LookContext(private val looker: Looker, private val lookable: Lookable) {
     }
 
     fun getSeenObjects(): Any {
-        return looker.getSeenObjects()
+        return looker.getSeenObjects(lookable)
     }
 
     fun getQuality(): LookQuality {
@@ -32,6 +32,21 @@ class LookContext(private val looker: Looker, private val lookable: Lookable) {
             return LookQuality.BETTER_THAN_EARTH
         }
         return LookQuality.IMPOSSIBLE
+    }
+
+    override fun hashCode(): Int {
+        return this.looker.hashCode() + 10 * this.quality.hashCode() + 100 * this.lookable.hashCode();
+    }
+
+    override fun toString(): String {
+        return "${this.looker} -> ${this.lookable}: ${this.quality}"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if(other is LookContext) {
+            return this.looker == other.looker && this.lookable == other.lookable && this.quality == other.quality
+        }
+        return false
     }
 
     companion object {
