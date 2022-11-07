@@ -16,4 +16,18 @@ class Earth: Planet {
         return EarthSurface();
     }
 
+    override fun toString(): String {
+        return getName()
+    }
+
+    override fun hashCode(): Int {
+        return toString().hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if(other is Earth) {
+            return toString() == other.toString()
+        }
+        return false
+    }
 }

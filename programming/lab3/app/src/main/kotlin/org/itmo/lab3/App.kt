@@ -7,7 +7,8 @@ import org.itmo.lab3.characters.Donut
 import org.itmo.lab3.characters.Dunno
 import org.itmo.lab3.planets.Earth
 import org.itmo.lab3.planets.Moon
-import org.itmo.lab3.rocket.Rocket
+import org.itmo.lab3.spaceships.Spaceship
+import org.itmo.lab3.spaceships.rocket.Rocket
 
 /**
   * Незнайка поднялся под потолок кабины и, прильнув к верхнему иллюминатору, принялся разглядывать поверхность Луны.
@@ -24,13 +25,17 @@ import org.itmo.lab3.rocket.Rocket
  * и можно потрогать верхушку какой-нибудь лунной горы.
   */
 fun main() {
-    val rocket = Rocket(arrayOf(Dunno(), Donut()), 1500.0)
-    val earth = Earth()
+    val rocket: Spaceship = Rocket(arrayOf(Dunno(), Donut()), 1500.0)
     val moon = Moon()
 
-//    rocket.crew[0].look(earth.telescope, moon)
-    rocket.crew[0].getUp()
-    rocket.crew[0].look(rocket.illuminator, moon)
-    rocket.crew[1].getUp()
-    rocket.crew[1].look(rocket.illuminator, moon)
+    rocket.getCrewMember(0).getUp()
+    rocket.getCrewMember(0).look(rocket.getIlluminator(), moon)
+    rocket.getCrewMember(1).getUp()
+    rocket.getCrewMember(1).look(rocket.getIlluminator(), moon)
+    println("Скорость сближения с Луной: ${rocket.calcApproachSpeed(moon)}")
+    rocket.getCrewMember(1).modifyRelief(0.0)
+    println("Размер Луны: ${moon.getSizeComparedToSky()} неба")
+    println("Размер Луны: ${moon.getSizeComparedToSky()} неба")
+    val everythingAround = rocket.getIlluminator().getSeenObjects(moon)
+    println("Вокруг видно: $everythingAround")
 }

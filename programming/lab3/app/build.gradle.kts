@@ -29,6 +29,9 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.0.1-jre")
+
+    val mockkVersion = "1.13.2"
+    testImplementation("io.mockk:mockk:${mockkVersion}")
 }
 
 testing {
