@@ -1,0 +1,9 @@
+report
+.idea
+.gradle
+build
+app/build
+.gitignore
+Dockerfile
+.dockerignore
+.git
