@@ -1,0 +1,28 @@
+ORG 0x142
+X: WORD 0x0100
+A: WORD 0xA149
+Y: WORD 0x0200
+B: WORD 0x0100
+C: WORD 0x414A
+D: WORD 0x0200
+E: WORD 0xA149
+F: WORD 0xE14A
+G: WORD 0xE14A
+H: WORD 0x414A
+
+START:
+LD $A   
+OR $K   
+ADD $C  
+OR $D   
+ST $G   
+LD $Y   
+SUB $G  
+AND $F  
+ADD $B  
+OR $H   
+ADD $G  
+ST $X   
+HLT      
+
+K: WORD 0xE14A

@@ -1,0 +1,146 @@
+ORG 0
+WAS: WORD 1,0,0,0,0,0,0
+G: WORD 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0
+
+
+WRITE_WAS_BY_I: ; &1 = ID, &2 = VALUE
+	LD &1
+	ST $WRITE_ID
+	;HLT
+	LD $SAVE_VALUE
+	ADD $WRITE_ID
+	ST $SAVE_VALUE
+	LD #5
+	SAVE_VALUE: ST $WAS
+	;HLT
+	LD $SAVE_VALUE
+	SUB $WRITE_ID
+	ST $SAVE_VALUE
+	LD &1
+	RET
+	WRITE_ID: WORD 0
+
+GET_WAS_BY_I: ;&1 = ID
+	LD &1
+	ST $GET_ID
+	LD $GET_VALUE
+	ADD $GET_ID
+	ST $GET_VALUE
+	GET_VALUE: LD $WAS
+	ST &1
+	LD $GET_VALUE
+	SUB $GET_ID
+	ST $GET_VALUE
+	LD &1
+	RET
+	GET_ID: WORD 0
+
+GET_G_BY_I_J: ; &2 = J &1 = I
+	CLA
+	ST $LOOP_I
+	ST $PROD
+	LD &1
+	ST $G_I
+	LD &2
+	ST $G_J
+	GET_LOOP_START:
+		LD $G_I
+		CMP $LOOP_I ; G_I - LOOP_I
+		BEQ GET_LOOP_END
+		LD $PROD
+		ADD #7
+		ST $PROD
+		LD $LOOP_I
+		INC
+		ST $LOOP_I
+		JUMP GET_LOOP_START
+	GET_LOOP_END: 
+	LD $PROD
+	ADD $G_J
+	ST $PROD
+	LD $GET_G_VALUE
+	ADD $PROD
+	ST $GET_G_VALUE
+	GET_G_VALUE: LD $G
+	ST &1
+	ST &2
+	LD $GET_G_VALUE
+	SUB $PROD
+	ST $GET_G_VALUE
+	LD &1
+	RET
+	G_I: WORD 0
+	PROD: WORD 0x0
+	G_J: WORD 0
+	LOOP_I: WORD 0
+
+CHECK_CAN_GO: ; можем ли перейти из вершины i в j ; &2 - I, &1 - J
+	LD &2
+	ST $CHECK_I
+	LD &1
+	ST $CHECK_J
+	PUSH
+	CALL $GET_WAS_BY_I
+	POP ; AC = WAS[J]
+	;HLT
+	BNE RETURN_NO ; Z == 0 <=> AC != 0 <=> WAS[j] != 0 => не переходим
+	LD $CHECK_J
+	PUSH
+	LD $CHECK_I
+	PUSH
+	CALL $GET_G_BY_I_J
+	POP
+	POP ; AC = G[i][j]
+	;HLT
+	BNE RETURN_YES ; Z == 0 <=> AC != 0 <=> G[i][j] != 0 => можно заходить в вершину
+	RETURN_NO:
+	CLA
+	ST &1
+	ST &2
+	RET
+	RETURN_YES:
+	LD #1
+	ST &1
+	ST &2
+	RET
+	CHECK_I: WORD 0
+	CHECK_J: WORD 0
+
+DFS: ; # &1 - NODE
+	LD &1
+	HLT
+	CLA
+	ST $DFS_I
+	LOOP_START: LD &1
+	PUSH
+	LD $DFS_I
+	PUSH
+	CALL $CHECK_CAN_GO
+	POP
+	POP
+	BEQ SKIP_DFS
+	LD $DFS_I
+	PUSH
+	CALL $WRITE_WAS_BY_I
+	POP
+	LD $DFS_I
+	PUSH
+	CALL DFS
+	POP
+	ST $DFS_I
+	SKIP_DFS: LD $DFS_I
+	INC
+	ST $DFS_I
+	CMP #7
+	BNE LOOP_START
+	LD &1
+	RET
+	DFS_I: WORD 0
+	
+START:
+	LD #0
+	PUSH
+	CALL DFS
+	POP
+	HLT
+	
