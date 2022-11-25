@@ -1,7 +1,9 @@
 package org.itmo.lab4.characters
 
 class Donut(relief: Double = 0.0): Character(relief) {
-    override val face: Face = object: Face() {
+    override val face: Face = DonutFace()
+
+    inner class DonutFace: Face() {
         override fun showScaredEmotion() {
             println("У ${getName()} затряслись и губы, и щеки, и даже уши, а из глаз потекли слезы")
         }

@@ -73,10 +73,10 @@ fun main() {
 
     /** Демонстрация unchecked exception, я не придумал ничего лучше */
     try {
-        val schizophrenia: Character = rocket.getCrew().getMember(2)
+        rocket.getCrew().getMember(2)
     }
     catch (e: NoCrewMemberException) {
-        println("В экипаже нет ни чела с индексом ${e.i}, ни шизофрении ")
+        println("В экипаже нет чела с индексом ${e.i}")
     }
 
     try {
