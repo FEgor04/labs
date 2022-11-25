@@ -108,7 +108,6 @@ CHECK_CAN_GO: ; можем ли перейти из вершины i в j ; &2 -
 
 DFS: ; # &1 - NODE
 	LD &1
-	HLT
 	CLA
 	ST $DFS_I
 	LOOP_START: LD &1
