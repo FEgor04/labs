@@ -3,7 +3,6 @@ package lab5.cli.commands
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class RemoveKeyCommandTest : CommandTest() {
@@ -24,7 +23,8 @@ class RemoveKeyCommandTest : CommandTest() {
         confirmVerified(repository)
     }
 
-    @Test fun `bad input`() {
+    @Test
+    fun `bad input`() {
         val id = "bad_input";
         val cmd = RemoveKeyCommand(repository)
         cmd.handle("remove_key $id", writer, reader)

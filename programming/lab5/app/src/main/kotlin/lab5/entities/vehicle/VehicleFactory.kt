@@ -24,55 +24,50 @@ object VehicleFactory {
         val enginePower: Double
         val vehType: VehicleType?
 
-        if(name.isEmpty()) {
+        if (name.isEmpty()) {
             throw FactoryException("name", "should not be empty")
         }
 
         try {
             x = xStr.trim().toInt()
-        }
-        catch (e: NumberFormatException) {
+        } catch (e: NumberFormatException) {
             throw FactoryException("x", "should be an int")
         }
 
-        if(yStr.trim() != "null" && yStr.isNotEmpty()) {
+        if (yStr.trim() != "null" && yStr.isNotEmpty()) {
             try {
                 y = yStr.trim().toLong()
             } catch (e: NumberFormatException) {
                 throw FactoryException("y", "should be an int (long)")
             }
-        }
-        else {
+        } else {
             y = null
         }
 
         try {
             enginePower = enginePowerStr.trim().toDouble()
-        }
-        catch (e: NumberFormatException) {
+        } catch (e: NumberFormatException) {
             throw FactoryException("y", "should be a real number")
         }
 
-        if(vehicleType == "null" || vehicleType.isEmpty()) {
+        if (vehicleType == "null" || vehicleType.isEmpty()) {
             vehType = null
-        }
-        else {
+        } else {
             vehType = VehicleType.values().find { it.toString().lowercase() == vehicleType.trim().lowercase() }
             if (vehType == null) {
                 throw FactoryException("vehicle type", "should be one of ${VehicleType.values().map { "$it" }}")
             }
         }
 
-        val fType = FuelType.values().find { it.toString().lowercase() ==  fuelType.trim().lowercase()}
-        if(fType == null) {
+        val fType = FuelType.values().find { it.toString().lowercase() == fuelType.trim().lowercase() }
+        if (fType == null) {
             throw FactoryException("fuel type", "should be one of ${FuelType.values().map { "$it" }}")
         }
 
         val vehicle = Vehicle(1, name, Coordinates(x, y), java.time.LocalDate.MIN, enginePower, vehType, fType)
         try {
             vehicle.validate()
-        }
-        catch(e: ValidationException) {
+        } catch (e: ValidationException) {
             throw e
         }
 

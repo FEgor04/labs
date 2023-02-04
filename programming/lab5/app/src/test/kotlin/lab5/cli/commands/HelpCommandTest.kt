@@ -12,16 +12,17 @@ import java.io.BufferedWriter
 import java.io.File
 import java.util.*
 
-class HelpCommandTest: CommandTest() {
+class HelpCommandTest : CommandTest() {
 
     @Test
     fun `no commands`() {
         val command = HelpCommand(listOf())
-        command.handle("help", reader=reader, writer=writer)
+        command.handle("help", reader = reader, writer = writer)
     }
 
-    @Test fun `one command`() {
-        val command = HelpCommand(listOf(object: Command {
+    @Test
+    fun `one command`() {
+        val command = HelpCommand(listOf(object : Command {
             override fun check(userInput: String): Boolean {
                 TODO("Not yet implemented")
             }
@@ -39,7 +40,7 @@ class HelpCommandTest: CommandTest() {
                 return "Command!"
             }
         }))
-        command.handle("help", reader=reader, writer=writer)
+        command.handle("help", reader = reader, writer = writer)
         verify {
             writer.write("- Command!\n")
             writer.flush()

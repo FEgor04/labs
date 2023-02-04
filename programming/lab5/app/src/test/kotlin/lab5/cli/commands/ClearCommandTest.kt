@@ -11,9 +11,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class ClearCommandTest: CommandTest() {
+class ClearCommandTest : CommandTest() {
 
-    @Test fun test() {
+    @Test
+    fun test() {
         val cmd = ClearCommand(repository)
         every { repository.clear() } returns Unit
         cmd.handle("clear", reader = reader, writer = writer)
@@ -24,10 +25,11 @@ class ClearCommandTest: CommandTest() {
         confirmVerified(writer)
     }
 
-    @Test fun check() {
+    @Test
+    fun check() {
         val cmd = ClearCommand(repository)
-        assert( cmd.check("clear") )
-        assert( cmd.check("clear       ") )
-        assert( cmd.check("    clear       ") )
+        assert(cmd.check("clear"))
+        assert(cmd.check("clear       "))
+        assert(cmd.check("    clear       "))
     }
 }

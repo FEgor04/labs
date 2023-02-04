@@ -3,12 +3,11 @@ package lab5.repositories
 import lab5.entities.ValidationException
 import lab5.entities.vehicle.Vehicle
 import lab5.entities.vehicle.VehicleType
-import kotlin.jvm.Throws
 
 /**
  * Интерфейс репозитория транспорта
  */
-interface VehicleRepository: Iterable<Vehicle> {
+interface VehicleRepository : Iterable<Vehicle> {
     /**
      * Добавляет новый транспорт
      * @throws ValidationException если vehicle не валидно

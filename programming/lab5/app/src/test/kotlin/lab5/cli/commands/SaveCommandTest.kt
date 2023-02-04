@@ -6,7 +6,8 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 
 class SaveCommandTest : CommandTest() {
-    @Test fun ok() {
+    @Test
+    fun ok() {
         val cmd = SaveCommand(repository)
         every { repository.saveCollection() } returns Unit
         cmd.handle("save", writer, reader)
@@ -19,7 +20,8 @@ class SaveCommandTest : CommandTest() {
         confirmVerified(writer)
     }
 
-    @Test fun `exception on save`() {
+    @Test
+    fun `exception on save`() {
         val cmd = SaveCommand(repository)
         val e: Exception = Exception("not today")
         every { repository.saveCollection() } throws e

@@ -9,8 +9,8 @@ class VehicleTest {
     @Test
     fun `Should be OK`() {
         val vehicle = Vehicle(
-            id=512,
-            name="Test",
+            id = 512,
+            name = "Test",
             coordinates = Coordinates(512, 1512),
             enginePower = 5.2,
             type = VehicleType.BICYCLE,
@@ -20,10 +20,11 @@ class VehicleTest {
         vehicle.validate()
     }
 
-    @Test fun `Empty name`() {
+    @Test
+    fun `Empty name`() {
         val vehicle = Vehicle(
-            id=1,
-            name="",
+            id = 1,
+            name = "",
             coordinates = Coordinates(512, 1512),
             enginePower = 5.2,
             type = VehicleType.BICYCLE,
@@ -35,10 +36,11 @@ class VehicleTest {
         }
     }
 
-    @Test fun `Bad ID`() {
+    @Test
+    fun `Bad ID`() {
         val vehicle = Vehicle(
-            id=0,
-            name="Test",
+            id = 0,
+            name = "Test",
             coordinates = Coordinates(512, 1512),
             enginePower = 5.2,
             type = VehicleType.BICYCLE,
@@ -50,10 +52,11 @@ class VehicleTest {
         }
     }
 
-    @Test fun `Bad Coordinates`() {
+    @Test
+    fun `Bad Coordinates`() {
         val vehicle = Vehicle(
-            id=0,
-            name="Test",
+            id = 0,
+            name = "Test",
             coordinates = Coordinates(-150, 1512),
             enginePower = 5.2,
             type = VehicleType.BICYCLE,
@@ -65,10 +68,11 @@ class VehicleTest {
         }
     }
 
-    @Test fun `Bad Name`() {
+    @Test
+    fun `Bad Name`() {
         val vehicle = Vehicle(
-            id=0,
-            name="",
+            id = 0,
+            name = "",
             coordinates = Coordinates(-150, 1512),
             enginePower = 5.2,
             type = VehicleType.BICYCLE,
@@ -80,10 +84,11 @@ class VehicleTest {
         }
     }
 
-    @Test fun `Bad Engine Power`() {
+    @Test
+    fun `Bad Engine Power`() {
         val vehicle = Vehicle(
-            id=0,
-            name="Test",
+            id = 0,
+            name = "Test",
             coordinates = Coordinates(-150, 1512),
             enginePower = -10.0,
             type = VehicleType.BICYCLE,

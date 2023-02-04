@@ -6,7 +6,8 @@ package lab5
 import lab5.cli.CLIHandler
 import lab5.repositories.VehicleRepository
 import lab5.repositories.csv.VehicleCsvRepository
-import java.io.*
+import java.io.File
+import java.io.FileNotFoundException
 
 fun main() {
     val inputStream = System.`in`
@@ -15,26 +16,23 @@ fun main() {
     val writer = System.out.bufferedWriter()
 
     val filename = System.getenv("FILENAME")
-    val file: File? = if(filename.isNullOrEmpty()) {
+    val file: File? = if (filename.isNullOrEmpty()) {
         writer.write("Переменная окружения FILENAME не указана. Данные загружены не будут.\n")
         null
     } else {
         File(filename)
     }
     val repository: VehicleRepository = VehicleCsvRepository(file)
-    if(file != null && file.exists()) {
+    if (file != null && file.exists()) {
         try {
             repository.loadData()
-        }
-        catch(e: FileNotFoundException) {
+        } catch (e: FileNotFoundException) {
             writer.write("Нет файла $file или он недоступен для записи: $e\n")
             writer.flush()
-        }
-        catch(e: SecurityException) {
+        } catch (e: SecurityException) {
             writer.write("Недостаточно прав чтобы открыть файл $file: $e\n")
             writer.flush()
-        }
-        catch(e: Exception) {
+        } catch (e: Exception) {
             writer.write("Невозможно открыть файл $file: $e\n")
             writer.flush()
         }

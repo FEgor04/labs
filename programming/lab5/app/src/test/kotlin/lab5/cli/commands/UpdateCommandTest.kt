@@ -90,7 +90,8 @@ class UpdateCommandTest : CommandTest() {
         confirmVerified(repository)
     }
 
-    @Test fun `no vehicle`() {
+    @Test
+    fun `no vehicle`() {
         every { repository.getVehicleById(123) } returns null
         val cmd = UpdateCommand(repository)
         cmd.handle("update 123", writer, reader)
@@ -101,7 +102,8 @@ class UpdateCommandTest : CommandTest() {
         confirmVerified(writer)
     }
 
-    @Test fun `id is not an int`() {
+    @Test
+    fun `id is not an int`() {
         val cmd = UpdateCommand(repository)
         cmd.handle("update notAnInteger", writer, reader)
         verify {
@@ -111,7 +113,8 @@ class UpdateCommandTest : CommandTest() {
         confirmVerified(writer)
     }
 
-    @Test fun `empty input`() {
+    @Test
+    fun `empty input`() {
         val cmd = UpdateCommand(repository)
         cmd.handle("update", writer, reader)
         verify {
@@ -121,17 +124,19 @@ class UpdateCommandTest : CommandTest() {
         confirmVerified(writer)
     }
 
-    @Test fun `everything is null`() {
+    @Test
+    fun `everything is null`() {
         mockkObject(ReaderUtils)
 
         val oldVehicle = VehicleFactory.generateRandomVehicle()
         val newVehicle =
-            VehicleFactory.generateRandomVehicle().copy(id = oldVehicle.id,
+            VehicleFactory.generateRandomVehicle().copy(
+                id = oldVehicle.id,
                 creationDate = oldVehicle.creationDate,
                 name = oldVehicle.name,
-                coordinates = oldVehicle.coordinates.copy(y=null),
+                coordinates = oldVehicle.coordinates.copy(y = null),
                 fuelType = oldVehicle.fuelType,
-                type=null,
+                type = null,
                 enginePower = oldVehicle.enginePower
             )
         every { repository.getVehicleById(oldVehicle.id) } returns oldVehicle

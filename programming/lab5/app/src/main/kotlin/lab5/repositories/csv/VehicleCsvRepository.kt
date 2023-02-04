@@ -7,11 +7,7 @@ import lab5.entities.vehicle.VehicleType
 import lab5.repositories.CollectionInfo
 import lab5.repositories.ReplaceIfLowerResults
 import lab5.repositories.VehicleRepository
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+import java.io.*
 
 /**
  * Класс реализации Repository с хранением в CSV
@@ -19,7 +15,7 @@ import java.io.OutputStreamWriter
  * @property creationDate дата создания коллекции (создания инстанса)
  * @property map сама коллекция типа java.util.TreeMap
  */
-open class VehicleCsvRepository(private val file: File?): VehicleRepository {
+open class VehicleCsvRepository(private val file: File?) : VehicleRepository {
     private val creationDate = java.time.LocalDateTime.now()
     private var map = java.util.TreeMap<Int, Vehicle>()
 
@@ -51,13 +47,13 @@ open class VehicleCsvRepository(private val file: File?): VehicleRepository {
     }
 
     override fun saveCollection() {
-        if(file == null) {
+        if (file == null) {
             return
         }
 
         val file = OutputStreamWriter(FileOutputStream(file))
         file.use { // Use автоматически закроет поток после выполнения
-            map.forEach {(_, veh) -> it.write( veh.toCsv() + "\n" )}
+            map.forEach { (_, veh) -> it.write(veh.toCsv() + "\n") }
             file.flush()
         }
     }
@@ -71,7 +67,7 @@ open class VehicleCsvRepository(private val file: File?): VehicleRepository {
     }
 
     override fun loadData() {
-        if(file == null) {
+        if (file == null) {
             return
         }
 
@@ -93,10 +89,10 @@ open class VehicleCsvRepository(private val file: File?): VehicleRepository {
 
     override fun replaceIfLower(id: Int, vehicle: Vehicle): ReplaceIfLowerResults {
         val old = getVehicleById(id)
-        if(old == null) {
+        if (old == null) {
             return ReplaceIfLowerResults.NOT_EXISTS
         }
-        if(VehicleComparator().compare(vehicle, old) < 0) {
+        if (VehicleComparator().compare(vehicle, old) < 0) {
             this.updateVehicleById(vehicle.copy(id = old.id))
             return ReplaceIfLowerResults.REPLACED
         }
@@ -104,7 +100,7 @@ open class VehicleCsvRepository(private val file: File?): VehicleRepository {
     }
 
     override fun getMinById(): Vehicle? {
-        if(map.firstEntry() == null) {
+        if (map.firstEntry() == null) {
             return null
         }
         return map.firstEntry().component2()
@@ -126,7 +122,7 @@ open class VehicleCsvRepository(private val file: File?): VehicleRepository {
     private fun loadOneLine(line: String) {
         val regex = Regex("(?<!\\\\),")
         val args = line.trim().split(regex, 0)
-        if(args.size != 8) {
+        if (args.size != 8) {
             throw Exception("Bad format of a file")
         }
 
@@ -139,7 +135,7 @@ open class VehicleCsvRepository(private val file: File?): VehicleRepository {
             vehicleType = args[6],
             fuelType = args[7],
             enginePowerStr = args[5]
-        ).copy(id=id, creationDate=creationDate)
+        ).copy(id = id, creationDate = creationDate)
         vehicle.validate()
         this.map[id] = vehicle
     }

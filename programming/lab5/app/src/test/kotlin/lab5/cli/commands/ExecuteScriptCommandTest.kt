@@ -16,11 +16,12 @@ import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ExecuteScriptCommandTest : CommandTest() {
-    @Test fun `recursion`() {
+    @Test
+    fun `recursion`() {
         val fileReader = mockk<InputStreamReader>()
 
         val handler = mockk<CLIHandler>();
-        val  stackTrace = Stack<File>()
+        val stackTrace = Stack<File>()
         stackTrace.push(File("test1"))
         stackTrace.push(File("test2"))
         val cmd = ExecuteScriptCommand(handler, { it -> fileReader })
@@ -31,7 +32,8 @@ class ExecuteScriptCommandTest : CommandTest() {
         }
     }
 
-    @Test fun `no file`() {
+    @Test
+    fun `no file`() {
         val handler = mockk<CLIHandler>();
         val err = FileNotFoundException("not today")
         val cmd = ExecuteScriptCommand(handler, { it -> throw err })
@@ -42,7 +44,8 @@ class ExecuteScriptCommandTest : CommandTest() {
         }
     }
 
-    @Test fun `security exception`() {
+    @Test
+    fun `security exception`() {
         val handler = mockk<CLIHandler>();
         val err = SecurityException("not today")
         val cmd = ExecuteScriptCommand(handler, { it -> throw err })
@@ -53,7 +56,8 @@ class ExecuteScriptCommandTest : CommandTest() {
         }
     }
 
-    @Test fun `some other exception exception`() {
+    @Test
+    fun `some other exception exception`() {
         val handler = mockk<CLIHandler>();
         val err = Exception("not today")
         val cmd = ExecuteScriptCommand(handler) { it -> throw err }
@@ -61,6 +65,26 @@ class ExecuteScriptCommandTest : CommandTest() {
         verify {
             writer.write("Ошибка открытия файла: $err\n")
             writer.flush()
+        }
+    }
+
+    @Test
+    fun ok() {
+        val handler = mockk<CLIHandler>();
+        val streamReader = mockk<InputStreamReader>();
+        val bStreamReader = BufferedReader(streamReader)
+        val stack = mockk<Stack<File>>();
+        val cmd = ExecuteScriptCommand(handler) { streamReader }
+        every { stack.contains(any()) } returns false
+        every { stack.push(File("test1")) } returns File("test1")
+        every { handler.handleStream(any(), writer, stack) } returns Unit
+
+        cmd.handle("execute_script test1", writer, reader, stack)
+        verify { stack.contains(File("test1")) }
+        verify { stack.push(File("test1")) }
+        verify { stack.push(File("test1")) }
+        verify {
+            handler.handleStream(any(), writer, stack)
         }
     }
 }

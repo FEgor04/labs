@@ -17,8 +17,13 @@ typealias CommandHandler = (userInput: String, writer: BufferedWriter, reader: B
  * @property argumentsPattern regex-паттерн аргументов, необходим для проверки в check()
  * @property handler - функция, обрабатывающая команду
  */
-open class CommandImpl(protected val commandName: String, protected val description: String, protected val argumentsPattern: String, protected val handler: CommandHandler): Command {
-    private val regexChecker: Regex = when(argumentsPattern.isEmpty()) {
+open class CommandImpl(
+    protected val commandName: String,
+    protected val description: String,
+    private val argumentsPattern: String,
+    protected val handler: CommandHandler
+) : Command {
+    private val regexChecker: Regex = when (argumentsPattern.isEmpty()) {
         false -> Regex("[ \t]*$commandName[ \t]+$argumentsPattern[ \t]*$")
         true -> Regex("[ \t]*$commandName[ \t]*$")
     }
@@ -39,7 +44,12 @@ open class CommandImpl(protected val commandName: String, protected val descript
      * @param executeCommandStackTrace стэк-трэйс команд execute_script.
      * Необходим для предовтращеняи рекурсии.
      */
-    override fun handle(userInput: String, writer: BufferedWriter, reader: BufferedReader, executeCommandStackTrace: Stack<File>) {
+    override fun handle(
+        userInput: String,
+        writer: BufferedWriter,
+        reader: BufferedReader,
+        executeCommandStackTrace: Stack<File>
+    ) {
         return handler(userInput, writer, reader, executeCommandStackTrace)
     }
 

@@ -13,8 +13,10 @@ import java.io.BufferedWriter
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ReaderUtilsTest {
 
-    @Nested inner class ToEnumOrNullCaster {
-        @Test fun ok() {
+    @Nested
+    inner class ToEnumOrNullCaster {
+        @Test
+        fun ok() {
             VehicleType.values().forEach {
                 assertEquals(it, ReaderUtils.toEnumOrNullCaster<VehicleType>(it.toString().uppercase()))
                 assertEquals(it, ReaderUtils.toEnumOrNullCaster<VehicleType>(it.toString().lowercase()))
@@ -23,20 +25,24 @@ class ReaderUtilsTest {
             }
         }
 
-        @Test fun `null`() {
+        @Test
+        fun `null`() {
             assertEquals(null, ReaderUtils.toEnumOrNullCaster<VehicleType>(""))
             assertEquals(null, ReaderUtils.toEnumOrNullCaster<FuelType>(""))
         }
 
-        @Test fun `bad input`() {
+        @Test
+        fun `bad input`() {
             assertThrows<IllegalArgumentException> {
                 ReaderUtils.toEnumOrNullCaster<VehicleType>("obviously bad input")
             }
         }
     }
 
-    @Nested inner class ToEnumCaster {
-        @Test fun ok() {
+    @Nested
+    inner class ToEnumCaster {
+        @Test
+        fun ok() {
             VehicleType.values().forEach {
                 assertEquals(it, ReaderUtils.toEnumCaster<VehicleType>(it.toString().uppercase()))
                 assertEquals(it, ReaderUtils.toEnumCaster<VehicleType>(it.toString().lowercase()))
@@ -45,15 +51,18 @@ class ReaderUtilsTest {
             }
         }
 
-        @Test fun `bad input`() {
+        @Test
+        fun `bad input`() {
             assertThrows<IllegalArgumentException> { ReaderUtils.toEnumCaster<VehicleType>("obviously bad input") }
             assertThrows<IllegalArgumentException> { ReaderUtils.toEnumCaster<VehicleType>("null") }
             assertThrows<IllegalArgumentException> { ReaderUtils.toEnumCaster<VehicleType>("") }
         }
     }
 
-    @Nested inner class ToIntCaster {
-        @Test fun ok() {
+    @Nested
+    inner class ToIntCaster {
+        @Test
+        fun ok() {
             (-1000..1000 step 100).forEach {
                 assertEquals(it, ReaderUtils.toIntCaster(it.toString()))
                 assertEquals(it, ReaderUtils.toIntCaster("$it      "))
@@ -61,15 +70,18 @@ class ReaderUtilsTest {
             }
         }
 
-        @Test fun `bad input`() {
+        @Test
+        fun `bad input`() {
             assertThrows<NumberFormatException> { ReaderUtils.toIntCaster("obviously bad input") }
             assertThrows<NumberFormatException> { ReaderUtils.toIntCaster("null") }
             assertThrows<NumberFormatException> { ReaderUtils.toIntCaster("") }
         }
     }
 
-    @Nested inner class ToIntOrNullCaster {
-        @Test fun ok() {
+    @Nested
+    inner class ToIntOrNullCaster {
+        @Test
+        fun ok() {
             (-1000..1000 step 100).forEach {
                 assertEquals(it, ReaderUtils.toIntOrNullCaster(it.toString()))
                 assertEquals(it, ReaderUtils.toIntOrNullCaster("$it      "))
@@ -77,41 +89,49 @@ class ReaderUtilsTest {
             }
         }
 
-        @Test fun `null`() {
+        @Test
+        fun `null`() {
             assertEquals(null, ReaderUtils.toIntOrNullCaster(""))
         }
 
-        @Test fun `bad input`() {
+        @Test
+        fun `bad input`() {
             assertThrows<NumberFormatException> { ReaderUtils.toIntOrNullCaster("obviously bad input") }
             assertThrows<NumberFormatException> { ReaderUtils.toIntOrNullCaster("null") }
         }
     }
 
-    @Nested inner class ToDoubleCaster {
-        @Test fun ok() {
+    @Nested
+    inner class ToDoubleCaster {
+        @Test
+        fun ok() {
             (-10000..10000 step 25).forEach {
-                assertEquals(it.toDouble()/10, ReaderUtils.toDoubleOrNullCaster((it.toDouble()/10).toString()))
-                assertEquals(it.toDouble()/10, ReaderUtils.toDoubleOrNullCaster("${it.toDouble()/10}      "))
-                assertEquals(it.toDouble()/10, ReaderUtils.toDoubleOrNullCaster("     ${it.toDouble()/10}"))
+                assertEquals(it.toDouble() / 10, ReaderUtils.toDoubleOrNullCaster((it.toDouble() / 10).toString()))
+                assertEquals(it.toDouble() / 10, ReaderUtils.toDoubleOrNullCaster("${it.toDouble() / 10}      "))
+                assertEquals(it.toDouble() / 10, ReaderUtils.toDoubleOrNullCaster("     ${it.toDouble() / 10}"))
                 assertEquals(it.toDouble(), ReaderUtils.toDoubleOrNullCaster("$it"))
                 assertEquals(it.toDouble(), ReaderUtils.toDoubleOrNullCaster("$it      "))
                 assertEquals(it.toDouble(), ReaderUtils.toDoubleOrNullCaster("     $it"))
             }
         }
 
-        @Test fun `bad input`() {
+        @Test
+        fun `bad input`() {
             assertThrows<NumberFormatException> { ReaderUtils.toDoubleCaster("obviously bad input") }
             assertThrows<NumberFormatException> { ReaderUtils.toDoubleCaster("null") }
 
         }
 
-        @Test fun `null`() {
+        @Test
+        fun `null`() {
             assertEquals(null, ReaderUtils.toDoubleOrNullCaster(""))
         }
     }
 
-    @Nested inner class ToLongOrNullCaster {
-        @Test fun ok() {
+    @Nested
+    inner class ToLongOrNullCaster {
+        @Test
+        fun ok() {
             (-1000..1000 step 100).forEach {
                 assertEquals(it.toLong(), ReaderUtils.toLongOrNullCaster(it.toString()))
                 assertEquals(it.toLong(), ReaderUtils.toLongOrNullCaster("$it      "))
@@ -119,18 +139,21 @@ class ReaderUtilsTest {
             }
         }
 
-        @Test fun `null`() {
+        @Test
+        fun `null`() {
             assertEquals(null, ReaderUtils.toLongOrNullCaster(""))
         }
 
-        @Test fun `bad input`() {
+        @Test
+        fun `bad input`() {
             assertThrows<NumberFormatException> { ReaderUtils.toLongOrNullCaster("obviously bad input") }
             assertThrows<NumberFormatException> { ReaderUtils.toLongOrNullCaster("null") }
         }
     }
 
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    @Nested inner class ReadType {
+    @Nested
+    inner class ReadType {
         val hint = "sample hint"
         val reader = mockk<BufferedReader>()
         val writer = mockk<BufferedWriter>()
@@ -140,8 +163,9 @@ class ReaderUtilsTest {
             clearAllMocks()
         }
 
-        @Test fun readInt() {
-            val predicate = {it: Int -> it > 50}
+        @Test
+        fun readInt() {
+            val predicate = { it: Int -> it > 50 }
 
             every { reader.readLine() } returns "this is not an int!" andThen "-500" andThen "" andThen "100"
             every { writer.write(any<String>()) } returns Unit
@@ -162,11 +186,17 @@ class ReaderUtilsTest {
 
         }
 
-        @Test fun readEnumOrNull() {
+        @Test
+        fun readEnumOrNull() {
             every { reader.readLine() } returns "hey there" andThen "not an enum" andThen ""
             every { writer.write(any<String>()) } returns Unit
             every { writer.flush() } returns Unit
-            val value = ReaderUtils.readType<VehicleType?>(reader, writer, hint, { ReaderUtils.toEnumOrNullCaster<VehicleType>(it) }, {true})
+            val value = ReaderUtils.readType<VehicleType?>(
+                reader,
+                writer,
+                hint,
+                { ReaderUtils.toEnumOrNullCaster<VehicleType>(it) },
+                { true })
             verify {
                 writer.write(hint)
                 writer.flush()
@@ -179,11 +209,17 @@ class ReaderUtilsTest {
             assertEquals(null, value)
         }
 
-        @Test fun readEnumOrNullNoErrors() {
+        @Test
+        fun readEnumOrNullNoErrors() {
             every { reader.readLine() } returns ""
             every { writer.write(any<String>()) } returns Unit
             every { writer.flush() } returns Unit
-            val value = ReaderUtils.readType<VehicleType?>(reader, writer, hint, { ReaderUtils.toEnumOrNullCaster<VehicleType>(it) }, {true})
+            val value = ReaderUtils.readType<VehicleType?>(
+                reader,
+                writer,
+                hint,
+                { ReaderUtils.toEnumOrNullCaster<VehicleType>(it) },
+                { true })
             verify {
                 writer.write(hint)
                 writer.flush()
@@ -192,11 +228,17 @@ class ReaderUtilsTest {
             assertEquals(null, value)
         }
 
-        @Test fun readEnumNoError() {
+        @Test
+        fun readEnumNoError() {
             every { reader.readLine() } returns VehicleType.BICYCLE.toString()
             every { writer.write(any<String>()) } returns Unit
             every { writer.flush() } returns Unit
-            val value = ReaderUtils.readType<VehicleType>(reader, writer, hint, { ReaderUtils.toEnumCaster<VehicleType>(it) }, {true})
+            val value = ReaderUtils.readType<VehicleType>(
+                reader,
+                writer,
+                hint,
+                { ReaderUtils.toEnumCaster<VehicleType>(it) },
+                { true })
             verify {
                 writer.write(hint)
                 writer.flush()
@@ -205,11 +247,17 @@ class ReaderUtilsTest {
             assertEquals(VehicleType.BICYCLE, value)
         }
 
-        @Test fun readEnumOneError() {
+        @Test
+        fun readEnumOneError() {
             every { reader.readLine() } returns "bad!" andThen VehicleType.BICYCLE.toString()
             every { writer.write(any<String>()) } returns Unit
             every { writer.flush() } returns Unit
-            val value = ReaderUtils.readType<VehicleType>(reader, writer, hint, { ReaderUtils.toEnumCaster<VehicleType>(it) }, {true})
+            val value = ReaderUtils.readType<VehicleType>(
+                reader,
+                writer,
+                hint,
+                { ReaderUtils.toEnumCaster<VehicleType>(it) },
+                { true })
             verify {
                 writer.write(hint)
                 writer.flush()
@@ -220,11 +268,17 @@ class ReaderUtilsTest {
             assertEquals(VehicleType.BICYCLE, value)
         }
 
-        @Test fun readEnumTwoErrors() {
+        @Test
+        fun readEnumTwoErrors() {
             every { reader.readLine() } returns "bad!" andThen "bad again!" andThen VehicleType.BICYCLE.toString()
             every { writer.write(any<String>()) } returns Unit
             every { writer.flush() } returns Unit
-            val value = ReaderUtils.readType<VehicleType>(reader, writer, hint, { ReaderUtils.toEnumCaster<VehicleType>(it) }, {true})
+            val value = ReaderUtils.readType<VehicleType>(
+                reader,
+                writer,
+                hint,
+                { ReaderUtils.toEnumCaster<VehicleType>(it) },
+                { true })
             verify {
                 writer.write(hint)
                 writer.flush()
@@ -238,18 +292,21 @@ class ReaderUtilsTest {
         }
     }
 
-    @Nested inner class ReadVehicle {
+    @Nested
+    inner class ReadVehicle {
         val hint = "sample hint"
         val reader = mockk<BufferedReader>()
-        val writer = mockk<BufferedWriter>(relaxed=true)
+        val writer = mockk<BufferedWriter>(relaxed = true)
 
-        @AfterEach fun cleanUp() {
+        @AfterEach
+        fun cleanUp() {
             clearAllMocks()
         }
 
-        @Test fun read() {
+        @Test
+        fun read() {
             val badInput = "Некорректный ввод. Попробуйте еще.\n"
-            val vehicle = VehicleFactory.generateRandomVehicle().copy(id=1)
+            val vehicle = VehicleFactory.generateRandomVehicle().copy(id = 1)
             every { reader.readLine() } returnsMany listOf(
                 "", // empty name
                 vehicle.name,
