@@ -6,6 +6,7 @@ import lab5.entities.vehicle.Vehicle
 import lab5.entities.vehicle.VehicleType
 import java.io.BufferedReader
 import java.io.BufferedWriter
+import java.lang.IllegalArgumentException
 import java.time.LocalDate
 import java.util.function.Predicate
 
@@ -34,10 +35,24 @@ object ReaderUtils {
             try {
                 output = caster(userInput)
             }
-            catch (e: Exception) {
-                writer.write("Некорректный ввод. Попробуйте еще.\n")
-                writer.flush()
-                continue;
+            catch(e: Exception) {
+                when(e) {
+                    is NumberFormatException -> {
+                        writer.write("Некорректный ввод числа. Попробуйте еще.\n")
+                        writer.flush()
+                        continue;
+                    }
+                    is IllegalArgumentException -> {
+                        writer.write("Некорректный ввод enum.\n")
+                        writer.flush()
+                        continue;
+                    }
+                    else -> {
+                        writer.write("Некорректный ввод. Попробуйте еще.\n")
+                        writer.flush()
+                        continue;
+                    }
+                }
             }
             if(validator.test(output)) {
                 break;
@@ -50,32 +65,30 @@ object ReaderUtils {
         return output
     }
 
-    val toIntCaster: TypeCaster<Int> = { it.toInt() }
+    val toIntCaster: TypeCaster<Int> = { it.trim().toInt() }
     val toIntOrNullCaster: TypeCaster<Int?> = { if(it.isEmpty()) { null } else { toIntCaster(it) } }
-    val toLongCaster: TypeCaster<Long> = { it.toLong() }
+    val toLongCaster: TypeCaster<Long> = { it.trim().toLong() }
     val toLongOrNullCaster: TypeCaster<Long?> = { if(it.isEmpty()) { null } else { toLongCaster(it) } }
-    val toDoubleCaster: TypeCaster<Double> = { it.toDouble() }
-    val toDoubleCasterOrNull: TypeCaster<Double?> = { if(it.isEmpty()) {null} else { toDoubleCaster(it) } }
+    val toDoubleCaster: TypeCaster<Double> = { it.trim().toDouble() }
+    val toDoubleOrNullCaster: TypeCaster<Double?> = { if(it.isEmpty()) {null} else { toDoubleCaster(it) } }
 
     /**
      * Функция, приводящая строку ввода к enum-типу T
      * @param T желаемый enum тип
-     * @throws Exception если введенного значения нет в T
-     * @TODO -- сделать нормальный тип exception
+     * @throws BadEnumValueException если введенного значения нет в T
      */
     inline fun <reified T: Enum<T>> toEnumCaster(userInput: String): T {
-        val output = enumValues<T>().find { it.toString().lowercase() == userInput.trim().lowercase() }
-        if(output == null) {
-            throw Exception("No such value. Possible values: ${enumValues<T>().map { it.toString() }}")
-        }
-        return output
+//        val output = enumValues<T>().find { it.toString().lowercase() == userInput.trim().lowercase() }
+//        if(output == null) {
+//            throw BadEnumValueException(enumValues<T>().map { it.toString() })
+//        }
+        return enumValueOf(userInput.trim().uppercase())
     }
 
     /**
      * Функция, приводящая строку ввода к enum-типу T или null, если была введена пустая строка
      * @param T желаемый enum тип
-     * @throws Exception если введенного значения нет в T
-     * @TODO -- сделать нормальный тип exception
+     * @throws BadEnumValueException если введенного значения нет в T
      */
     inline fun <reified T: Enum<T>> toEnumOrNullCaster(userInput: String): T? {
         if(userInput.isEmpty()) {

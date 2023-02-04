@@ -8,11 +8,11 @@ import java.util.*
 /**
  * Класс команды execute_script
  */
-class ExecuteScriptCommand(handler: CLIHandler, writer: BufferedWriter): CommandImpl(
+class ExecuteScriptCommand(handler: CLIHandler, inputStreamProvider: (File) -> InputStreamReader = { InputStreamReader(it.inputStream()) }): CommandImpl(
     "execute_script",
     "читать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.",
     ".*",
-    fun (userInput, _, _, executeCommandStackTrace: Stack<File>) {
+    fun (userInput, writer, _, executeCommandStackTrace: Stack<File>) {
         val regex = Regex("execute_script\\s(.*)")
         val filename: String
         try {
@@ -27,7 +27,7 @@ class ExecuteScriptCommand(handler: CLIHandler, writer: BufferedWriter): Command
         val file = File(filename)
         val stream: InputStreamReader
         try {
-            stream = InputStreamReader(file.inputStream())
+            stream = inputStreamProvider(file)
         }
         catch (e: FileNotFoundException) {
             writer.write("Не существует файла $filename: $e\n")
@@ -53,11 +53,6 @@ class ExecuteScriptCommand(handler: CLIHandler, writer: BufferedWriter): Command
 
         executeCommandStackTrace.push(file)
 
-        val recursionRegex = Regex("execute_script\\s(.*)")
-        var lineNumber = 1
-        stream.forEachLine {
-            handler.handleCommand(it, reader= BufferedReader(stream), writer=writer, executeCommandStackTrace)
-            lineNumber += 1
-        }
+        handler.handleStream(BufferedReader(stream), writer, executeCommandStackTrace)
     },
     )

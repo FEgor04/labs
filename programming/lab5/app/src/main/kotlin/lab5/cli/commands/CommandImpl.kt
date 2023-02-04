@@ -5,6 +5,9 @@ import java.io.BufferedWriter
 import java.io.File
 import java.util.*
 
+/**
+ * Тип обработчика команды
+ */
 typealias CommandHandler = (userInput: String, writer: BufferedWriter, reader: BufferedReader, executeCommandStackTrace: Stack<File>) -> Unit
 
 /**
@@ -16,8 +19,8 @@ typealias CommandHandler = (userInput: String, writer: BufferedWriter, reader: B
  */
 open class CommandImpl(protected val commandName: String, protected val description: String, protected val argumentsPattern: String, protected val handler: CommandHandler): Command {
     private val regexChecker: Regex = when(argumentsPattern.isEmpty()) {
-        false -> Regex("^$commandName $argumentsPattern")
-        true -> Regex("^$commandName")
+        false -> Regex("[ \t]*$commandName[ \t]+$argumentsPattern[ \t]*$")
+        true -> Regex("[ \t]*$commandName[ \t]*$")
     }
 
     /**
@@ -28,7 +31,13 @@ open class CommandImpl(protected val commandName: String, protected val descript
     }
 
     /**
-     * Обрабатывает команду
+     * Обрабатывает ввод пользователя
+     * @param userInput ввод пользователя
+     * @param writer BufferedWriter, в который надо выводить текст
+     * @param reader BufferedReader, из которого надо читать текст.
+     * Необходим для выполнения команды execute_script для исполнения команд из файла
+     * @param executeCommandStackTrace стэк-трэйс команд execute_script.
+     * Необходим для предовтращеняи рекурсии.
      */
     override fun handle(userInput: String, writer: BufferedWriter, reader: BufferedReader, executeCommandStackTrace: Stack<File>) {
         return handler(userInput, writer, reader, executeCommandStackTrace)

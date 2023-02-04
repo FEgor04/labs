@@ -7,25 +7,20 @@ import java.io.BufferedWriter
 /**
  * Класс команды remove_key
  */
-class CountByTypeCommand(repository: VehicleRepository, writer: BufferedWriter): CommandImpl(
+class CountByTypeCommand(repository: VehicleRepository): CommandImpl(
     "count_by_type",
     "вывести количество элементов, значение поля type которых равно заданному",
-    ".*",
-    fun (userInput, _, _, _) {
-        var type: VehicleType? = null
+    "\\w",
+    fun (userInput, writer, _, _) {
+        val type: VehicleType?
         try {
-            val regex = Regex("count_by_type\\s*(.*)")
+            val regex = Regex("count_by_type\\s*(\\w*)")
             val (typeStr) = regex.find(userInput)?.destructured!!
             if(typeStr.isEmpty()) {
                 type = null
             }
             else {
-                type = VehicleType.values().find { it.toString().lowercase() == typeStr.lowercase().trim() }
-                if(type == null) { // В таком случае ввод не пустой и не нашлось нужного enum
-                    writer.write("Некорректный ввод. Допустимые значения type: ${VehicleType.values().map { it.toString() }} или пустая строка для null\n")
-                    writer.flush()
-                    return
-                }
+                type = VehicleType.valueOf(typeStr.trim().uppercase())
             }
         }
         catch (e: Exception) {

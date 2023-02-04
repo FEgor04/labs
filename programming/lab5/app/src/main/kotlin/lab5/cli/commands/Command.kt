@@ -16,6 +16,12 @@ interface Command {
 
     /**
      * Обрабатывает ввод пользователя
+     * @param userInput ввод пользователя
+     * @param writer BufferedWriter, в который надо выводить текст
+     * @param reader BufferedReader, из которого надо читать текст.
+     * Необходим для выполнения команды execute_script для исполнения команд из файла
+     * @param executeCommandStackTrace стэк-трэйс команд execute_script.
+     * Необходим для предовтращеняи рекурсии.
      */
     fun handle(userInput: String, writer: BufferedWriter, reader: BufferedReader, executeCommandStackTrace: Stack<File> = Stack())
 }

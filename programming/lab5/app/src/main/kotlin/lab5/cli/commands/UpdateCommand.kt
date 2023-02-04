@@ -10,19 +10,18 @@ import java.io.BufferedWriter
 /**
  * Класс команды update
  */
-class UpdateCommand(repository: VehicleRepository, writer: BufferedWriter, reader: BufferedReader): CommandImpl(
+class UpdateCommand(repository: VehicleRepository): CommandImpl(
     "update",
     "обновить значение элемента коллекции, id которого равен заданному",
     "\\d*",
-    fun (userInput, _, _, _) {
+    fun (userInput, writer, reader, _) {
         val regex = Regex("update\\s(\\d*)")
         val id: Int
-        println(regex.find(userInput))
         try {
             val (idStr) = regex.find(userInput)?.destructured!!
             id = idStr.toInt()
         } catch (e: Exception) {
-            writer.write("Error: $e. Try again!\n")
+            writer.write("Неправильный ввод. Попробуйте еще.\n")
             writer.flush()
             return
         }
@@ -52,7 +51,7 @@ class UpdateCommand(repository: VehicleRepository, writer: BufferedWriter, reade
 
         val newEnginePower: Double = ReaderUtils.readType(reader, writer,
             hint = "Введите новое значение мощности двигателя или оставьте пустым чтобы оставить старое значение = ${vehicle.enginePower}\n",
-            caster = ReaderUtils.toDoubleCasterOrNull,
+            caster = ReaderUtils.toDoubleOrNullCaster,
             validator = {true}
         ) ?: vehicle.enginePower
 

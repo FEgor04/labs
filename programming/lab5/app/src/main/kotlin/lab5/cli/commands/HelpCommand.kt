@@ -5,14 +5,12 @@ import java.io.BufferedWriter
 /**
  * Класс команды help
  */
-class HelpCommand(commandsList: List<Command>, writer: BufferedWriter): CommandImpl(
+class HelpCommand(commandsList: List<Command>): CommandImpl(
     "help",
     "вывести справку по доступным командам",
     "",
-    fun (_, _, _, _) {
-        for(command in commandsList) {
-            writer.write("- $command\n")
-        }
+    fun (_, writer, _, _) {
+        commandsList.forEach { writer.write("- $it\n") }
         writer.flush()
     },
     )

@@ -8,7 +8,8 @@ import lab5.entities.ValidationException
  */
 object VehicleFactory {
     /**
-     * Создает транспорт из строки
+     * Создает транспорт из строки.
+     * Чтобы оставить поле равным null можно либо указать null, либо оставить строку пустой.
      */
     fun createVehicleFromString(
         name: String,
@@ -22,6 +23,11 @@ object VehicleFactory {
         val y: Long?
         val enginePower: Double
         val vehType: VehicleType?
+
+        if(name.isEmpty()) {
+            throw FactoryException("name", "should not be empty")
+        }
+
         try {
             x = xStr.trim().toInt()
         }
@@ -29,7 +35,7 @@ object VehicleFactory {
             throw FactoryException("x", "should be an int")
         }
 
-        if(yStr.trim() != "null") {
+        if(yStr.trim() != "null" && yStr.isNotEmpty()) {
             try {
                 y = yStr.trim().toLong()
             } catch (e: NumberFormatException) {
@@ -47,17 +53,17 @@ object VehicleFactory {
             throw FactoryException("y", "should be a real number")
         }
 
-        if(vehicleType == "null") {
+        if(vehicleType == "null" || vehicleType.isEmpty()) {
             vehType = null
         }
         else {
-            vehType = VehicleType.values().find { it -> it.toString().lowercase() == vehicleType.trim().lowercase() }
+            vehType = VehicleType.values().find { it.toString().lowercase() == vehicleType.trim().lowercase() }
             if (vehType == null) {
                 throw FactoryException("vehicle type", "should be one of ${VehicleType.values().map { "$it" }}")
             }
         }
 
-        val fType = FuelType.values().find { it -> it.toString().lowercase() ==  fuelType.trim().lowercase()}
+        val fType = FuelType.values().find { it.toString().lowercase() ==  fuelType.trim().lowercase()}
         if(fType == null) {
             throw FactoryException("fuel type", "should be one of ${FuelType.values().map { "$it" }}")
         }
@@ -84,8 +90,8 @@ object VehicleFactory {
             coordinates = Coordinates(random.nextInt(-522, 1000000), random.nextLong()),
             creationDate = java.time.LocalDate.now(),
             enginePower = random.nextDouble(1.0, 1000000.0),
-            fuelType = FuelType.ELECTRICITY,
-            type = VehicleType.BICYCLE
+            fuelType = FuelType.values()[random.nextInt(0, FuelType.values().size)],
+            type = VehicleType.values()[random.nextInt(0, VehicleType.values().size)]
         )
     }
 }
