@@ -6,7 +6,6 @@ import io.mockk.mockkObject
 import io.mockk.verify
 import lab5.cli.utils.ReaderUtils
 import lab5.entities.vehicle.VehicleFactory
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class RemoveLowerCommandTest : CommandTest() {

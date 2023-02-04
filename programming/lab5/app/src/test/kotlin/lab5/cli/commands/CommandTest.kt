@@ -12,7 +12,7 @@ import java.io.BufferedWriter
 
 open class CommandTest {
     protected val reader = mockk<BufferedReader>()
-    protected val writer = mockk<BufferedWriter>(relaxed=true)
+    protected val writer = mockk<BufferedWriter>(relaxed = true)
     protected val repository = mockk<VehicleRepository>()
 
     @AfterEach

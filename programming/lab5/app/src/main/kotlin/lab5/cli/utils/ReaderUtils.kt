@@ -6,7 +6,6 @@ import lab5.entities.vehicle.Vehicle
 import lab5.entities.vehicle.VehicleType
 import java.io.BufferedReader
 import java.io.BufferedWriter
-import java.lang.IllegalArgumentException
 import java.time.LocalDate
 import java.util.function.Predicate
 
@@ -26,27 +25,34 @@ object ReaderUtils {
      * @param caster функция, приводящая строку к необходимому типу
      * @param validator функция, проверяющая валидность введенного типа
      */
-    fun <T> readType(reader: BufferedReader, writer: BufferedWriter, hint: String, caster: TypeCaster<T>, validator: Predicate<T>): T {
+    fun <T> readType(
+        reader: BufferedReader,
+        writer: BufferedWriter,
+        hint: String,
+        caster: TypeCaster<T>,
+        validator: Predicate<T>
+    ): T {
         writer.write(hint)
         writer.flush()
         var output: T
-        while(true) {
+        while (true) {
             val userInput = reader.readLine()
             try {
                 output = caster(userInput)
-            }
-            catch(e: Exception) {
-                when(e) {
+            } catch (e: Exception) {
+                when (e) {
                     is NumberFormatException -> {
                         writer.write("Некорректный ввод числа. Попробуйте еще.\n")
                         writer.flush()
                         continue;
                     }
+
                     is IllegalArgumentException -> {
                         writer.write("Некорректный ввод enum.\n")
                         writer.flush()
                         continue;
                     }
+
                     else -> {
                         writer.write("Некорректный ввод. Попробуйте еще.\n")
                         writer.flush()
@@ -54,10 +60,9 @@ object ReaderUtils {
                     }
                 }
             }
-            if(validator.test(output)) {
+            if (validator.test(output)) {
                 break;
-            }
-            else {
+            } else {
                 writer.write("Некорректный ввод. Попробуйте еще.\n")
                 writer.flush()
             }
@@ -66,22 +71,36 @@ object ReaderUtils {
     }
 
     val toIntCaster: TypeCaster<Int> = { it.trim().toInt() }
-    val toIntOrNullCaster: TypeCaster<Int?> = { if(it.isEmpty()) { null } else { toIntCaster(it) } }
+    val toIntOrNullCaster: TypeCaster<Int?> = {
+        if (it.isEmpty()) {
+            null
+        } else {
+            toIntCaster(it)
+        }
+    }
     val toLongCaster: TypeCaster<Long> = { it.trim().toLong() }
-    val toLongOrNullCaster: TypeCaster<Long?> = { if(it.isEmpty()) { null } else { toLongCaster(it) } }
+    val toLongOrNullCaster: TypeCaster<Long?> = {
+        if (it.isEmpty()) {
+            null
+        } else {
+            toLongCaster(it)
+        }
+    }
     val toDoubleCaster: TypeCaster<Double> = { it.trim().toDouble() }
-    val toDoubleOrNullCaster: TypeCaster<Double?> = { if(it.isEmpty()) {null} else { toDoubleCaster(it) } }
+    val toDoubleOrNullCaster: TypeCaster<Double?> = {
+        if (it.isEmpty()) {
+            null
+        } else {
+            toDoubleCaster(it)
+        }
+    }
 
     /**
      * Функция, приводящая строку ввода к enum-типу T
      * @param T желаемый enum тип
      * @throws BadEnumValueException если введенного значения нет в T
      */
-    inline fun <reified T: Enum<T>> toEnumCaster(userInput: String): T {
-//        val output = enumValues<T>().find { it.toString().lowercase() == userInput.trim().lowercase() }
-//        if(output == null) {
-//            throw BadEnumValueException(enumValues<T>().map { it.toString() })
-//        }
+    inline fun <reified T : Enum<T>> toEnumCaster(userInput: String): T {
         return enumValueOf(userInput.trim().uppercase())
     }
 
@@ -90,8 +109,8 @@ object ReaderUtils {
      * @param T желаемый enum тип
      * @throws BadEnumValueException если введенного значения нет в T
      */
-    inline fun <reified T: Enum<T>> toEnumOrNullCaster(userInput: String): T? {
-        if(userInput.isEmpty()) {
+    inline fun <reified T : Enum<T>> toEnumOrNullCaster(userInput: String): T? {
+        if (userInput.isEmpty()) {
             return null
         }
         return toEnumCaster<T>(userInput)

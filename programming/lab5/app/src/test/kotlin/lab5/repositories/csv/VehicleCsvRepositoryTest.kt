@@ -1,19 +1,11 @@
 package lab5.repositories.csv
 
 import lab5.entities.ValidationException
-import lab5.entities.vehicle.Vehicle
 import lab5.entities.vehicle.VehicleFactory
-import lab5.entities.vehicle.VehicleFactoryTest
 import lab5.entities.vehicle.VehicleType
 import lab5.repositories.ReplaceIfLowerResults
-import lab5.repositories.VehicleRepository
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Test
-
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertThrows
 import java.io.File
 
 /**
@@ -34,7 +26,7 @@ class VehicleCsvRepositoryTest {
         fun ok() {
             val vehicle = VehicleFactory.generateRandomVehicle()
             repository.insertVehicle(vehicle)
-            assertEquals(vehicle.copy(id=1), repository.getVehicleById(1), "elements should be equal")
+            assertEquals(vehicle.copy(id = 1), repository.getVehicleById(1), "elements should be equal")
             assertEquals(1, repository.getCollectionInfo().elementsCount)
         }
 
@@ -218,29 +210,33 @@ class VehicleCsvRepositoryTest {
             val new = VehicleFactory.generateRandomVehicle().copy(enginePower = 25.0)
             val result = repository.replaceIfLower(1, new)
             assertEquals(ReplaceIfLowerResults.REPLACED, result)
-            assertEquals(new.copy(id=1), repository.getVehicleById(1))
+            assertEquals(new.copy(id = 1), repository.getVehicleById(1))
         }
 
-        @Test fun `no replace`() {
+        @Test
+        fun `no replace`() {
             val old = VehicleFactory.generateRandomVehicle().copy(enginePower = 25.0)
             repository.insertVehicle(old)
             val new = VehicleFactory.generateRandomVehicle().copy(enginePower = 50.0)
             val result = repository.replaceIfLower(1, new)
             assertEquals(ReplaceIfLowerResults.NOT_REPLACED, result)
-            assertEquals(old.copy(id=1), repository.getVehicleById(1))
+            assertEquals(old.copy(id = 1), repository.getVehicleById(1))
         }
 
-        @Test fun `does not exists`() {
+        @Test
+        fun `does not exists`() {
             val new = VehicleFactory.generateRandomVehicle().copy(enginePower = 50.0)
             val result = repository.replaceIfLower(1, new)
             assertEquals(ReplaceIfLowerResults.NOT_EXISTS, result)
         }
     }
 
-    @Nested inner class GetMinById {
-        @Test fun `many elements`() {
+    @Nested
+    inner class GetMinById {
+        @Test
+        fun `many elements`() {
             val vehicles =
-                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it*10.0) }
+                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it * 10.0) }
             vehicles.forEach { repository.insertVehicle(it) }
             val min = repository.getMinById()
             assertNotNull(min)
@@ -248,9 +244,10 @@ class VehicleCsvRepositoryTest {
             assertEquals(actual, min)
         }
 
-        @Test fun `no element with id #1`() {
+        @Test
+        fun `no element with id #1`() {
             val vehicles =
-                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it*10.0) }
+                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it * 10.0) }
             vehicles.forEach { repository.insertVehicle(it) }
             (1..25).forEach { repository.removeVehicle(it) }
             val min = repository.getMinById()
@@ -259,43 +256,57 @@ class VehicleCsvRepositoryTest {
             assertEquals(actual, min)
         }
 
-        @Test fun `empty collection`() {
+        @Test
+        fun `empty collection`() {
             assertNull(repository.getMinById())
         }
     }
 
-    @Nested inner class CountByType() {
-        @Test fun `20 types each`() {
+    @Nested
+    inner class CountByType() {
+        @Test
+        fun `20 types each`() {
             val typesCount = VehicleType.values().size + 1 // +1 для null
             (1..typesCount * 10).forEach {
                 repository.insertVehicle(
                     VehicleFactory.generateRandomVehicle()
-                        .copy(type = if(it % typesCount == typesCount-1){ null } else { VehicleType.values()[it%typesCount] } )
+                        .copy(
+                            type = if (it % typesCount == typesCount - 1) {
+                                null
+                            } else {
+                                VehicleType.values()[it % typesCount]
+                            }
+                        )
                 )
             }
             VehicleType.values().forEach { assertEquals(10, repository.countByType(it)) }
             assertEquals(10, repository.countByType(null))
         }
 
-        @Test fun `no type`() {
+        @Test
+        fun `no type`() {
             repeat(100) { repository.insertVehicle(VehicleFactory.generateRandomVehicle()) }
             assertEquals(0, repository.countByType(null))
         }
 
-        @Test fun `no elements`() {
+        @Test
+        fun `no elements`() {
             assertEquals(0, repository.countByType(null))
             VehicleType.values().forEach { assertEquals(0, repository.countByType(it)) }
         }
     }
 
-    @Nested inner class CountLessThanEnginePower {
-        @Test fun `no elements`() {
+    @Nested
+    inner class CountLessThanEnginePower {
+        @Test
+        fun `no elements`() {
             (1..100).forEach {
-                assertEquals(0, repository.countLessThanEnginePower(it*1.1))
+                assertEquals(0, repository.countLessThanEnginePower(it * 1.1))
             }
         }
 
-        @Test fun `equal engine power`() {
+        @Test
+        fun `equal engine power`() {
             repeat(100) {
                 repository.insertVehicle(VehicleFactory.generateRandomVehicle().copy(enginePower = 1.0))
             }
@@ -304,32 +315,47 @@ class VehicleCsvRepositoryTest {
             assertEquals(0, repository.countLessThanEnginePower(0.0))
         }
 
-        @Test fun ok() {
+        @Test
+        fun ok() {
             (1..100).forEach {
                 repository.insertVehicle(VehicleFactory.generateRandomVehicle().copy(enginePower = it.toDouble()))
             }
             (1..100).forEach {
-                assertEquals(it-1, repository.countLessThanEnginePower(it.toDouble()-0.1))
-                assertEquals(it-1, repository.countLessThanEnginePower(it.toDouble()))
-                assertEquals(it, repository.countLessThanEnginePower(it.toDouble()+1))
+                assertEquals(it - 1, repository.countLessThanEnginePower(it.toDouble() - 0.1))
+                assertEquals(it - 1, repository.countLessThanEnginePower(it.toDouble()))
+                assertEquals(it, repository.countLessThanEnginePower(it.toDouble() + 1))
             }
         }
     }
 
-    @Nested inner class LoadOneLine {
-        @Test fun ok() {
+    @Nested
+    inner class LoadOneLine {
+        @Test
+        fun ok() {
             val vehicle = VehicleFactory.generateRandomVehicle()
-            val method = repository.javaClass.getDeclaredMethod("loadOneLine", String::class.java) // очень плохо, но нужно же как-то тестить приватные функции
+            val method = repository.javaClass.getDeclaredMethod(
+                "loadOneLine",
+                String::class.java
+            ) // очень плохо, но нужно же как-то тестить приватные функции
             method.isAccessible = true
             method.invoke(repository, vehicle.toCsv())
             assertEquals(vehicle, repository.getVehicleById(vehicle.id))
         }
 
-        @Test fun noCsv() {
+        @Test
+        fun noCsv() {
             val vehicle = VehicleFactory.generateRandomVehicle()
-            val method = repository.javaClass.getDeclaredMethod("loadOneLine", String::class.java) // очень плохо, но нужно же как-то тестить приватные функции
+            val method = repository.javaClass.getDeclaredMethod(
+                "loadOneLine",
+                String::class.java
+            ) // очень плохо, но нужно же как-то тестить приватные функции
             method.isAccessible = true
-            assertThrows<Exception> {method.invoke(repository, "Подходит как то Петька к Василь Иванычу и сдает лабу по нюансам")}
+            assertThrows<Exception> {
+                method.invoke(
+                    repository,
+                    "Подходит как то Петька к Василь Иванычу и сдает лабу по нюансам"
+                )
+            }
         }
     }
 }

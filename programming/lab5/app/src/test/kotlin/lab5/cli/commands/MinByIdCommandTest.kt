@@ -4,7 +4,6 @@ import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.verify
 import lab5.entities.vehicle.VehicleFactory
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class MinByIdCommandTest : CommandTest() {

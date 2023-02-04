@@ -19,11 +19,12 @@ class CountByTypeCommandTest : CommandTest() {
     }
 
     @MethodSource("types")
-    @ParameterizedTest fun execute(type: VehicleType) {
+    @ParameterizedTest
+    fun execute(type: VehicleType) {
         val cmd = CountByTypeCommand(repository)
 
         every { repository.countByType(type) } returns 20
-        cmd.handle("count_by_type ${type.toString()}", reader = reader, writer=writer)
+        cmd.handle("count_by_type ${type.toString()}", reader = reader, writer = writer)
         verify {
             writer.write("В коллекции содержиться 20 элементов с типом $type.\n")
             writer.flush()
@@ -31,11 +32,12 @@ class CountByTypeCommandTest : CommandTest() {
         confirmVerified(writer)
     }
 
-    @Test fun nullType() {
+    @Test
+    fun nullType() {
         val cmd = CountByTypeCommand(repository)
 
         every { repository.countByType(null) } returns 20
-        cmd.handle("count_by_type", reader = reader, writer=writer)
+        cmd.handle("count_by_type", reader = reader, writer = writer)
         verify {
             writer.write("В коллекции содержиться 20 элементов с типом null.\n")
             writer.flush()
@@ -43,23 +45,33 @@ class CountByTypeCommandTest : CommandTest() {
         confirmVerified(writer)
     }
 
-    @Test fun `not an enum element`() {
+    @Test
+    fun `not an enum element`() {
         val cmd = CountByTypeCommand(repository)
 
-        cmd.handle("count_by_type asdsaada", reader = reader, writer=writer)
+        cmd.handle("count_by_type asdsaada", reader = reader, writer = writer)
         verify {
-            writer.write("Некорректный ввод. Допустимые значения type: ${VehicleType.values().map { it.toString() }} или пустая строка для null\n")
+            writer.write(
+                "Некорректный ввод. Допустимые значения type: ${
+                    VehicleType.values().map { it.toString() }
+                } или пустая строка для null\n"
+            )
             writer.flush()
         }
         confirmVerified(writer)
     }
 
-    @Test fun `not a word`() {
+    @Test
+    fun `not a word`() {
         val cmd = CountByTypeCommand(repository)
 
-        cmd.handle("count_by_type 3123213", reader = reader, writer=writer)
+        cmd.handle("count_by_type 3123213", reader = reader, writer = writer)
         verify {
-            writer.write("Некорректный ввод. Допустимые значения type: ${VehicleType.values().map { it.toString() }} или пустая строка для null\n")
+            writer.write(
+                "Некорректный ввод. Допустимые значения type: ${
+                    VehicleType.values().map { it.toString() }
+                } или пустая строка для null\n"
+            )
             writer.flush()
         }
         confirmVerified(writer)

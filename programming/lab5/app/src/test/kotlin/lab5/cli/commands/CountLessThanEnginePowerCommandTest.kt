@@ -22,7 +22,8 @@ class CountLessThanEnginePowerCommandTest : CommandTest() {
         confirmVerified(writer)
     }
 
-    @Test fun `empty input`() {
+    @Test
+    fun `empty input`() {
         val cmd = CountLessThanEnginePowerCommand(repository)
         cmd.handle("count_less_than_engine_power     ", writer, reader)
         verify {
@@ -32,7 +33,8 @@ class CountLessThanEnginePowerCommandTest : CommandTest() {
         confirmVerified(writer)
     }
 
-    @Test fun `bad input`() {
+    @Test
+    fun `bad input`() {
         val cmd = CountLessThanEnginePowerCommand(repository)
         cmd.handle("count_less_than_engine_power  nan", writer, reader)
         verify {
@@ -46,15 +48,15 @@ class CountLessThanEnginePowerCommandTest : CommandTest() {
     @MethodSource("power")
     fun `test check`(power: Double) {
         val cmd = CountLessThanEnginePowerCommand(repository)
-        assert( cmd.check("count_less_than_engine_power ${power}   ") )
-        assert( cmd.check("count_less_than_engine_power       ${power}    ") )
-        assert( cmd.check("     count_less_than_engine_power       ${power}   ") )
-        assert( cmd.check("     count_less_than_engine_power   ${power}     ") )
-        assert( !cmd.check("     count_less_than_engine_power") )
-        assert( !cmd.check("     count_less_than_engine_power     ") )
-        assert( !cmd.check("     count_less_than_engine_power asdasdsa$power") )
-        assert( !cmd.check("     count_less_than_engine_power adasds${power}dasdas") )
-        assert( !cmd.check("     count_less_than_engine_power ${power}dasdas") )
+        assert(cmd.check("count_less_than_engine_power ${power}   "))
+        assert(cmd.check("count_less_than_engine_power       ${power}    "))
+        assert(cmd.check("     count_less_than_engine_power       ${power}   "))
+        assert(cmd.check("     count_less_than_engine_power   ${power}     "))
+        assert(!cmd.check("     count_less_than_engine_power"))
+        assert(!cmd.check("     count_less_than_engine_power     "))
+        assert(!cmd.check("     count_less_than_engine_power asdasdsa$power"))
+        assert(!cmd.check("     count_less_than_engine_power adasds${power}dasdas"))
+        assert(!cmd.check("     count_less_than_engine_power ${power}dasdas"))
     }
 
     companion object {

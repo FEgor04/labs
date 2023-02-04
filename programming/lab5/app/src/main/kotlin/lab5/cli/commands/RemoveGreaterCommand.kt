@@ -1,22 +1,18 @@
 package lab5.cli.commands
 
 import lab5.cli.utils.ReaderUtils
-import lab5.entities.vehicle.FuelType
-import lab5.entities.vehicle.VehicleType
 import lab5.repositories.VehicleRepository
-import java.io.BufferedReader
-import java.io.BufferedWriter
 
 /**
  * Класс команды remove_greater.
  * Использование: remove_greater
  * Удаляет все элементы коллекции, превыщающие данный
  */
-class RemoveGreaterCommand(repository: VehicleRepository): CommandImpl(
+class RemoveGreaterCommand(repository: VehicleRepository) : CommandImpl(
     "remove_greater",
     "удалить из коллекции все элементы, превышающие данный",
     "",
-    fun (_, writer, reader, _) {
+    fun(_, writer, reader, _) {
         val element = ReaderUtils.readVehicle(writer, reader)
         repository.removeGreater(element)
         writer.write("Успех!\n")

@@ -6,11 +6,11 @@ import io.mockk.mockkObject
 import io.mockk.verify
 import lab5.cli.utils.ReaderUtils
 import lab5.entities.vehicle.VehicleFactory
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class InsertCommandTest : CommandTest() {
-    @Test fun `ok`() {
+    @Test
+    fun `ok`() {
         mockkObject(ReaderUtils)
         val veh = VehicleFactory.generateRandomVehicle()
         val cmd = InsertCommand(repository)

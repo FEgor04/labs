@@ -3,10 +3,9 @@ package lab5.entities.vehicle
 import io.mockk.InternalPlatformDsl.toStr
 import lab5.entities.FactoryException
 import lab5.entities.ValidationException
-import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class VehicleFactoryTest {
@@ -108,7 +107,8 @@ class VehicleFactoryTest {
             }
         }
 
-        @Test fun `y is null`() {
+        @Test
+        fun `y is null`() {
             val veh = factory.generateRandomVehicle()
             val actual = factory.createVehicleFromString(
                 name = veh.name,
@@ -118,11 +118,12 @@ class VehicleFactoryTest {
                 fuelType = veh.fuelType.toStr(),
                 vehicleType = veh.type.toString()
             )
-            assertEquals(veh.copy(coordinates = veh.coordinates.copy(y=null)), actual.copy(id=veh.id))
+            assertEquals(veh.copy(coordinates = veh.coordinates.copy(y = null)), actual.copy(id = veh.id))
         }
 
 
-        @Test fun `y is empty`() {
+        @Test
+        fun `y is empty`() {
             val veh = factory.generateRandomVehicle()
             val actual = factory.createVehicleFromString(
                 name = veh.name,
@@ -132,11 +133,12 @@ class VehicleFactoryTest {
                 fuelType = veh.fuelType.toStr(),
                 vehicleType = veh.type.toString()
             )
-            assertEquals(veh.copy(coordinates = veh.coordinates.copy(y=null)), actual.copy(id=veh.id))
+            assertEquals(veh.copy(coordinates = veh.coordinates.copy(y = null)), actual.copy(id = veh.id))
         }
 
-        @Test fun `vehicleType is null`() {
-            val veh = factory.generateRandomVehicle().copy(type=null)
+        @Test
+        fun `vehicleType is null`() {
+            val veh = factory.generateRandomVehicle().copy(type = null)
             val actual = factory.createVehicleFromString(
                 name = veh.name,
                 xStr = veh.coordinates.x.toString(),
@@ -145,12 +147,13 @@ class VehicleFactoryTest {
                 fuelType = veh.fuelType.toString(),
                 vehicleType = "null"
             )
-            assertEquals(veh, actual.copy(id=veh.id))
+            assertEquals(veh, actual.copy(id = veh.id))
         }
 
 
-        @Test fun `vehicleType is empty`() {
-            val veh = factory.generateRandomVehicle().copy(type=null)
+        @Test
+        fun `vehicleType is empty`() {
+            val veh = factory.generateRandomVehicle().copy(type = null)
             val actual = factory.createVehicleFromString(
                 name = veh.name,
                 xStr = veh.coordinates.x.toString(),
@@ -159,11 +162,12 @@ class VehicleFactoryTest {
                 fuelType = veh.fuelType.toString(),
                 vehicleType = ""
             )
-            assertEquals(veh, actual.copy(id=veh.id))
+            assertEquals(veh, actual.copy(id = veh.id))
         }
 
-        @Test fun `name is empty`() {
-            val veh = factory.generateRandomVehicle().copy(type=null)
+        @Test
+        fun `name is empty`() {
+            val veh = factory.generateRandomVehicle().copy(type = null)
 
             assertThrows<FactoryException> {
                 factory.createVehicleFromString(
@@ -178,8 +182,9 @@ class VehicleFactoryTest {
         }
 
 
-        @Test fun `x is invalid`() {
-            val veh = factory.generateRandomVehicle().copy(type=null)
+        @Test
+        fun `x is invalid`() {
+            val veh = factory.generateRandomVehicle().copy(type = null)
 
             assertThrows<ValidationException> {
                 factory.createVehicleFromString(

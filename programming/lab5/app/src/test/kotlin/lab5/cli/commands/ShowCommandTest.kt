@@ -5,7 +5,6 @@ import io.mockk.every
 import io.mockk.verify
 import lab5.entities.vehicle.VehicleFactory
 import lab5.repositories.CollectionInfo
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
@@ -13,8 +12,9 @@ class ShowCommandTest : CommandTest() {
     @Test
     fun `got elements`() {
         val cmd = ShowCommand(repository)
-        val vehicles = (1..100).map { VehicleFactory.generateRandomVehicle().copy(id=it) }
-        val info = CollectionInfo(type="Test collection", elementsCount = vehicles.size, initDate = LocalDateTime.now())
+        val vehicles = (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it) }
+        val info =
+            CollectionInfo(type = "Test collection", elementsCount = vehicles.size, initDate = LocalDateTime.now())
         every { repository.getCollectionInfo() } returns info
         every { repository.iterator() } returns vehicles.iterator()
         cmd.handle("show", writer, reader)
@@ -32,9 +32,10 @@ class ShowCommandTest : CommandTest() {
         confirmVerified(repository)
     }
 
-    @Test fun `no elements`() {
+    @Test
+    fun `no elements`() {
         val cmd = ShowCommand(repository)
-        val info = CollectionInfo(type="Test collection", elementsCount = 0, initDate = LocalDateTime.now())
+        val info = CollectionInfo(type = "Test collection", elementsCount = 0, initDate = LocalDateTime.now())
         every { repository.getCollectionInfo() } returns info
         cmd.handle("show", writer, reader)
         verify {

@@ -23,5 +23,10 @@ interface Command {
      * @param executeCommandStackTrace стэк-трэйс команд execute_script.
      * Необходим для предовтращеняи рекурсии.
      */
-    fun handle(userInput: String, writer: BufferedWriter, reader: BufferedReader, executeCommandStackTrace: Stack<File> = Stack())
+    fun handle(
+        userInput: String,
+        writer: BufferedWriter,
+        reader: BufferedReader,
+        executeCommandStackTrace: Stack<File> = Stack()
+    )
 }
