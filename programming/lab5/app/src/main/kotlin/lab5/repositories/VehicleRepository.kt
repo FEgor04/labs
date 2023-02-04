@@ -8,7 +8,7 @@ import kotlin.jvm.Throws
 /**
  * Интерфейс репозитория транспорта
  */
-interface VehicleRepository {
+interface VehicleRepository: Iterable<Vehicle> {
     /**
      * Добавляет новый транспорт
      * @throws ValidationException если vehicle не валидно
@@ -87,4 +87,5 @@ interface VehicleRepository {
      * Очищает коллекцию
      */
     fun clear()
+
 }

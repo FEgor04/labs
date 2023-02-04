@@ -11,19 +11,19 @@ import java.io.BufferedWriter
  * Использование: replace_if_lower ID
  * Удаляет все элементы коллекции, чей ID больше, чем данный
  */
-class ReplaceIfLowerCommand(repository: VehicleRepository, writer: BufferedWriter, reader: BufferedReader): CommandImpl(
+class ReplaceIfLowerCommand(repository: VehicleRepository): CommandImpl(
     "replace_if_lower",
     "заменить значение по ключу, если новое значение меньше старого",
     "\\d*",
-    fun (userInput, _, _, _) {
+    fun (userInput, writer, reader, _) {
         val id: Int
         try {
-            val regex = Regex("replace_if_lower\\s(\\d*)")
+            val regex = Regex("^[ \t]*replace_if_lower[ \t]+(\\d*)[ \t]*$")
             val (idStr) = regex.find(userInput)?.destructured!!
             id = idStr.toInt()
         }
         catch (e: Exception) {
-            writer.write("Bad input: $e\n")
+            writer.write("Некорректный ввод.\n")
             writer.flush()
             return
         }

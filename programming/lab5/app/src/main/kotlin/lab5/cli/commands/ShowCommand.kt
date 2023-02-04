@@ -6,18 +6,16 @@ import java.io.BufferedWriter
 /**
  * Класс команды show
  */
-class ShowCommand(repository: VehicleRepository, writer: BufferedWriter): CommandImpl(
+class ShowCommand(repository: VehicleRepository): CommandImpl(
     "show",
     "вывести в стандартный поток вывода все элементы коллекции в строковом представлении",
     "",
-    fun (_, _, _, _) {
+    fun (_, writer, _, _) {
         if(repository.getCollectionInfo().elementsCount == 0) {
             writer.write("В коллекции нет элементов\n")
         }
         else {
-            for (item in repository.listAllVehicles()) {
-                writer.write("$item\n")
-            }
+            repository.forEach { writer.write("$it\n") }
         }
         writer.flush()
     },

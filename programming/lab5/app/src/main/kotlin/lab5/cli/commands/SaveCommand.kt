@@ -6,18 +6,18 @@ import java.io.BufferedWriter
 /**
  * Класс команды save
  */
-class SaveCommand(repository: VehicleRepository, writer: BufferedWriter): CommandImpl(
+class SaveCommand(repository: VehicleRepository): CommandImpl(
     "save",
     "сохранить коллекцию в файл",
     "",
-    fun (_, _, _, _) {
+    fun (_, writer, _, _) {
         try {
             repository.saveCollection()
             writer.write("Успех!")
             writer.flush()
         }
         catch(e: Exception) {
-            writer.write("Could not save collection. Error: $e\n")
+            writer.write("Не удалось сохранить коллекцию. Ошибка: $e\n")
             writer.flush()
         }
     },

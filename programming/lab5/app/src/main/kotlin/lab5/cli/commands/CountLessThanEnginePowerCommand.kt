@@ -7,14 +7,14 @@ import java.io.BufferedWriter
 /**
  * Класс команды remove_key
  */
-class CountLessThanEnginePowerCommand(repository: VehicleRepository, writer: BufferedWriter): CommandImpl(
+class CountLessThanEnginePowerCommand(repository: VehicleRepository): CommandImpl(
     "count_less_than_engine_power",
     "вывести количество элементов, значение поля enginePower которых меньше заданного",
-    "[\\d|\\.]*",
-    fun (userInput, _, _, _) {
+    "[-|+|]?[\\d]+.?[\\d]*",
+    fun (userInput, writer, _, _) {
         val enginePower: Double
         try {
-            val regex = Regex("count_less_than_engine_power\\s*([\\d|\\.]*)")
+            val regex = Regex("count_less_than_engine_power\\s*([-|+]?[\\d|\\.]*)")
             val (enginePowerStr) = regex.find(userInput)?.destructured!!
             enginePower = enginePowerStr.toDouble()
 

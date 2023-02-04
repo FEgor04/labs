@@ -12,7 +12,6 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
-import java.util.TreeMap
 
 /**
  * Класс реализации Repository с хранением в CSV
@@ -20,7 +19,7 @@ import java.util.TreeMap
  * @property creationDate дата создания коллекции (создания инстанса)
  * @property map сама коллекция типа java.util.TreeMap
  */
-class VehicleCsvRepository(private val filename: String?): VehicleRepository {
+open class VehicleCsvRepository(private val file: File?): VehicleRepository {
     private val creationDate = java.time.LocalDateTime.now()
     private var map = java.util.TreeMap<Int, Vehicle>()
 
@@ -40,7 +39,6 @@ class VehicleCsvRepository(private val filename: String?): VehicleRepository {
     }
 
     override fun updateVehicleById(vehicle: Vehicle) {
-        removeVehicle(vehicle.id)
         this.map[vehicle.id] = vehicle
     }
 
@@ -53,15 +51,13 @@ class VehicleCsvRepository(private val filename: String?): VehicleRepository {
     }
 
     override fun saveCollection() {
-        if(filename.isNullOrEmpty()) {
+        if(file == null) {
             return
         }
 
-        val file = OutputStreamWriter(FileOutputStream(File(filename)))
-        file.use {
-            for (item in listAllVehicles()) {
-                file.write(item.toCsv() + "\n")
-            }
+        val file = OutputStreamWriter(FileOutputStream(file))
+        file.use { // Use автоматически закроет поток после выполнения
+            map.forEach {(_, veh) -> it.write( veh.toCsv() + "\n" )}
             file.flush()
         }
     }
@@ -75,15 +71,13 @@ class VehicleCsvRepository(private val filename: String?): VehicleRepository {
     }
 
     override fun loadData() {
-        if(filename.isNullOrEmpty()) {
+        if(file == null) {
             return
         }
 
-        val file = InputStreamReader(FileInputStream(File(filename)))
-        file.use { file ->
-            for (line in file.readLines()) {
-                loadOneLine(line)
-            }
+        val file = InputStreamReader(FileInputStream(file))
+        file.use {
+            it.forEachLine { line -> loadOneLine(line) }
         }
     }
 
@@ -92,16 +86,18 @@ class VehicleCsvRepository(private val filename: String?): VehicleRepository {
     }
 
     override fun removeLower(veh: Vehicle) {
-        map.filter { VehicleComparator().compare(it.component2(), veh) < 0 }.forEach { map.remove(it.component1()) }
+        map
+            .filter { VehicleComparator().compare(it.component2(), veh) < 0 }
+            .forEach { map.remove(it.component1()) }
     }
 
     override fun replaceIfLower(id: Int, vehicle: Vehicle): ReplaceIfLowerResults {
-        val element = getVehicleById(id)
-        if(element == null) {
+        val old = getVehicleById(id)
+        if(old == null) {
             return ReplaceIfLowerResults.NOT_EXISTS
         }
-        if(VehicleComparator().compare(vehicle, element) < 0) {
-            this.updateVehicleById(vehicle.copy(id = element.id))
+        if(VehicleComparator().compare(vehicle, old) < 0) {
+            this.updateVehicleById(vehicle.copy(id = old.id))
             return ReplaceIfLowerResults.REPLACED
         }
         return ReplaceIfLowerResults.NOT_REPLACED
@@ -125,12 +121,11 @@ class VehicleCsvRepository(private val filename: String?): VehicleRepository {
 
     /**
      * Добавляет в коллекцию одну строку csv файла
+     * @throws Exception если был передан некорректный формат строки
      */
     private fun loadOneLine(line: String) {
         val regex = Regex("(?<!\\\\),")
         val args = line.trim().split(regex, 0)
-        println(args.size)
-        println(args.toString())
         if(args.size != 8) {
             throw Exception("Bad format of a file")
         }
@@ -151,5 +146,9 @@ class VehicleCsvRepository(private val filename: String?): VehicleRepository {
 
     override fun clear() {
         this.map.clear()
+    }
+
+    override fun iterator(): Iterator<Vehicle> {
+        return this.map.values.iterator()
     }
 }

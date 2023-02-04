@@ -6,18 +6,18 @@ import java.io.BufferedWriter
 /**
  * Класс команды remove_key
  */
-class RemoveKeyCommand(repository: VehicleRepository, writer: BufferedWriter): CommandImpl(
+class RemoveKeyCommand(repository: VehicleRepository): CommandImpl(
     "remove_key",
     "вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)",
     "\\d*",
-    fun (userInput, _, _, _) {
+    fun (userInput, writer, _, _) {
         val id: Int;
         try {
             val regex = Regex("remove_key\\s(\\d*)")
             val (idStr) = regex.find(userInput)?.destructured!!
             id = idStr.toInt()
         } catch(e : Exception) {
-            writer.write("Bad input: $e\n")
+            writer.write("Неправильный ввод.\n")
             writer.flush()
             return
         }

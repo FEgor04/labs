@@ -7,11 +7,11 @@ import java.io.BufferedWriter
  * Класс команды clear
  * Очищает коллекцию от всех элементов
  */
-class ClearCommand(repository: VehicleRepository, writer: BufferedWriter): CommandImpl(
+class ClearCommand(repository: VehicleRepository): CommandImpl(
     "clear",
     "очистить коллекцию",
     "",
-    fun (_, _, _, _) {
+    fun (_, writer, _, _) {
         repository.clear()
         writer.write("Коллекция очищена\n")
         writer.flush()

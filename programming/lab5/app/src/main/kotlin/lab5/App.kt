@@ -6,41 +6,42 @@ package lab5
 import lab5.cli.CLIHandler
 import lab5.repositories.VehicleRepository
 import lab5.repositories.csv.VehicleCsvRepository
-import java.io.BufferedReader
-import java.io.BufferedWriter
-import java.io.FileNotFoundException
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+import java.io.*
 
 fun main() {
     val inputStream = System.`in`
-    val reader = BufferedReader(InputStreamReader(inputStream))
+    val reader = System.`in`.bufferedReader()
 
-    val outputStream = System.out
-    val writer = BufferedWriter(OutputStreamWriter(outputStream))
+    val writer = System.out.bufferedWriter()
 
     val filename = System.getenv("FILENAME")
-    val repository: VehicleRepository = VehicleCsvRepository(filename)
-    if(filename.isNotEmpty()) {
+    val file: File? = if(filename.isNullOrEmpty()) {
+        writer.write("Переменная окружения FILENAME не указана. Данные загружены не будут.\n")
+        null
+    } else {
+        File(filename)
+    }
+    val repository: VehicleRepository = VehicleCsvRepository(file)
+    if(file != null && file.exists()) {
         try {
             repository.loadData()
         }
         catch(e: FileNotFoundException) {
-            writer.write("No file $filename. No data was loaded.\n")
+            writer.write("Нет файла $file или он недоступен для записи: $e\n")
             writer.flush()
         }
         catch(e: SecurityException) {
-            writer.write("Not enough rights to open $filename. No data was loaded.\n")
+            writer.write("Недостаточно прав чтобы открыть файл $file: $e\n")
             writer.flush()
         }
         catch(e: Exception) {
-            writer.write("Can't open file $filename. Error: $e\n")
+            writer.write("Невозможно открыть файл $file: $e\n")
+            writer.flush()
         }
     }
 
 
+    val handler = CLIHandler(repository)
 
-    val handler = CLIHandler(repository, reader, writer)
-
-    handler.start()
+    handler.start(reader, writer)
 }

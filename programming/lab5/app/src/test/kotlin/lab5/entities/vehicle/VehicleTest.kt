@@ -20,6 +20,21 @@ class VehicleTest {
         vehicle.validate()
     }
 
+    @Test fun `Empty name`() {
+        val vehicle = Vehicle(
+            id=1,
+            name="",
+            coordinates = Coordinates(512, 1512),
+            enginePower = 5.2,
+            type = VehicleType.BICYCLE,
+            fuelType = FuelType.ANTIMATTER,
+            creationDate = java.time.LocalDate.now()
+        )
+        assertThrows<ValidationException> {
+            vehicle.validate()
+        }
+    }
+
     @Test fun `Bad ID`() {
         val vehicle = Vehicle(
             id=0,

@@ -6,6 +6,8 @@ import lab5.repositories.VehicleRepository
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.File
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 import java.util.*
 
 /**
@@ -14,25 +16,25 @@ import java.util.*
  * @param inputReader reader с которорго осуществляется ввод
  * @param outputWriter writer на который осуществляется вывод
  */
-class CLIHandler(private val repository: VehicleRepository, private val inputReader: BufferedReader, private val outputWriter: BufferedWriter) {
+class CLIHandler(private val repository: VehicleRepository) {
     private var commands = mutableListOf<Command>()
     init {
-        commands += HelpCommand(this.commands, outputWriter)
-        commands += InfoCommand(this.repository, outputWriter)
-        commands += InsertCommand(this.repository, outputWriter, inputReader)
-        commands += ShowCommand(this.repository, outputWriter)
-        commands += ExitCommand(outputWriter) { this.shouldContinue = false }
-        commands += SaveCommand(repository, outputWriter)
-        commands += ClearCommand(repository, outputWriter)
-        commands += RemoveKeyCommand(repository, outputWriter)
-        commands += UpdateCommand(repository, outputWriter, inputReader)
-        commands += RemoveGreaterCommand(repository, outputWriter, inputReader)
-        commands += RemoveLowerCommand(repository, outputWriter, inputReader)
-        commands += ReplaceIfLowerCommand(repository, outputWriter, inputReader)
-        commands += MinByIdCommand(repository, outputWriter)
-        commands += CountByTypeCommand(repository, outputWriter)
-        commands += CountLessThanEnginePowerCommand(repository, outputWriter)
-        commands += ExecuteScriptCommand(this, outputWriter)
+        commands += HelpCommand(this.commands)
+        commands += InfoCommand(this.repository)
+        commands += InsertCommand(this.repository)
+        commands += ShowCommand(this.repository)
+        commands += ExitCommand() { this.shouldContinue = false }
+        commands += SaveCommand(repository)
+        commands += ClearCommand(repository)
+        commands += RemoveKeyCommand(repository)
+        commands += UpdateCommand(repository)
+        commands += RemoveGreaterCommand(repository)
+        commands += RemoveLowerCommand(repository)
+        commands += ReplaceIfLowerCommand(repository)
+        commands += MinByIdCommand(repository)
+        commands += CountByTypeCommand(repository)
+        commands += CountLessThanEnginePowerCommand(repository)
+        commands += ExecuteScriptCommand(this)
     }
 
     /**
@@ -41,18 +43,19 @@ class CLIHandler(private val repository: VehicleRepository, private val inputRea
      * @param executeCommandStackTrace стэк вызовов команды execute_script.
      * Необходим для предовтращения рекурсивных вызовов
      */
-    fun handleCommand(userInput: String, reader: BufferedReader = this.inputReader, writer: BufferedWriter = this.outputWriter, executeCommandStackTrace: Stack<File> = Stack()) {
+    fun handleCommand(
+        userInput: String,
+        reader: BufferedReader,
+        writer: BufferedWriter,
+        executeCommandStackTrace: Stack<File> = Stack()
+    ) {
         var goodInput = false
-        for(command in commands) {
-            if(command.check(userInput)) {
-                command.handle(userInput, reader=reader, writer=writer, executeCommandStackTrace = executeCommandStackTrace)
-                goodInput = true
-                break
-            }
-        }
-        if( !goodInput) {
+        val command = commands.find {it.check(userInput)}
+        if(command == null) {
             writer.write("Нет такой команды =(\n")
             writer.flush()
+        } else {
+            command.handle(userInput, reader=reader, writer=writer, executeCommandStackTrace = executeCommandStackTrace)
         }
     }
 
@@ -60,10 +63,17 @@ class CLIHandler(private val repository: VehicleRepository, private val inputRea
      * Начинает обработку команд.
      * Блокирует поток, перестает только введенной командой exit
      */
-    fun start() {
+    fun start(inputReader: BufferedReader, outputWriter: BufferedWriter) {
         while(shouldContinue) {
             val userInput = inputReader.readLine()
-            handleCommand(userInput)
+            handleCommand(userInput, reader = inputReader, writer = outputWriter)
+        }
+    }
+
+    fun handleStream(input: BufferedReader, output: BufferedWriter, stack: Stack<File>) {
+        while(input.ready()) {
+            val userInput = input.readLine()
+            handleCommand(userInput, writer = output, reader = input, executeCommandStackTrace = stack)
         }
     }
 
