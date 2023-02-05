@@ -14,7 +14,7 @@ class CountLessThanEnginePowerCommandTest : CommandTest() {
     fun execute(power: Double) {
         val cmd = CountLessThanEnginePowerCommand(repository)
         every { repository.countLessThanEnginePower(power) } returns 10
-        cmd.handle("count_less_than_engine_power ${power}", writer, reader)
+        cmd.handle("count_less_than_engine_power $power", writer, reader)
         verify {
             writer.write("В коллекции содержиться 10 элементов с мощностью двигателя меньше чем $power\n")
             writer.flush()
@@ -48,10 +48,10 @@ class CountLessThanEnginePowerCommandTest : CommandTest() {
     @MethodSource("power")
     fun `test check`(power: Double) {
         val cmd = CountLessThanEnginePowerCommand(repository)
-        assert(cmd.check("count_less_than_engine_power ${power}   "))
-        assert(cmd.check("count_less_than_engine_power       ${power}    "))
-        assert(cmd.check("     count_less_than_engine_power       ${power}   "))
-        assert(cmd.check("     count_less_than_engine_power   ${power}     "))
+        assert(cmd.check("count_less_than_engine_power $power   "))
+        assert(cmd.check("count_less_than_engine_power       $power    "))
+        assert(cmd.check("     count_less_than_engine_power       $power   "))
+        assert(cmd.check("     count_less_than_engine_power   $power     "))
         assert(!cmd.check("     count_less_than_engine_power"))
         assert(!cmd.check("     count_less_than_engine_power     "))
         assert(!cmd.check("     count_less_than_engine_power asdasdsa$power"))

@@ -4,9 +4,6 @@ import io.mockk.clearAllMocks
 import io.mockk.mockk
 import lab5.repositories.VehicleRepository
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-
-import org.junit.jupiter.api.Assertions.*
 import java.io.BufferedReader
 import java.io.BufferedWriter
 

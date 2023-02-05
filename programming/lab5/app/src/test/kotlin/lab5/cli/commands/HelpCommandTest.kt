@@ -1,11 +1,7 @@
 package lab5.cli.commands
 
-import io.mockk.clearAllMocks
 import io.mockk.confirmVerified
-import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.BufferedReader
 import java.io.BufferedWriter

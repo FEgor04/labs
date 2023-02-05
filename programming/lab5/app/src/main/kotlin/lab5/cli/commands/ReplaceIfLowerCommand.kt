@@ -25,8 +25,7 @@ class ReplaceIfLowerCommand(repository: VehicleRepository) : CommandImpl(
             return
         }
         val element = ReaderUtils.readVehicle(writer, reader)
-        val result = repository.replaceIfLower(id, element)
-        when (result) {
+        when (repository.replaceIfLower(id, element)) {
             ReplaceIfLowerResults.NOT_EXISTS -> writer.write("Такого ключа не существует. Вставлен новый элемент.\n")
             ReplaceIfLowerResults.REPLACED -> writer.write("Успешно заменено.\n")
             ReplaceIfLowerResults.NOT_REPLACED -> writer.write("Элемент по ключу меньше данного. Не заменено.\n")

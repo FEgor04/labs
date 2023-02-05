@@ -3,7 +3,7 @@ package lab5.cli.commands
 import io.mockk.*
 import lab5.cli.utils.ReaderUtils
 import lab5.entities.vehicle.FuelType
-import lab5.entities.vehicle.VehicleFactory
+import lab5.entities.vehicle.Vehicle
 import lab5.entities.vehicle.VehicleType
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Test
@@ -15,9 +15,9 @@ class UpdateCommandTest : CommandTest() {
     fun ok() {
         mockkObject(ReaderUtils)
 
-        val oldVehicle = VehicleFactory.generateRandomVehicle()
+        val oldVehicle = Vehicle.generateRandomVehicle()
         val newVehicle =
-            VehicleFactory.generateRandomVehicle().copy(id = oldVehicle.id, creationDate = oldVehicle.creationDate)
+            Vehicle.generateRandomVehicle().copy(id = oldVehicle.id, creationDate = oldVehicle.creationDate)
         every { repository.getVehicleById(oldVehicle.id) } returns oldVehicle
         every {
             (ReaderUtils.readType<String?>(
@@ -28,7 +28,7 @@ class UpdateCommandTest : CommandTest() {
             ))
         } returns newVehicle.name
         every {
-            (ReaderUtils.readType<Int?>(
+            (ReaderUtils.readType(
                 reader, writer,
                 hint = "Введите новое значение координаты X или оставьте пустым чтобы оставить старое значение = ${oldVehicle.coordinates.x}\n",
                 caster = ReaderUtils.toIntOrNullCaster,
@@ -128,9 +128,9 @@ class UpdateCommandTest : CommandTest() {
     fun `everything is null`() {
         mockkObject(ReaderUtils)
 
-        val oldVehicle = VehicleFactory.generateRandomVehicle()
+        val oldVehicle = Vehicle.generateRandomVehicle()
         val newVehicle =
-            VehicleFactory.generateRandomVehicle().copy(
+            Vehicle.generateRandomVehicle().copy(
                 id = oldVehicle.id,
                 creationDate = oldVehicle.creationDate,
                 name = oldVehicle.name,
@@ -149,7 +149,7 @@ class UpdateCommandTest : CommandTest() {
             ))
         } returns null
         every {
-            (ReaderUtils.readType<Int?>(
+            (ReaderUtils.readType(
                 reader, writer,
                 hint = "Введите новое значение координаты X или оставьте пустым чтобы оставить старое значение = ${oldVehicle.coordinates.x}\n",
                 caster = ReaderUtils.toIntOrNullCaster,

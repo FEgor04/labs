@@ -29,13 +29,13 @@ class UpdateCommand(repository: VehicleRepository) : CommandImpl(
             writer.flush()
             return
         }
-        val newName: String = (ReaderUtils.readType<String?>(reader, writer,
+        val newName: String = (ReaderUtils.readType(reader, writer,
             hint = "Введите новое имя или оставьте пустым чтобы оставить старое значение = ${vehicle.name}.\n",
             caster = { it.ifEmpty { null } },
             validator = { true }
         )) ?: vehicle.name
 
-        val newX: Int = (ReaderUtils.readType<Int?>(reader, writer,
+        val newX: Int = (ReaderUtils.readType(reader, writer,
             hint = "Введите новое значение координаты X или оставьте пустым чтобы оставить старое значение = ${vehicle.coordinates.x}\n",
             caster = ReaderUtils.toIntOrNullCaster,
             validator = { it == null || it > -523 }

@@ -3,7 +3,7 @@ package lab5.cli.commands
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.verify
-import lab5.entities.vehicle.VehicleFactory
+import lab5.entities.vehicle.Vehicle
 import org.junit.jupiter.api.Test
 
 class MinByIdCommandTest : CommandTest() {
@@ -25,7 +25,7 @@ class MinByIdCommandTest : CommandTest() {
 
     @Test
     fun `has an element`() {
-        val veh = VehicleFactory.generateRandomVehicle()
+        val veh = Vehicle.generateRandomVehicle()
         val cmd = MinByIdCommand(repository)
         every { repository.getMinById() } returns veh
         cmd.handle("    min_by_id   ", writer, reader)

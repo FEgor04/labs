@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class RemoveKeyCommandTest : CommandTest() {
     @Test
     fun ok() {
-        val id = 123;
+        val id = 123
         val cmd = RemoveKeyCommand(repository)
         every { repository.removeVehicle(id) } returns Unit
 
@@ -25,7 +25,7 @@ class RemoveKeyCommandTest : CommandTest() {
 
     @Test
     fun `bad input`() {
-        val id = "bad_input";
+        val id = "bad_input"
         val cmd = RemoveKeyCommand(repository)
         cmd.handle("remove_key $id", writer, reader)
         verify {

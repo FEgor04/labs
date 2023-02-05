@@ -5,14 +5,14 @@ import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.verify
 import lab5.cli.utils.ReaderUtils
-import lab5.entities.vehicle.VehicleFactory
+import lab5.entities.vehicle.Vehicle
 import org.junit.jupiter.api.Test
 
 class InsertCommandTest : CommandTest() {
     @Test
-    fun `ok`() {
+    fun ok() {
         mockkObject(ReaderUtils)
-        val veh = VehicleFactory.generateRandomVehicle()
+        val veh = Vehicle.generateRandomVehicle()
         val cmd = InsertCommand(repository)
 
         every { ReaderUtils.readVehicle(writer, reader) } returns veh

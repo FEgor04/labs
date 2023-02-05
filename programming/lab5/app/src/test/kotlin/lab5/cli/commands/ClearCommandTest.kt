@@ -2,13 +2,7 @@ package lab5.cli.commands
 
 import io.mockk.confirmVerified
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.verify
-import lab5.repositories.VehicleRepository
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class ClearCommandTest : CommandTest() {

@@ -5,14 +5,14 @@ import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.verify
 import lab5.cli.utils.ReaderUtils
-import lab5.entities.vehicle.VehicleFactory
+import lab5.entities.vehicle.Vehicle
 import org.junit.jupiter.api.Test
 
 class RemoveLowerCommandTest : CommandTest() {
     @Test
     fun ok() {
         mockkObject(ReaderUtils)
-        val vehicle = VehicleFactory.generateRandomVehicle()
+        val vehicle = Vehicle.generateRandomVehicle()
         val cmd = RemoveLowerCommand(repository)
         every { ReaderUtils.readVehicle(writer, reader) } returns vehicle
         every { repository.removeLower(vehicle) } returns Unit

@@ -1,7 +1,7 @@
 package lab5.repositories.csv
 
 import lab5.entities.ValidationException
-import lab5.entities.vehicle.VehicleFactory
+import lab5.entities.vehicle.Vehicle
 import lab5.entities.vehicle.VehicleType
 import lab5.repositories.ReplaceIfLowerResults
 import org.junit.jupiter.api.*
@@ -24,7 +24,7 @@ class VehicleCsvRepositoryTest {
     inner class InsertVehicle {
         @Test
         fun ok() {
-            val vehicle = VehicleFactory.generateRandomVehicle()
+            val vehicle = Vehicle.generateRandomVehicle()
             repository.insertVehicle(vehicle)
             assertEquals(vehicle.copy(id = 1), repository.getVehicleById(1), "elements should be equal")
             assertEquals(1, repository.getCollectionInfo().elementsCount)
@@ -32,7 +32,7 @@ class VehicleCsvRepositoryTest {
 
         @Test
         fun `invalid vehicle`() {
-            val vehicle = VehicleFactory.generateRandomVehicle().copy(enginePower = -10.0)
+            val vehicle = Vehicle.generateRandomVehicle().copy(enginePower = -10.0)
             assertThrows<ValidationException> {
                 repository.insertVehicle(vehicle)
             }
@@ -45,7 +45,7 @@ class VehicleCsvRepositoryTest {
     inner class GetVehicleById {
         @Test
         fun ok() {
-            val vehicle = VehicleFactory.generateRandomVehicle().copy(id = 1)
+            val vehicle = Vehicle.generateRandomVehicle().copy(id = 1)
             repository.insertVehicle(vehicle)
             val actualVehicle = repository.getVehicleById(1)
             assertEquals(vehicle, actualVehicle)
@@ -62,7 +62,7 @@ class VehicleCsvRepositoryTest {
     inner class RemoveVehicle {
         @Test
         fun `insert and remove`() {
-            val vehicle = VehicleFactory.generateRandomVehicle()
+            val vehicle = Vehicle.generateRandomVehicle()
             repository.insertVehicle(vehicle)
             assertEquals(1, repository.getCollectionInfo().elementsCount)
             repository.removeVehicle(1)
@@ -81,20 +81,20 @@ class VehicleCsvRepositoryTest {
     inner class UpdateVehicleById {
         @Test
         fun ok() {
-            val vehicle = VehicleFactory.generateRandomVehicle()
+            val vehicle = Vehicle.generateRandomVehicle()
             repository.insertVehicle(vehicle)
             assertEquals(1, repository.getCollectionInfo().elementsCount)
-            val newVehicle = VehicleFactory.generateRandomVehicle().copy(id = vehicle.id)
+            val newVehicle = Vehicle.generateRandomVehicle().copy(id = vehicle.id)
             repository.updateVehicleById(newVehicle)
             assertEquals(newVehicle, repository.getVehicleById(vehicle.id))
         }
 
         @Test
         fun `update non-existent`() {
-            val vehicle = VehicleFactory.generateRandomVehicle()
+            val vehicle = Vehicle.generateRandomVehicle()
             repository.insertVehicle(vehicle)
             assertEquals(1, repository.getCollectionInfo().elementsCount)
-            val newVehicle = VehicleFactory.generateRandomVehicle().copy(id = vehicle.id)
+            val newVehicle = Vehicle.generateRandomVehicle().copy(id = vehicle.id)
             repository.updateVehicleById(newVehicle)
             assertEquals(newVehicle, repository.getVehicleById(vehicle.id))
         }
@@ -104,7 +104,7 @@ class VehicleCsvRepositoryTest {
     inner class ListAllVehicles {
         @Test
         fun ok() {
-            val vehicles = (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it) }
+            val vehicles = (1..100).map { Vehicle.generateRandomVehicle().copy(id = it) }
             vehicles.forEach { repository.insertVehicle(it) }
             val actual = repository.listAllVehicles().toList()
             actual.forEachIndexed { id, it -> assertEquals(vehicles[id], it) }
@@ -122,12 +122,12 @@ class VehicleCsvRepositoryTest {
         @Test
         fun ok() {
             val vehicles =
-                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
+                (1..100).map { Vehicle.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
             vehicles.forEach { repository.insertVehicle(it) }
             val actual = repository.listAllVehicles().toList()
             actual.forEachIndexed { id, it -> assertEquals(vehicles[id], it) }
             val power = 50.0
-            repository.removeGreater(VehicleFactory.generateRandomVehicle().copy(enginePower = power))
+            repository.removeGreater(Vehicle.generateRandomVehicle().copy(enginePower = power))
 
             repository.forEach { assert(it.enginePower <= power) }
         }
@@ -135,12 +135,12 @@ class VehicleCsvRepositoryTest {
         @Test
         fun `remove all`() {
             val vehicles =
-                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
+                (1..100).map { Vehicle.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
             vehicles.forEach { repository.insertVehicle(it) }
             val actual = repository.listAllVehicles().toList()
             actual.forEachIndexed { id, it -> assertEquals(vehicles[id], it) }
             val power = -100.0
-            repository.removeGreater(VehicleFactory.generateRandomVehicle().copy(enginePower = power))
+            repository.removeGreater(Vehicle.generateRandomVehicle().copy(enginePower = power))
 
             assertEquals(0, repository.getCollectionInfo().elementsCount)
         }
@@ -148,12 +148,12 @@ class VehicleCsvRepositoryTest {
         @Test
         fun `do not remove`() {
             val vehicles =
-                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
+                (1..100).map { Vehicle.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
             vehicles.forEach { repository.insertVehicle(it) }
             val actual = repository.listAllVehicles().toList()
             actual.forEachIndexed { id, it -> assertEquals(vehicles[id], it) }
             val power = 500.0
-            repository.removeGreater(VehicleFactory.generateRandomVehicle().copy(enginePower = power))
+            repository.removeGreater(Vehicle.generateRandomVehicle().copy(enginePower = power))
 
             assertEquals(100, repository.getCollectionInfo().elementsCount)
         }
@@ -164,12 +164,12 @@ class VehicleCsvRepositoryTest {
         @Test
         fun ok() {
             val vehicles =
-                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
+                (1..100).map { Vehicle.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
             vehicles.forEach { repository.insertVehicle(it) }
             val actual = repository.listAllVehicles().toList()
             actual.forEachIndexed { id, it -> assertEquals(vehicles[id], it) }
             val power = 50.0
-            repository.removeLower(VehicleFactory.generateRandomVehicle().copy(enginePower = power))
+            repository.removeLower(Vehicle.generateRandomVehicle().copy(enginePower = power))
 
             repository.forEach { assert(it.enginePower >= power) }
         }
@@ -177,12 +177,12 @@ class VehicleCsvRepositoryTest {
         @Test
         fun `remove all`() {
             val vehicles =
-                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
+                (1..100).map { Vehicle.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
             vehicles.forEach { repository.insertVehicle(it) }
             val actual = repository.listAllVehicles().toList()
             actual.forEachIndexed { id, it -> assertEquals(vehicles[id], it) }
             val power = 500.0
-            repository.removeLower(VehicleFactory.generateRandomVehicle().copy(enginePower = power))
+            repository.removeLower(Vehicle.generateRandomVehicle().copy(enginePower = power))
 
             assertEquals(0, repository.getCollectionInfo().elementsCount)
         }
@@ -190,12 +190,12 @@ class VehicleCsvRepositoryTest {
         @Test
         fun `do not remove`() {
             val vehicles =
-                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
+                (1..100).map { Vehicle.generateRandomVehicle().copy(id = it, enginePower = it.toDouble()) }
             vehicles.forEach { repository.insertVehicle(it) }
             val actual = repository.listAllVehicles().toList()
             actual.forEachIndexed { id, it -> assertEquals(vehicles[id], it) }
             val power = -500.0
-            repository.removeLower(VehicleFactory.generateRandomVehicle().copy(enginePower = power))
+            repository.removeLower(Vehicle.generateRandomVehicle().copy(enginePower = power))
 
             assertEquals(100, repository.getCollectionInfo().elementsCount)
         }
@@ -205,9 +205,9 @@ class VehicleCsvRepositoryTest {
     inner class ReplaceIfLower {
         @Test
         fun replace() {
-            val old = VehicleFactory.generateRandomVehicle().copy(enginePower = 50.0)
+            val old = Vehicle.generateRandomVehicle().copy(enginePower = 50.0)
             repository.insertVehicle(old)
-            val new = VehicleFactory.generateRandomVehicle().copy(enginePower = 25.0)
+            val new = Vehicle.generateRandomVehicle().copy(enginePower = 25.0)
             val result = repository.replaceIfLower(1, new)
             assertEquals(ReplaceIfLowerResults.REPLACED, result)
             assertEquals(new.copy(id = 1), repository.getVehicleById(1))
@@ -215,9 +215,9 @@ class VehicleCsvRepositoryTest {
 
         @Test
         fun `no replace`() {
-            val old = VehicleFactory.generateRandomVehicle().copy(enginePower = 25.0)
+            val old = Vehicle.generateRandomVehicle().copy(enginePower = 25.0)
             repository.insertVehicle(old)
-            val new = VehicleFactory.generateRandomVehicle().copy(enginePower = 50.0)
+            val new = Vehicle.generateRandomVehicle().copy(enginePower = 50.0)
             val result = repository.replaceIfLower(1, new)
             assertEquals(ReplaceIfLowerResults.NOT_REPLACED, result)
             assertEquals(old.copy(id = 1), repository.getVehicleById(1))
@@ -225,7 +225,7 @@ class VehicleCsvRepositoryTest {
 
         @Test
         fun `does not exists`() {
-            val new = VehicleFactory.generateRandomVehicle().copy(enginePower = 50.0)
+            val new = Vehicle.generateRandomVehicle().copy(enginePower = 50.0)
             val result = repository.replaceIfLower(1, new)
             assertEquals(ReplaceIfLowerResults.NOT_EXISTS, result)
         }
@@ -236,7 +236,7 @@ class VehicleCsvRepositoryTest {
         @Test
         fun `many elements`() {
             val vehicles =
-                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it * 10.0) }
+                (1..100).map { Vehicle.generateRandomVehicle().copy(id = it, enginePower = it * 10.0) }
             vehicles.forEach { repository.insertVehicle(it) }
             val min = repository.getMinById()
             assertNotNull(min)
@@ -247,7 +247,7 @@ class VehicleCsvRepositoryTest {
         @Test
         fun `no element with id #1`() {
             val vehicles =
-                (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it, enginePower = it * 10.0) }
+                (1..100).map { Vehicle.generateRandomVehicle().copy(id = it, enginePower = it * 10.0) }
             vehicles.forEach { repository.insertVehicle(it) }
             (1..25).forEach { repository.removeVehicle(it) }
             val min = repository.getMinById()
@@ -263,13 +263,13 @@ class VehicleCsvRepositoryTest {
     }
 
     @Nested
-    inner class CountByType() {
+    inner class CountByType {
         @Test
         fun `20 types each`() {
             val typesCount = VehicleType.values().size + 1 // +1 для null
             (1..typesCount * 10).forEach {
                 repository.insertVehicle(
-                    VehicleFactory.generateRandomVehicle()
+                    Vehicle.generateRandomVehicle()
                         .copy(
                             type = if (it % typesCount == typesCount - 1) {
                                 null
@@ -285,7 +285,7 @@ class VehicleCsvRepositoryTest {
 
         @Test
         fun `no type`() {
-            repeat(100) { repository.insertVehicle(VehicleFactory.generateRandomVehicle()) }
+            repeat(100) { repository.insertVehicle(Vehicle.generateRandomVehicle()) }
             assertEquals(0, repository.countByType(null))
         }
 
@@ -308,7 +308,7 @@ class VehicleCsvRepositoryTest {
         @Test
         fun `equal engine power`() {
             repeat(100) {
-                repository.insertVehicle(VehicleFactory.generateRandomVehicle().copy(enginePower = 1.0))
+                repository.insertVehicle(Vehicle.generateRandomVehicle().copy(enginePower = 1.0))
             }
             assertEquals(100, repository.countLessThanEnginePower(1.1))
             assertEquals(0, repository.countLessThanEnginePower(1.0))
@@ -318,7 +318,7 @@ class VehicleCsvRepositoryTest {
         @Test
         fun ok() {
             (1..100).forEach {
-                repository.insertVehicle(VehicleFactory.generateRandomVehicle().copy(enginePower = it.toDouble()))
+                repository.insertVehicle(Vehicle.generateRandomVehicle().copy(enginePower = it.toDouble()))
             }
             (1..100).forEach {
                 assertEquals(it - 1, repository.countLessThanEnginePower(it.toDouble() - 0.1))
@@ -332,7 +332,7 @@ class VehicleCsvRepositoryTest {
     inner class LoadOneLine {
         @Test
         fun ok() {
-            val vehicle = VehicleFactory.generateRandomVehicle()
+            val vehicle = Vehicle.generateRandomVehicle()
             val method = repository.javaClass.getDeclaredMethod(
                 "loadOneLine",
                 String::class.java
@@ -344,7 +344,7 @@ class VehicleCsvRepositoryTest {
 
         @Test
         fun noCsv() {
-            val vehicle = VehicleFactory.generateRandomVehicle()
+            val vehicle = Vehicle.generateRandomVehicle()
             val method = repository.javaClass.getDeclaredMethod(
                 "loadOneLine",
                 String::class.java
