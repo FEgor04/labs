@@ -7,15 +7,28 @@ import java.util.*
 
 /**
  * Тип обработчика команды
+ * @param userInput ввод пользователя
+ * @param writer поток, в который надо осуществлять вывод
+ * @param reader поток, из которого надо при необходимости читать данные
+ * @param executeCommandStackTrace стэк вызова команды execute_script.
+ * @param checker regex-чекер, используемый для проверки команды.
  */
-typealias CommandHandler = (userInput: String, writer: BufferedWriter, reader: BufferedReader, executeCommandStackTrace: Stack<File>) -> Unit
+typealias CommandHandler = (
+    userInput: String,
+    writer: BufferedWriter,
+    reader: BufferedReader,
+    executeCommandStackTrace: Stack<File>,
+    checker: Regex,
+) -> Unit
 
 /**
  * Класс команды в CLI
  * @property commandName навзание команды
  * @property description описание команды
  * @property argumentsPattern regex-паттерн аргументов, необходим для проверки в check()
- * @property handler - функция, обрабатывающая команду
+ * @property handler функция, обрабатывающая команду
+ * @property regexChecker regex-чекер, проверяющий подходит ли ввод пользователя под данную команду.
+ * При реализации рекомендуется использовать группы для последующего вычленения аргументов из ввода пользователя.
  */
 open class CommandImpl(
     protected val commandName: String,
@@ -23,9 +36,9 @@ open class CommandImpl(
     private val argumentsPattern: String,
     protected val handler: CommandHandler
 ) : Command {
-    private val regexChecker: Regex = when (argumentsPattern.isEmpty()) {
-        false -> Regex("[ \t]*$commandName[ \t]+$argumentsPattern[ \t]*$")
-        true -> Regex("[ \t]*$commandName[ \t]*$")
+    protected open val regexChecker: Regex = when (argumentsPattern.isEmpty()) {
+        false -> Regex("^[ \\t]*$commandName[ \\t]+$argumentsPattern[ \t]*$\$")
+        true -> Regex("^[ \\t]*$commandName[ \\t]*$\$")
     }
 
     /**
@@ -50,7 +63,7 @@ open class CommandImpl(
         reader: BufferedReader,
         executeCommandStackTrace: Stack<File>
     ) {
-        return handler(userInput, writer, reader, executeCommandStackTrace)
+        return handler(userInput, writer, reader, executeCommandStackTrace, regexChecker)
     }
 
     override fun toString(): String {

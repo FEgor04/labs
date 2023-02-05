@@ -8,11 +8,10 @@ import lab5.repositories.VehicleRepository
 class RemoveKeyCommand(repository: VehicleRepository) : CommandImpl(
     "remove_key",
     "вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)",
-    "\\d*",
-    fun(userInput, writer, _, _) {
+    "(\\d+)",
+    fun(userInput, writer, _, _, regex) {
         val id: Int
         try {
-            val regex = Regex("remove_key\\s(\\d*)")
             val (idStr) = regex.find(userInput)?.destructured!!
             id = idStr.toInt()
         } catch (e: Exception) {

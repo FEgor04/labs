@@ -3,6 +3,7 @@ package lab5.cli.commands
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class RemoveKeyCommandTest : CommandTest() {
@@ -33,5 +34,10 @@ class RemoveKeyCommandTest : CommandTest() {
             writer.flush()
         }
         confirmVerified(writer)
+    }
+
+    @Test fun description() {
+        val cmd = RemoveKeyCommand(repository)
+        assertEquals("remove_key id - вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)", cmd.toString())
     }
 }

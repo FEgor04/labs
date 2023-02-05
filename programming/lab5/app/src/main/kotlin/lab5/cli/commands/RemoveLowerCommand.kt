@@ -12,7 +12,7 @@ class RemoveLowerCommand(repository: VehicleRepository) : CommandImpl(
     "remove_lower",
     "удалить из коллекции все элементы, меньшие, чем заданный",
     "",
-    fun(_, writer, reader, _) {
+    fun(_, writer, reader, _, _) {
         val element = ReaderUtils.readVehicle(writer, reader)
         repository.removeLower(element)
         writer.write("Успех!\n")

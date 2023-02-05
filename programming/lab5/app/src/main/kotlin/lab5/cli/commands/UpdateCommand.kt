@@ -11,9 +11,8 @@ import lab5.repositories.VehicleRepository
 class UpdateCommand(repository: VehicleRepository) : CommandImpl(
     "update",
     "обновить значение элемента коллекции, id которого равен заданному",
-    "\\d*",
-    fun(userInput, writer, reader, _) {
-        val regex = Regex("update\\s(\\d*)")
+    "(\\d+)",
+    fun(userInput, writer, reader, _, regex) {
         val id: Int
         try {
             val (idStr) = regex.find(userInput)?.destructured!!

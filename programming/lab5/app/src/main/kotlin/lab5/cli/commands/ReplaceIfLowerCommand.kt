@@ -12,11 +12,10 @@ import lab5.repositories.VehicleRepository
 class ReplaceIfLowerCommand(repository: VehicleRepository) : CommandImpl(
     "replace_if_lower",
     "заменить значение по ключу, если новое значение меньше старого",
-    "\\d*",
-    fun(userInput, writer, reader, _) {
+    "(\\d+)",
+    fun(userInput, writer, reader, _, regex) {
         val id: Int
         try {
-            val regex = Regex("^[ \t]*replace_if_lower[ \t]+(\\d*)[ \t]*$")
             val (idStr) = regex.find(userInput)?.destructured!!
             id = idStr.toInt()
         } catch (e: Exception) {

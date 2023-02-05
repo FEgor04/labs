@@ -10,7 +10,7 @@ class InsertCommand(repository: VehicleRepository) : CommandImpl(
     "insert",
     "добавить новый элемент с заданным ключом",
     "",
-    fun(_, writer, reader, _) {
+    fun(_, writer, reader, _, _) {
         val vehicle = ReaderUtils.readVehicle(writer, reader)
         repository.insertVehicle(vehicle)
         writer.write("Успех!\n")
