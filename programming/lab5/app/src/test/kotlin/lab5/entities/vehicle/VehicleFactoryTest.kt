@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class VehicleFactoryTest {
-    private val factory = VehicleFactory
+    private val factory = Vehicle
 
 
     @Nested

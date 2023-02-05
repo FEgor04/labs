@@ -2,7 +2,7 @@ package lab5.cli.utils
 
 import io.mockk.*
 import lab5.entities.vehicle.FuelType
-import lab5.entities.vehicle.VehicleFactory
+import lab5.entities.vehicle.Vehicle
 import lab5.entities.vehicle.VehicleType
 import org.junit.jupiter.api.*
 
@@ -154,7 +154,7 @@ class ReaderUtilsTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @Nested
     inner class ReadType {
-        val hint = "sample hint"
+        private val hint = "sample hint"
         val reader = mockk<BufferedReader>()
         val writer = mockk<BufferedWriter>()
 
@@ -170,7 +170,7 @@ class ReaderUtilsTest {
             every { reader.readLine() } returns "this is not an int!" andThen "-500" andThen "" andThen "100"
             every { writer.write(any<String>()) } returns Unit
             every { writer.flush() } returns Unit
-            val value = ReaderUtils.readType<Int>(reader, writer, hint, ReaderUtils.toIntCaster, predicate)
+            val value = ReaderUtils.readType(reader, writer, hint, ReaderUtils.toIntCaster, predicate)
             verify {
                 writer.write(eq(hint))
                 writer.flush()
@@ -191,7 +191,7 @@ class ReaderUtilsTest {
             every { reader.readLine() } returns "hey there" andThen "not an enum" andThen ""
             every { writer.write(any<String>()) } returns Unit
             every { writer.flush() } returns Unit
-            val value = ReaderUtils.readType<VehicleType?>(
+            val value = ReaderUtils.readType(
                 reader,
                 writer,
                 hint,
@@ -214,7 +214,7 @@ class ReaderUtilsTest {
             every { reader.readLine() } returns ""
             every { writer.write(any<String>()) } returns Unit
             every { writer.flush() } returns Unit
-            val value = ReaderUtils.readType<VehicleType?>(
+            val value = ReaderUtils.readType(
                 reader,
                 writer,
                 hint,
@@ -237,7 +237,7 @@ class ReaderUtilsTest {
                 reader,
                 writer,
                 hint,
-                { ReaderUtils.toEnumCaster<VehicleType>(it) },
+                { ReaderUtils.toEnumCaster(it) },
                 { true })
             verify {
                 writer.write(hint)
@@ -256,7 +256,7 @@ class ReaderUtilsTest {
                 reader,
                 writer,
                 hint,
-                { ReaderUtils.toEnumCaster<VehicleType>(it) },
+                { ReaderUtils.toEnumCaster(it) },
                 { true })
             verify {
                 writer.write(hint)
@@ -277,7 +277,7 @@ class ReaderUtilsTest {
                 reader,
                 writer,
                 hint,
-                { ReaderUtils.toEnumCaster<VehicleType>(it) },
+                { ReaderUtils.toEnumCaster(it) },
                 { true })
             verify {
                 writer.write(hint)
@@ -294,7 +294,6 @@ class ReaderUtilsTest {
 
     @Nested
     inner class ReadVehicle {
-        val hint = "sample hint"
         val reader = mockk<BufferedReader>()
         val writer = mockk<BufferedWriter>(relaxed = true)
 
@@ -306,7 +305,7 @@ class ReaderUtilsTest {
         @Test
         fun read() {
             val badInput = "Некорректный ввод. Попробуйте еще.\n"
-            val vehicle = VehicleFactory.generateRandomVehicle().copy(id = 1)
+            val vehicle = Vehicle.generateRandomVehicle().copy(id = 1)
             every { reader.readLine() } returnsMany listOf(
                 "", // empty name
                 vehicle.name,

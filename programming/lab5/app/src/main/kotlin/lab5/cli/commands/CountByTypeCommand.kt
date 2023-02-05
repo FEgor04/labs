@@ -15,10 +15,10 @@ class CountByTypeCommand(repository: VehicleRepository) : CommandImpl(
         try {
             val regex = Regex("count_by_type\\s*(\\w*)")
             val (typeStr) = regex.find(userInput)?.destructured!!
-            if (typeStr.isEmpty()) {
-                type = null
+            type = if (typeStr.isEmpty()) {
+                null
             } else {
-                type = VehicleType.valueOf(typeStr.trim().uppercase())
+                VehicleType.valueOf(typeStr.trim().uppercase())
             }
         } catch (e: Exception) {
             writer.write(

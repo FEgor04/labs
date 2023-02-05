@@ -1,8 +1,7 @@
 package lab5.repositories.csv
 
-import lab5.entities.vehicle.Vehicle
 import lab5.entities.vehicle.VehicleComparator
-import lab5.entities.vehicle.VehicleFactory
+import lab5.entities.vehicle.Vehicle
 import lab5.entities.vehicle.VehicleType
 import lab5.repositories.CollectionInfo
 import lab5.repositories.ReplaceIfLowerResults
@@ -11,11 +10,11 @@ import java.io.*
 
 /**
  * Класс реализации Repository с хранением в CSV
- * @property filename путь к csv файлу
+ * @property file csv-файл с данными
  * @property creationDate дата создания коллекции (создания инстанса)
  * @property map сама коллекция типа java.util.TreeMap
  */
-open class VehicleCsvRepository(private val file: File?) : VehicleRepository {
+class VehicleCsvRepository(private val file: File?) : VehicleRepository {
     private val creationDate = java.time.LocalDateTime.now()
     private var map = java.util.TreeMap<Int, Vehicle>()
 
@@ -88,10 +87,7 @@ open class VehicleCsvRepository(private val file: File?) : VehicleRepository {
     }
 
     override fun replaceIfLower(id: Int, vehicle: Vehicle): ReplaceIfLowerResults {
-        val old = getVehicleById(id)
-        if (old == null) {
-            return ReplaceIfLowerResults.NOT_EXISTS
-        }
+        val old = getVehicleById(id) ?: return ReplaceIfLowerResults.NOT_EXISTS
         if (VehicleComparator().compare(vehicle, old) < 0) {
             this.updateVehicleById(vehicle.copy(id = old.id))
             return ReplaceIfLowerResults.REPLACED
@@ -128,7 +124,7 @@ open class VehicleCsvRepository(private val file: File?) : VehicleRepository {
 
         val id = args[0].toInt()
         val creationDate = java.time.LocalDate.parse(args[4])
-        val vehicle = VehicleFactory.createVehicleFromString(
+        val vehicle = Vehicle.createVehicleFromString(
             name = args[1].trim(),
             xStr = args[2],
             yStr = args[3],

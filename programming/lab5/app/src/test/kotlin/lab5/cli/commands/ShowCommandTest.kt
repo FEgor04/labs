@@ -3,7 +3,7 @@ package lab5.cli.commands
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.verify
-import lab5.entities.vehicle.VehicleFactory
+import lab5.entities.vehicle.Vehicle
 import lab5.repositories.CollectionInfo
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
@@ -12,7 +12,7 @@ class ShowCommandTest : CommandTest() {
     @Test
     fun `got elements`() {
         val cmd = ShowCommand(repository)
-        val vehicles = (1..100).map { VehicleFactory.generateRandomVehicle().copy(id = it) }
+        val vehicles = (1..100).map { Vehicle.generateRandomVehicle().copy(id = it) }
         val info =
             CollectionInfo(type = "Test collection", elementsCount = vehicles.size, initDate = LocalDateTime.now())
         every { repository.getCollectionInfo() } returns info

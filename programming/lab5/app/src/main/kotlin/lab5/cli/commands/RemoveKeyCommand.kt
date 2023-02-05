@@ -10,7 +10,7 @@ class RemoveKeyCommand(repository: VehicleRepository) : CommandImpl(
     "вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)",
     "\\d*",
     fun(userInput, writer, _, _) {
-        val id: Int;
+        val id: Int
         try {
             val regex = Regex("remove_key\\s(\\d*)")
             val (idStr) = regex.find(userInput)?.destructured!!

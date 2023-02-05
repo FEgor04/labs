@@ -5,12 +5,9 @@ import io.mockk.every
 import io.mockk.verify
 import lab5.entities.vehicle.VehicleType
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.provider.EnumSource
+import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import org.junit.jupiter.params.provider.ValueSource
 
 class CountByTypeCommandTest : CommandTest() {
     companion object {
@@ -24,7 +21,7 @@ class CountByTypeCommandTest : CommandTest() {
         val cmd = CountByTypeCommand(repository)
 
         every { repository.countByType(type) } returns 20
-        cmd.handle("count_by_type ${type.toString()}", reader = reader, writer = writer)
+        cmd.handle("count_by_type $type", reader = reader, writer = writer)
         verify {
             writer.write("В коллекции содержиться 20 элементов с типом $type.\n")
             writer.flush()

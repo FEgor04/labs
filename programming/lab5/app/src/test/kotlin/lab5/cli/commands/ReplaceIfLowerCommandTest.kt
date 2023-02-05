@@ -5,15 +5,15 @@ import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.verify
 import lab5.cli.utils.ReaderUtils
-import lab5.entities.vehicle.VehicleFactory
+import lab5.entities.vehicle.Vehicle
 import lab5.repositories.ReplaceIfLowerResults
 import org.junit.jupiter.api.Test
 
 class ReplaceIfLowerCommandTest : CommandTest() {
     @Test
-    fun `replaced`() {
+    fun replaced() {
         mockkObject(ReaderUtils)
-        val old = VehicleFactory.generateRandomVehicle()
+        val old = Vehicle.generateRandomVehicle()
         val new = old.copy(enginePower = old.enginePower / 2)
         val cmd = ReplaceIfLowerCommand(repository)
 
@@ -33,7 +33,7 @@ class ReplaceIfLowerCommandTest : CommandTest() {
     @Test
     fun `not replaced`() {
         mockkObject(ReaderUtils)
-        val old = VehicleFactory.generateRandomVehicle()
+        val old = Vehicle.generateRandomVehicle()
         val new = old.copy(enginePower = old.enginePower / 2)
         val cmd = ReplaceIfLowerCommand(repository)
 
@@ -60,7 +60,7 @@ class ReplaceIfLowerCommandTest : CommandTest() {
     @Test
     fun `not exists`() {
         mockkObject(ReaderUtils)
-        val old = VehicleFactory.generateRandomVehicle()
+        val old = Vehicle.generateRandomVehicle()
         val new = old.copy(enginePower = old.enginePower / 2)
         val cmd = ReplaceIfLowerCommand(repository)
 

@@ -10,8 +10,7 @@ import java.util.*
 /**
  * Обработчик CLI команд
  * @param repository репозиторий транспорта
- * @param inputReader reader с которорго осуществляется ввод
- * @param outputWriter writer на который осуществляется вывод
+ * @property shouldContinue нужно ли продолжать обрабатывать команду на следующем цикле ввода
  */
 class CLIHandler(private val repository: VehicleRepository) {
     private var commands = mutableListOf<Command>()
@@ -21,7 +20,7 @@ class CLIHandler(private val repository: VehicleRepository) {
         commands += InfoCommand(this.repository)
         commands += InsertCommand(this.repository)
         commands += ShowCommand(this.repository)
-        commands += ExitCommand() { this.shouldContinue = false }
+        commands += ExitCommand { this.shouldContinue = false }
         commands += SaveCommand(repository)
         commands += ClearCommand(repository)
         commands += RemoveKeyCommand(repository)
@@ -41,7 +40,7 @@ class CLIHandler(private val repository: VehicleRepository) {
      * @param executeCommandStackTrace стэк вызовов команды execute_script.
      * Необходим для предовтращения рекурсивных вызовов
      */
-    fun handleCommand(
+    private fun handleCommand(
         userInput: String,
         reader: BufferedReader,
         writer: BufferedWriter,
@@ -64,7 +63,7 @@ class CLIHandler(private val repository: VehicleRepository) {
 
     /**
      * Начинает обработку команд.
-     * Блокирует поток, перестает только введенной командой exit
+     * Блокирует поток, перестает при изменении поля shouldContinue на false
      */
     fun start(inputReader: BufferedReader, outputWriter: BufferedWriter) {
         while (shouldContinue) {
@@ -73,6 +72,14 @@ class CLIHandler(private val repository: VehicleRepository) {
         }
     }
 
+    /**
+     * Обрабатывает команды из потока.
+     * Будет продолжать обрабатывать поток пока он ready.
+     * Используется для ввода команд из файла.
+     * @param input входной поток (например файл, stdin)
+     * @param output выходной поток (например файл, stdout)
+     * @param stack стэк вызова функции execute_script. Необходим для преодотвращения рекурсии
+     */
     fun handleStream(input: BufferedReader, output: BufferedWriter, stack: Stack<File>) {
         while (input.ready()) {
             val userInput = input.readLine()
