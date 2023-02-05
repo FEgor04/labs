@@ -93,7 +93,7 @@ fun main() {
     }
     catch (e: CantSleepException) {
         println("$dunno не может уснуть. Причина: ${e.message}")
-    }
+    } // Try with resources Java // Dispose pattern
 
     donut.bother(dunno)
     donut.goToCabin()

@@ -1,0 +1,194 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{будникова2022формула}{article}{}
+      \name{author}{2}{}{%
+        {{hash=a5cf2e443d9ecf3a392fbf2879f6c02d}{%
+           family={Будникова},
+           familyi={Б\bibinitperiod},
+           given={Ольга\bibnamedelima Владимировна},
+           giveni={О\bibinitperiod\bibinitdelim В\bibinitperiod}}}%
+        {{hash=5e1783aecf36063a4fdac5360d98cdf9}{%
+           family={Хмелевская},
+           familyi={Х\bibinitperiod},
+           given={Алина\bibnamedelima Григорьевна},
+           giveni={А\bibinitperiod\bibinitdelim Г\bibinitperiod}}}%
+      }
+      \strng{namehash}{8cef154c273418dd72ed31a242227f63}
+      \strng{fullhash}{8cef154c273418dd72ed31a242227f63}
+      \strng{bibnamehash}{8cef154c273418dd72ed31a242227f63}
+      \strng{authorbibnamehash}{8cef154c273418dd72ed31a242227f63}
+      \strng{authornamehash}{8cef154c273418dd72ed31a242227f63}
+      \strng{authorfullhash}{8cef154c273418dd72ed31a242227f63}
+      \field{sortinit}{Б}
+      \field{sortinithash}{5261f8dfa92113358b76bb09b8629977}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Костюмология}
+      \field{title}{Формула конструктивизма в дизайне костюма}
+      \field{year}{2022}
+      \field{number}{2}
+      \range{number}{1}
+      \field{volume}{7}
+      \range{volume}{1}
+    \endentry
+    \entry{золотарева2015суприматизм}{article}{}
+      \name{author}{1}{}{%
+        {{hash=7d39b7faf25e9bf719d1f7429997272c}{%
+           family={Золотарева},
+           familyi={З\bibinitperiod},
+           given={Милена\bibnamedelima Владимировна},
+           giveni={М\bibinitperiod\bibinitdelim В\bibinitperiod}}}%
+      }
+      \strng{namehash}{7d39b7faf25e9bf719d1f7429997272c}
+      \strng{fullhash}{7d39b7faf25e9bf719d1f7429997272c}
+      \strng{bibnamehash}{7d39b7faf25e9bf719d1f7429997272c}
+      \strng{authorbibnamehash}{7d39b7faf25e9bf719d1f7429997272c}
+      \strng{authornamehash}{7d39b7faf25e9bf719d1f7429997272c}
+      \strng{authorfullhash}{7d39b7faf25e9bf719d1f7429997272c}
+      \field{sortinit}{З}
+      \field{sortinithash}{1d80b3a15a09c2872443be31e19ee653}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Евразийский союз ученых}
+      \field{title}{Супрематизм, как путь к конструктивизму (Ленинградская школа)}
+      \field{year}{2015}
+      \field{number}{8\bibrangedash 4 (17)}
+      \range{number}{-1}
+      \field{pages}{114\bibrangedash 116}
+      \range{pages}{3}
+    \endentry
+    \entry{кумпан2022ретроспектива}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=896ae6bcd1067d58682d9609ba956d28}{%
+           family={Кумпан},
+           familyi={К\bibinitperiod},
+           given={ЕВ},
+           giveni={Е\bibinitperiod}}}%
+        {{hash=f5aec3bffa417100c56da2a2c0889181}{%
+           family={Баскакова},
+           familyi={Б\bibinitperiod},
+           given={ЮС},
+           giveni={Ю\bibinitperiod}}}%
+      }
+      \strng{namehash}{f2c24c40186a5c233c0d12d63e1a4bab}
+      \strng{fullhash}{f2c24c40186a5c233c0d12d63e1a4bab}
+      \strng{bibnamehash}{f2c24c40186a5c233c0d12d63e1a4bab}
+      \strng{authorbibnamehash}{f2c24c40186a5c233c0d12d63e1a4bab}
+      \strng{authornamehash}{f2c24c40186a5c233c0d12d63e1a4bab}
+      \strng{authorfullhash}{f2c24c40186a5c233c0d12d63e1a4bab}
+      \field{sortinit}{К}
+      \field{sortinithash}{007824ff2af181c6f6762379475efd5a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Инновации и технологии к развитию теории современной моды," Мода (Материалы. Одежда. Дизайн. Аксессуары)", посвящённая Фёдору Максимовичу Пармону}
+      \field{title}{Ретроспектива конструктивизма в проектировании современной одежды}
+      \field{year}{2022}
+      \field{pages}{115\bibrangedash 119}
+      \range{pages}{5}
+    \endentry
+    \entry{ли2018феномен}{article}{}
+      \name{author}{1}{}{%
+        {{hash=b1dc80b7b24da92dd525be5ba09568c8}{%
+           family={Ли},
+           familyi={Л\bibinitperiod},
+           given={Марина\bibnamedelima Николаевна},
+           giveni={М\bibinitperiod\bibinitdelim Н\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {федеральное государственное бюджетное образовательное учреждение высшего~…}%
+      }
+      \strng{namehash}{b1dc80b7b24da92dd525be5ba09568c8}
+      \strng{fullhash}{b1dc80b7b24da92dd525be5ba09568c8}
+      \strng{bibnamehash}{b1dc80b7b24da92dd525be5ba09568c8}
+      \strng{authorbibnamehash}{b1dc80b7b24da92dd525be5ba09568c8}
+      \strng{authornamehash}{b1dc80b7b24da92dd525be5ba09568c8}
+      \strng{authorfullhash}{b1dc80b7b24da92dd525be5ba09568c8}
+      \field{sortinit}{Л}
+      \field{sortinithash}{408c91708504c4d55e9c1a703c852f82}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Вестник Восточно-Сибирского государственного института культуры}
+      \field{title}{Феномен ``детского конструктивизма'' и советская книжная графика 1920-х гг}
+      \field{year}{2018}
+      \field{number}{1}
+      \range{number}{1}
+      \field{pages}{114\bibrangedash 123}
+      \range{pages}{10}
+    \endentry
+    \entry{пунанова2016эстетические}{article}{}
+      \name{author}{1}{}{%
+        {{hash=46a655b4eb9b48abf743eb8128bf8e2f}{%
+           family={Пунанова},
+           familyi={П\bibinitperiod},
+           given={Юлия\bibnamedelima Сергеевна},
+           giveni={Ю\bibinitperiod\bibinitdelim С\bibinitperiod}}}%
+      }
+      \strng{namehash}{46a655b4eb9b48abf743eb8128bf8e2f}
+      \strng{fullhash}{46a655b4eb9b48abf743eb8128bf8e2f}
+      \strng{bibnamehash}{46a655b4eb9b48abf743eb8128bf8e2f}
+      \strng{authorbibnamehash}{46a655b4eb9b48abf743eb8128bf8e2f}
+      \strng{authornamehash}{46a655b4eb9b48abf743eb8128bf8e2f}
+      \strng{authorfullhash}{46a655b4eb9b48abf743eb8128bf8e2f}
+      \field{sortinit}{П}
+      \field{sortinithash}{b60c3989b0a91e15e157f5b4997c35c7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Культура и цивилизация}
+      \field{title}{Эстетические принципы советского конструктивизма}
+      \field{year}{2016}
+      \field{number}{5А}
+      \range{number}{-1}
+      \field{pages}{141\bibrangedash 150}
+      \range{pages}{10}
+      \field{volume}{6}
+      \range{volume}{1}
+    \endentry
+    \entry{сидорина2007лики}{article}{}
+      \name{author}{1}{}{%
+        {{hash=7fe9d7bd6f663549e056c0369d351efe}{%
+           family={Сидорина},
+           familyi={С\bibinitperiod},
+           given={Елена},
+           giveni={Е\bibinitperiod}}}%
+      }
+      \strng{namehash}{7fe9d7bd6f663549e056c0369d351efe}
+      \strng{fullhash}{7fe9d7bd6f663549e056c0369d351efe}
+      \strng{bibnamehash}{7fe9d7bd6f663549e056c0369d351efe}
+      \strng{authorbibnamehash}{7fe9d7bd6f663549e056c0369d351efe}
+      \strng{authornamehash}{7fe9d7bd6f663549e056c0369d351efe}
+      \strng{authorfullhash}{7fe9d7bd6f663549e056c0369d351efe}
+      \field{sortinit}{С}
+      \field{sortinithash}{e581ee5e052c6c8e9beb0cf2da905808}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Искусствознание}
+      \field{title}{Лики конструктивизма}
+      \field{year}{2007}
+      \field{number}{1\bibrangedash 2}
+      \range{number}{2}
+      \field{pages}{460\bibrangedash 504}
+      \range{pages}{45}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

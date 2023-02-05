@@ -48,7 +48,7 @@ print(f"Синдром: {syndrom[::-1]}")
 
 if syndrom != "000":
     print(f"Ошибка в бите #{int(syndrom, 2)}")
-    data[int(syndrom, 2) - 1] ^= data[int(syndrom, 2) - 1] 
+    data[int(syndrom, 2) - 1] = int(not data[int(syndrom, 2) - 1])
 else:
     print(f"Либо ошибок нет, либо они везде")
 
