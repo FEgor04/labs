@@ -16,9 +16,8 @@ class ExecuteScriptCommand(
 ) : CommandImpl(
     "execute_script",
     "читать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.",
-    "[\\w \\t]+",
-    fun(userInput, writer, _, executeCommandStackTrace: Stack<File>) {
-        val regex = Regex("execute_script\\s(.*)")
+    "([\\w \\t]+)",
+    fun(userInput, writer, _, executeCommandStackTrace: Stack<File>, regex) {
         val filename: String
         try {
             filename = regex.find(userInput)!!.groups[1]!!.value

@@ -9,11 +9,10 @@ import lab5.repositories.VehicleRepository
 class CountByTypeCommand(repository: VehicleRepository) : CommandImpl(
     "count_by_type",
     "вывести количество элементов, значение поля type которых равно заданному",
-    "\\w",
-    fun(userInput, writer, _, _) {
+    "(\\w*)",
+    fun(userInput, writer, _, _, regex) {
         val type: VehicleType?
         try {
-            val regex = Regex("count_by_type\\s*(\\w*)")
             val (typeStr) = regex.find(userInput)?.destructured!!
             type = if (typeStr.isEmpty()) {
                 null
@@ -31,11 +30,13 @@ class CountByTypeCommand(repository: VehicleRepository) : CommandImpl(
         }
 
         val count = repository.countByType(type)
-        writer.write("В коллекции содержиться $count элементов с типом $type.\n")
+        writer.write("В коллекции $count элементов с типом $type.\n")
         writer.flush()
     },
 ) {
     override fun toString(): String {
-        return "${this.commandName} id - ${this.description}"
+        return "${this.commandName} type - ${this.description}"
     }
+
+    override val regexChecker = Regex("^[ \\t]*count_by_type[ \\t]*(\\w*)[ \\t]*$")
 }

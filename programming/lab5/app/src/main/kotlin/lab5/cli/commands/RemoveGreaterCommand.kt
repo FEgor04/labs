@@ -12,7 +12,7 @@ class RemoveGreaterCommand(repository: VehicleRepository) : CommandImpl(
     "remove_greater",
     "удалить из коллекции все элементы, превышающие данный",
     "",
-    fun(_, writer, reader, _) {
+    fun(_, writer, reader, _, _) {
         val element = ReaderUtils.readVehicle(writer, reader)
         repository.removeGreater(element)
         writer.write("Успех!\n")

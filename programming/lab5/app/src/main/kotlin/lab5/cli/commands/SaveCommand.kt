@@ -9,7 +9,7 @@ class SaveCommand(repository: VehicleRepository) : CommandImpl(
     "save",
     "сохранить коллекцию в файл",
     "",
-    fun(_, writer, _, _) {
+    fun(_, writer, _, _, _) {
         try {
             repository.saveCollection()
             writer.write("Успех!")

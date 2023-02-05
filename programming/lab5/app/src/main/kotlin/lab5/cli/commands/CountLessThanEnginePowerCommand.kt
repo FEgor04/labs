@@ -8,11 +8,10 @@ import lab5.repositories.VehicleRepository
 class CountLessThanEnginePowerCommand(repository: VehicleRepository) : CommandImpl(
     "count_less_than_engine_power",
     "вывести количество элементов, значение поля enginePower которых меньше заданного",
-    "[-|+|]?[\\d]+.?[\\d]*",
-    fun(userInput, writer, _, _) {
+    "([-|+]?[\\d]+.?[\\d]*)",
+    fun(userInput, writer, _, _, regex) {
         val enginePower: Double
         try {
-            val regex = Regex("count_less_than_engine_power\\s*([-|+]?[\\d|\\.]*)")
             val (enginePowerStr) = regex.find(userInput)?.destructured!!
             enginePower = enginePowerStr.toDouble()
 

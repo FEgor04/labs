@@ -9,7 +9,7 @@ class MinByIdCommand(repository: VehicleRepository) : CommandImpl(
     "min_by_id",
     "вывести любой объект из коллекции, значение поля id которого является минимальным",
     "",
-    fun(_, writer, _, _) {
+    fun(_, writer, _, _, _) {
         val element = repository.getMinById()
         if (element == null) {
             writer.write("В коллекции нет элементов.\n")

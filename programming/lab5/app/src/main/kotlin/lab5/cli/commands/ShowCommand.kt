@@ -9,7 +9,7 @@ class ShowCommand(repository: VehicleRepository) : CommandImpl(
     "show",
     "вывести в стандартный поток вывода все элементы коллекции в строковом представлении",
     "",
-    fun(_, writer, _, _) {
+    fun(_, writer, _, _, _) {
         if (repository.getCollectionInfo().elementsCount == 0) {
             writer.write("В коллекции нет элементов\n")
         } else {

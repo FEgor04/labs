@@ -9,7 +9,7 @@ class ExitCommand(stopHandling: () -> Unit = { exitProcess(0) }) : CommandImpl(
     "exit",
     "завершить программу (без сохранения в файл)",
     "",
-    fun(_, writer, _, _) {
+    fun(_, writer, _, _, _) {
         writer.write("Goodbye Blue Sky\n")
         writer.flush()
         stopHandling()
