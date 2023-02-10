@@ -1,6 +1,5 @@
 package lab5.repositories.csv
 
-import lab5.entities.vehicle.VehicleComparator
 import lab5.entities.vehicle.Vehicle
 import lab5.entities.vehicle.VehicleType
 import lab5.repositories.CollectionInfo
@@ -77,18 +76,18 @@ class VehicleCsvRepository(private val file: File?) : VehicleRepository {
     }
 
     override fun removeGreater(veh: Vehicle) {
-        map.filter { VehicleComparator().compare(it.component2(), veh) > 0 }.forEach { map.remove(it.component1()) }
+        map.filter { it.component2() > veh }.forEach { map.remove(it.component1()) }
     }
 
     override fun removeLower(veh: Vehicle) {
         map
-            .filter { VehicleComparator().compare(it.component2(), veh) < 0 }
+            .filter { it.component2() < veh }
             .forEach { map.remove(it.component1()) }
     }
 
     override fun replaceIfLower(id: Int, vehicle: Vehicle): ReplaceIfLowerResults {
         val old = getVehicleById(id) ?: return ReplaceIfLowerResults.NOT_EXISTS
-        if (VehicleComparator().compare(vehicle, old) < 0) {
+        if (vehicle < old) {
             this.updateVehicleById(vehicle.copy(id = old.id))
             return ReplaceIfLowerResults.REPLACED
         }
