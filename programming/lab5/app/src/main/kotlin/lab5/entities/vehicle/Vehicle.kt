@@ -14,7 +14,7 @@ data class Vehicle(
     val enginePower: Double,
     val type: VehicleType?,
     val fuelType: FuelType,
-) {
+): Comparable<Vehicle> {
     /**
      * Функция, валидирующая Vehicle
      * @throws ValidationException если хотя бы одно из полей невалидно
@@ -127,5 +127,9 @@ data class Vehicle(
                 type = VehicleType.values()[random.nextInt(0, VehicleType.values().size)]
             )
         }
+    }
+
+    override fun compareTo(other: Vehicle): Int {
+        return VehicleComparator().compare(this, other)
     }
 }
