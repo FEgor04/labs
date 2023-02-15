@@ -36,7 +36,7 @@ class ExecuteScriptCommandTest : CommandTest() {
         val cmd = ExecuteScriptCommand(handler) { throw err }
         cmd.handle("execute_script test1", writer, reader)
         verify {
-            writer.write("Не существует файла test1: $err\n")
+            writer.write("Нет файла test1 или он недоступен для записи: $err\n")
             writer.flush()
         }
     }
@@ -48,7 +48,7 @@ class ExecuteScriptCommandTest : CommandTest() {
         val cmd = ExecuteScriptCommand(handler) { throw err }
         cmd.handle("execute_script test1", writer, reader)
         verify {
-            writer.write("Недостаточно прав для доступа к файлу $err\n")
+            writer.write("Недостаточно прав чтобы открыть файл test1: $err\n")
             writer.flush()
         }
     }
@@ -60,7 +60,7 @@ class ExecuteScriptCommandTest : CommandTest() {
         val cmd = ExecuteScriptCommand(handler) { throw err }
         cmd.handle("execute_script test1", writer, reader)
         verify {
-            writer.write("Ошибка открытия файла: $err\n")
+            writer.write("Не удалось загрузить данные из файла. Ошибка: $err\n")
             writer.flush()
         }
     }
