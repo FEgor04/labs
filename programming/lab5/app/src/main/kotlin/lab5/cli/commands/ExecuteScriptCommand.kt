@@ -31,16 +31,18 @@ class ExecuteScriptCommand(
         val stream: InputStreamReader
         try {
             stream = inputStreamProvider(file)
-        } catch (e: FileNotFoundException) {
-            writer.write("Не существует файла $filename: $e\n")
-            writer.flush()
-            return
-        } catch (e: SecurityException) {
-            writer.write("Недостаточно прав для доступа к файлу $e\n")
-            writer.flush()
-            return
-        } catch (e: Exception) {
-            writer.write("Ошибка открытия файла: $e\n")
+        }  catch (e: Exception) {
+            when(e) {
+                is FileNotFoundException -> {
+                    writer.write("Нет файла $file или он недоступен для записи: $e\n")
+                }
+                is SecurityException -> {
+                    writer.write("Недостаточно прав чтобы открыть файл $file: $e\n")
+                }
+                else -> {
+                    writer.write("Не удалось загрузить данные из файла. Ошибка: $e\n")
+                }
+            }
             writer.flush()
             return
         }

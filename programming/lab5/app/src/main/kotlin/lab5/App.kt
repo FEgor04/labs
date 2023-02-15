@@ -10,14 +10,13 @@ import java.io.File
 import java.io.FileNotFoundException
 
 fun main() {
-    val inputStream = System.`in`
     val reader = System.`in`.bufferedReader()
-
     val writer = System.out.bufferedWriter()
 
     val filename = System.getenv("FILENAME")
     val file: File? = if (filename.isNullOrEmpty()) {
         writer.write("Переменная окружения FILENAME не указана. Данные загружены не будут.\n")
+        writer.flush()
         null
     } else {
         File(filename)
@@ -26,16 +25,24 @@ fun main() {
     if (file != null && file.exists()) {
         try {
             repository.loadData()
-        } catch (e: FileNotFoundException) {
-            writer.write("Нет файла $file или он недоступен для записи: $e\n")
-            writer.flush()
-        } catch (e: SecurityException) {
-            writer.write("Недостаточно прав чтобы открыть файл $file: $e\n")
-            writer.flush()
-        } catch (e: Exception) {
-            writer.write("Невозможно открыть файл $file: $e\n")
+        }
+         catch (e: Exception) {
+            when(e) {
+                is FileNotFoundException -> {
+                    writer.write("Нет файла $file или он недоступен для записи: $e\n")
+                }
+                is SecurityException -> {
+                    writer.write("Недостаточно прав чтобы открыть файл $file: $e\n")
+                }
+                else -> {
+                    writer.write("Не удалось загрузить данные из файла. Ошибка: $e\n")
+                }
+            }
             writer.flush()
         }
+    } else {
+        writer.write("Файла не существует.\n")
+        writer.flush()
     }
 
 
