@@ -1,3 +1,9 @@
+HUMANS: {
+  shape: sql_table
+  ID: SERIAL {constraint: primary_key}
+  NAME: VARCHAR(50)
+}
+
 SCIENTISTS: {
   shape: sql_table
   ID: SERIAL {constraint: primary_key}
@@ -25,6 +31,7 @@ FUNDS: {
 NEGOTIATIONS: {
   shape: sql_table
   ID: SERIAL {constraint: primary_key}
+  AGENDA: TEXT
   START: TIMESTAMP
   END: TIMESTAMP
 }
@@ -33,6 +40,16 @@ ACTIONS: {
   shape: sql_table
   ID: SERIAL {constraint: primary_key}
   DESCRIPTION: TEXT
+  START: TIMESTAMP
+  END: TIMESTAMP
+}
+
+ACTION_MOMENTS: {
+  shape: sql_table
+  ID: SERIAL {constraint: primary_key}
+  ACTION_ID: INTEGER {constraint: foreign_key}
+  DESCRIPTION: TEXT
+  TIME: TIMESTAMP
 }
 
 THINGS: {
@@ -77,6 +94,12 @@ NEGOTIATION_PARTICIPANTS: {
   SCIENTIST_ID: INTEGER {constraint: foreign_key}
 }
 
+NEGOTIATION_HUMAN_PARTICIPANTS: {
+  shape: sql_table
+  NEG_ID: INTEGER {constraint: foreign_key}
+  HUMAN_ID: INTEGER {constraint: foreign_key}
+}
+
 
 CREATURE_CREATORS: {
   shape: sql_table
@@ -98,7 +121,7 @@ CREATURE_CREATORS.SCIENTIST_ID <-> CREATURES.ID {
     shape: cf-one-required
   }
   source-arrowhead: {
-    shape: cf-many-required
+    shape: cf-many
   }
 }
 
@@ -116,7 +139,7 @@ NEGOTIATIONS.ID <-> NEGOTIATION_PARTICIPANTS.NEG_ID {
     shape: cf-one-required
   }
   target-arrowhead: {
-    shape: cf-many-required
+    shape: cf-many
   }
 }
 NEGOTIATION_PARTICIPANTS.SCIENTIST_ID <-> SCIENTISTS.ID {
@@ -133,15 +156,15 @@ ACTIONS.ID <-> ACTION_SUBJECT.ACTION_ID  {
     shape: cf-many
   }
   source-arrowhead: {
-    shape: cf-one
+    shape: cf-one-required
   }
 }
 ACTION_SUBJECT.SCIENTIST_ID <-> SCIENTISTS.ID {
   target-arrowhead: {
-    shape: cf-many
+    shape: cf-one-required
   }
   source-arrowhead: {
-    shape: cf-one
+    shape: cf-many
   }
 }
 
@@ -150,7 +173,7 @@ ACTIONS.ID <-> NEGOTIATION_ACTIONS.ACTION_ID {
     shape: cf-many
   }
   source-arrowhead: {
-    shape: cf-one
+    shape: cf-one-required
   }
 }
 
@@ -159,13 +182,13 @@ NEGOTIATIONS.ID <-> NEGOTIATION_ACTIONS.NEG_ID {
     shape: cf-many
   }
   source-arrowhead: {
-    shape: cf-one
+    shape: cf-one-required
   }
 }
 
 CAGES.CREATURE_ID <-> CREATURES.ID {
   target-arrowhead: {
-    shape: cf-one-required
+    shape: cf-one
   }
   source-arrowhead: {
     shape: cf-one-required
@@ -186,7 +209,7 @@ CAGES.ID <-> CAGE_LOOKS_LIKE.CAGE_ID {
     shape: cf-many
   }
   source-arrowhead: {
-    shape: cf-one
+    shape: cf-one-required
   }
 }
 
@@ -195,7 +218,7 @@ THINGS.ID <-> CAGE_LOOKS_LIKE.CAGE_ID {
     shape: cf-many
   }
   source-arrowhead: {
-    shape: cf-one
+    shape: cf-one-required
   }
 }
 
@@ -204,7 +227,7 @@ ACTIONS.ID <-> ACTION_CAGE_OBJECT.ACTION_ID {
     shape: cf-many
   }
   source-arrowhead: {
-    shape: cf-one
+    shape: cf-one-required
   }
 }
 
@@ -213,7 +236,7 @@ CAGES.ID <-> ACTION_CAGE_OBJECT.CAGE_ID {
     shape: cf-many
   }
   source-arrowhead: {
-    shape: cf-one
+    shape: cf-one-required
   }
 }
 
@@ -222,7 +245,7 @@ ACTIONS.ID <-> ACTION_THING_OBJECT.ACTION_ID {
     shape: cf-many
   }
   source-arrowhead: {
-    shape: cf-one
+    shape: cf-one-required
   }
 }
 
@@ -231,6 +254,32 @@ THINGS.ID <-> ACTION_THING_OBJECT.THING_ID {
     shape: cf-many
   }
   source-arrowhead: {
-    shape: cf-one
+    shape: cf-one-required
+  }
+}
+
+NEGOTIATION_HUMAN_PARTICIPANTS.HUMAN_ID <-> HUMANS.ID {
+  source-arrowhead: {
+    shape: cf-many
+  }
+  target-arrowhead: {
+    shape: cf-one-required
+  }
+}
+NEGOTIATION_HUMAN_PARTICIPANTS.NEG_ID <-> NEGOTIATIONS.ID {
+  source-arrowhead: {
+    shape: cf-many
+  }
+  target-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+ACTIONS.ID <-> ACTION_MOMENTS.ACTION_ID { 
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
   }
 }

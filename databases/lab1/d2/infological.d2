@@ -27,16 +27,41 @@
 Действие: {
   shape: sql_table
   Описание {constraint: primary_key} 
+  Время начала
+  Время конца
 }
+
+"Моменты действия": {
+  shape: sql_table
+  Описание {constraint: primary_key}
+  Время
+}
+
 
 Переговоры: {
   shape: sql_table
   Время проведения {constraint: primary_key}
+  Цель
 }
+
+Люди: {
+  shape: sql_table
+  Имя: {constraint: primary_key}
+}
+
+Люди.Имя <-> Переговоры."Время проведения": {
+  source-arrowhead {
+    shape: cf-many
+  }
+  target-arrowhead {
+    shape: cf-many
+  }
+}
+
 
 Существо.Имя <-> Ученый.Имя: Создатели {
   target-arrowhead {
-    shape: cf-many-required
+    shape: cf-many
   }
   source-arrowhead {
     shape: cf-many
@@ -45,7 +70,7 @@
 
 Фонд.Владелец <-> Ученый.Имя: Владелец фонда { 
   target-arrowhead {
-    shape: cf-many-required
+    shape: cf-one
   }
   source-arrowhead {
     shape: cf-many
@@ -55,10 +80,10 @@
 
 Клетка."Хранимое существо" <-> Существо.Имя: Находится в клетке {
   target-arrowhead {
-    shape: cf-one-required
+    shape: cf-one
   }
   source-arrowhead {
-    shape: cf-one-required
+    shape: cf-one
   }
 }
 
@@ -112,7 +137,7 @@
     shape: cf-many
   }
   source-arrowhead {
-    shape: cf-many-required
+    shape: cf-many
   } 
 }
 
@@ -123,4 +148,13 @@
   source-arrowhead {
     shape: cf-many
   } 
+}
+
+Действие <-> "Моменты действия": {
+  target-arrowhead {
+    shape: cf-many
+  }
+  source-arrowhead {
+    shape: cf-one
+  }
 }
