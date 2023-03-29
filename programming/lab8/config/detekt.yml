@@ -1,0 +1,19 @@
+naming:
+  PackageNaming:
+    active: false
+  FunctionParameterNaming:
+    parameterPattern: '_|[a-z][A-Za-z0-9]*'
+
+complexity:
+  LongParameterList:
+    active: true
+    functionThreshold: 10
+    constructorThreshold: 10
+
+style:
+  WildcardImport:
+    active: false
+
+formatting:
+  NoWildcardImports:
+    active: false
