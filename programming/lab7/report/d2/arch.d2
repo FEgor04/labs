@@ -1,0 +1,37 @@
+User -> Client.CLIHandler
+
+Client: {
+  RemoteCommandHandler
+  CLIHandler
+  CLIHandler -> RemoteCommandHandler
+}
+
+Server: {
+  UDPProducer -> InChannel: Deserialized RequestDTO
+  InChannel: {
+    shape: queue
+  }
+  Workers: {
+    Executor\#1
+    Executor\#2
+    Executor\#n
+  }
+  InChannel -> Workers.Executor\#1 -> OutChannel
+  InChannel -> Workers.Executor\#2 -> OutChannel
+  InChannel -> Workers.Executor\#n -> OutChannel
+
+  OutChannel: {
+    shape: queue
+  }
+  
+  OutChannel -> UDPConsumer: ResponseDTO
+
+  UseCase: {
+    Repository
+    AuthManager
+  }
+}
+
+Server.UDPConsumer -> Client.RemoteCommandHandler
+Server.UDPProducer <- Client.RemoteCommandHandler
+
