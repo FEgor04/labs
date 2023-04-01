@@ -3,7 +3,7 @@
  */
 
 plugins {
-    id("lab7.kotlin-library-conventions")
+    id("lab8.kotlin-library-conventions")
     kotlin("plugin.serialization") version "1.8.10"
 }
 

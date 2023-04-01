@@ -1,9 +1,9 @@
 plugins {
-    id("lab7.kotlin-common-conventions")
+    id("lab8.kotlin-common-conventions")
 }
 
 tasks.dokkaHtmlMultiModule {
-    moduleName.set("Лабораторная работа #7")
+    moduleName.set("Лабораторная работа #8")
 }
 
 subprojects {

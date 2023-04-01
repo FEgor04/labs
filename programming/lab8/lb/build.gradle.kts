@@ -3,7 +3,7 @@
  */
 
 plugins {
-    id("lab7.kotlin-application-conventions")
+    id("lab8.kotlin-application-conventions")
 }
 
 dependencies {
@@ -16,5 +16,5 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("lab7.lb.AppKt")
+    mainClass.set("lab8.lb.AppKt")
 }

@@ -3,14 +3,20 @@
  */
 
 plugins {
-    id("lab7.kotlin-application-conventions")
+    id("lab8.kotlin-application-conventions")
+    id("org.jetbrains.compose") version "1.3.1"
+}
+
+repositories {
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
 dependencies {
     implementation(project(":shared"))
+    implementation(compose.desktop.currentOs)
 }
 
 application {
     // Define the main class for the application.
-    mainClass.set("lab7.client.AppKt")
+    mainClass.set("lab8.client.AppKt")
 }
