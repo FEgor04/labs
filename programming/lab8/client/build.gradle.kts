@@ -8,12 +8,24 @@ plugins {
 }
 
 repositories {
+    mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
 dependencies {
+    val koin_version = "3.4.0"
+
     implementation(project(":shared"))
     implementation(compose.desktop.currentOs)
+
+    // https://mvnrepository.com/artifact/io.insert-koin/koin-core
+    runtimeOnly("io.insert-koin:koin-core:$koin_version")
+
+    // https://mvnrepository.com/artifact/io.insert-koin/koin-core-jvm
+    implementation("io.insert-koin:koin-core-jvm:$koin_version")
+
+    val voyagerVersion = "1.0.0-rc04"
+    implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
 }
 
 application {

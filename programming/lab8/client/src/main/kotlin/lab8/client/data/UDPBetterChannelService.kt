@@ -34,7 +34,7 @@ class UDPBetterChannelService(
         BIG_FUCKING_BUFFER,
     )
 
-    fun tryToAuth(): User {
+    private fun tryToAuth(): User {
         logger.info("Trying to auth")
         val response = sendAndReceiveCommand(AuthRequestDTO(user))
         return (response as AuthResponseDTO).user
@@ -56,10 +56,10 @@ class UDPBetterChannelService(
     /**
      * Получает данные от сервера
      */
-    private fun receiveData(): String = runBlocking {
-        val (data, _) = dc.receive()
+    private fun receiveData(): String {
+        val (data, _) = runBlocking { dc.receive() }
         logger.info("Received all chunks. Data size: ${data.size}")
-        data.toString(Charset.forName("UTF-8"))
+        return data.toString(Charset.forName("UTF-8"))
     }
 
     private fun sendAndReceiveString(data: String): String {
@@ -98,13 +98,13 @@ class UDPBetterChannelService(
 
     override fun countLessThanEnginePower(power: Double): Int {
         return (
-            sendAndReceiveCommand(
-                CountLessThanEnginePowerRequestDTO(
-                    power,
-                    user
-                )
-            ) as CountLessThanEnginePowerResponseDTO
-            ).count
+                sendAndReceiveCommand(
+                    CountLessThanEnginePowerRequestDTO(
+                        power,
+                        user
+                    )
+                ) as CountLessThanEnginePowerResponseDTO
+                ).count
     }
 
     override fun getCollectionInfo(): InfoResponseDTO {
@@ -117,13 +117,13 @@ class UDPBetterChannelService(
 
     override fun removeGreater(vehicle: Vehicle): Int {
         return (
-            sendAndReceiveCommand(
-                RemoveGreaterRequestDTO(
-                    vehicle.copy(authorID = user.id),
-                    user
-                )
-            ) as RemoveGreaterResponseDTO
-            ).cnt
+                sendAndReceiveCommand(
+                    RemoveGreaterRequestDTO(
+                        vehicle.copy(authorID = user.id),
+                        user
+                    )
+                ) as RemoveGreaterResponseDTO
+                ).cnt
     }
 
     override fun remove(id: Int) {
@@ -132,25 +132,25 @@ class UDPBetterChannelService(
 
     override fun removeLower(veh: Vehicle): Int {
         return (
-            sendAndReceiveCommand(
-                RemoveLowerRequestDTO(
-                    veh.copy(authorID = user.id),
-                    user
-                )
-            ) as RemoveLowerResponseDTO
-            ).cnt
+                sendAndReceiveCommand(
+                    RemoveLowerRequestDTO(
+                        veh.copy(authorID = user.id),
+                        user
+                    )
+                ) as RemoveLowerResponseDTO
+                ).cnt
     }
 
     override fun replaceIfLower(id: Int, element: Vehicle): ReplaceIfLowerResults {
         return (
-            sendAndReceiveCommand(
-                ReplaceIfLowerRequestDTO(
-                    id,
-                    element.copy(authorID = user.id),
-                    user
-                )
-            ) as ReplaceIfLowerResponseDTO
-            ).result
+                sendAndReceiveCommand(
+                    ReplaceIfLowerRequestDTO(
+                        id,
+                        element.copy(authorID = user.id),
+                        user
+                    )
+                ) as ReplaceIfLowerResponseDTO
+                ).result
     }
 
     override fun updateVehicleById(newVehicle: Vehicle) {
@@ -170,6 +170,11 @@ class UDPBetterChannelService(
 
     override fun await() {
         sendAndReceiveCommand(DelayRequestDTO(user))
+    }
+
+    override fun tryToLogin(user: User) {
+        this.user = user
+        this.user = tryToAuth()
     }
 
     companion object {

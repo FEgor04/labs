@@ -1,6 +1,7 @@
 package lab8.client.domain
 
 import lab8.entities.dtos.responses.*
+import lab8.entities.user.User
 import lab8.entities.vehicle.Vehicle
 import lab8.entities.vehicle.VehicleType
 
@@ -26,4 +27,6 @@ interface RemoteCommandHandler {
     fun updateVehicleById(newVehicle: Vehicle)
     fun exit()
     fun await()
+
+    fun tryToLogin(user: User)
 }
