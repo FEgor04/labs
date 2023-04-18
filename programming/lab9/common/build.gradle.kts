@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
 }
 
 repositories {
@@ -13,12 +14,13 @@ kotlin {
     }
     sourceSets {
         val commonMain by getting {
-
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+            }
         }
     }
 }
 
 
 dependencies {
-   val kotlinxHtmlVersion = ""
 }

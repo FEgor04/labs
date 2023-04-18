@@ -4,6 +4,7 @@ import csstype.Display
 import csstype.JustifyContent
 import csstype.px
 import emotion.react.css
+import exceptions.LoginException
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mui.material.Button
@@ -21,13 +22,14 @@ import react.useState
 import services.UserService
 import web.html.HTMLInputElement
 import web.html.InputType
+import web.prompts.alert
 
 external interface LoginProps : Props {
 
 }
 
 val LoginPage = FC<LoginProps> {
-    val scope =  MainScope()
+    val scope = MainScope()
     var showPassword: Boolean by useState(false)
     var username: String by useState("")
     var password: String by useState("")
@@ -84,8 +86,15 @@ val LoginPage = FC<LoginProps> {
                     +"Log In"
                 }
                 onClick = {
+
                     scope.launch {
-                        UserService().tryToLogin(username, password)
+                        try {
+                            val loginResult = UserService().tryToLogin(username, password)
+                            alert(UserService().getMe().toString())
+                        } catch (e: LoginException) {
+                            alert(e.toString())
+                        }
+
                     }
                 }
             }

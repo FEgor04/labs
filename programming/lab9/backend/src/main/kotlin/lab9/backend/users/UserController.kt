@@ -41,9 +41,9 @@ class UserController(private val userService: UserService) {
     }
 
     @GetMapping("/me")
-    fun getMe(principal: Principal): ResponseEntity<User> {
+    fun getMe(principal: Principal): ResponseEntity<UserDTO> {
         val user = userService.getUserByUsername(principal.name) ?: return ResponseEntity.notFound().build()
-        return ResponseEntity.ok(user)
+        return ResponseEntity.ok(user.toDTO())
     }
 
 }

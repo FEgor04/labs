@@ -1,10 +1,12 @@
 package lab9.common.responses
 
+import kotlinx.serialization.Serializable
 import lab9.common.dto.CoordinatesDTO
 import lab9.common.dto.UserDTO
 import lab9.common.vehicle.FuelType
 import lab9.common.vehicle.VehicleType
 
+@Serializable
 data class ShowVehicleResponse(
     val id: Int,
     val name: String,

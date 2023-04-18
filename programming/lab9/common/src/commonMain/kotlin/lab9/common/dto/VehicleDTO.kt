@@ -1,8 +1,10 @@
 package lab9.common.dto
 
+import kotlinx.serialization.Serializable
 import lab9.common.vehicle.FuelType
 import lab9.common.vehicle.VehicleType
 
+@Serializable
 data class VehicleDTO(
     val id: Int,
     val name: String,

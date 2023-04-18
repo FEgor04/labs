@@ -1,5 +1,8 @@
 package lab9.common.requests
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CreateUserRequest(
     val username: String,
     val password: String,
