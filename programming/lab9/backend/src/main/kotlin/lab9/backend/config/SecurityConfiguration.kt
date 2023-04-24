@@ -82,7 +82,6 @@ class SecurityConfiguration {
                 ex.authenticationEntryPoint(HttpStatusEntryPoint((HttpStatus.UNAUTHORIZED)))
             }
             .build()
-
     }
 
     @Bean

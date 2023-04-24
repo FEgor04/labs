@@ -7,6 +7,7 @@ import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import lab9.common.dto.VehicleDTO
 import lab9.common.responses.ShowVehicleResponse
@@ -21,9 +22,10 @@ data class Vehicle(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Int,
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, name = "name")
     val name: String,
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id")
     val creator: User,
     @Embedded
     val coordinates: Coordinates,
@@ -57,4 +59,5 @@ data class Vehicle(
             creator = this.creator.toDTO()
         )
     }
+
 }

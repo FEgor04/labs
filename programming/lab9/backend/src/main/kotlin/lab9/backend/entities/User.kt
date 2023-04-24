@@ -19,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.validation.annotation.Validated
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 @Validated
 data class User(
     @Id
@@ -31,7 +31,7 @@ data class User(
     @Column(nullable = false)
     @NotBlank
     private val password: String,
-    @OneToMany(fetch =  FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     val vehicles: Set<Vehicle>,
 ) : UserDetails {
     override fun getAuthorities(): Collection<SimpleGrantedAuthority> {
@@ -63,7 +63,7 @@ data class User(
     }
 
     fun toShowUserResponse(): ShowUserResponse {
-        return ShowUserResponse(id, username, vehicles.map { it.toDTO() })
+        return ShowUserResponse(id, username, vehicles.map { it.toDTO() }.toTypedArray())
     }
 
     fun toDTO(): UserDTO {

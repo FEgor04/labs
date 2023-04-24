@@ -10,7 +10,14 @@ repositories {
 kotlin {
     jvm()
     js(IR) {
-        browser {}
+        moduleName="lab9"
+        browser {
+            webpackTask {
+                output.library = "lab9"
+            }
+        }
+        binaries.library()
+        generateTypeScriptDefinitions()
     }
     sourceSets {
         val commonMain by getting {
@@ -19,8 +26,4 @@ kotlin {
             }
         }
     }
-}
-
-
-dependencies {
 }
