@@ -5,11 +5,13 @@ import jakarta.persistence.AccessType
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 import jakarta.validation.constraints.Min
+import kotlinx.serialization.Serializable
 import lab9.common.dto.CoordinatesDTO
 import org.springframework.validation.annotation.Validated
 
 @Embeddable
 @Validated
+@Serializable
 data class Coordinates(
     @Access(AccessType.FIELD)
     @Min(-522)

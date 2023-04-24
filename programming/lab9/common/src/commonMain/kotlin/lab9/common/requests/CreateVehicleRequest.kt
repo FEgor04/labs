@@ -1,20 +1,40 @@
+@file:OptIn(ExperimentalJsExport::class)
+@file:JsExport()
+
 package lab9.common.requests
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import lab9.common.dto.CoordinatesDTO
 import lab9.common.vehicle.FuelType
 import lab9.common.vehicle.VehicleType
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 
+@JsExport
 @Serializable
 data class CreateVehicleRequest(
     val name: String,
     val coordinates: CoordinatesDTO,
     val enginePower: Double,
     val vehicleType: VehicleType,
-    val fuelType: FuelType? = null,
+    val fuelType: FuelType? = null
 ) {
-    init {
-        require(name.isNotBlank()) { "name should not be blank" }
-        require(enginePower > 0) { "engine power should be > 0" }
+    @JsName("toJson")
+    fun toJson(): String {
+        return """
+            {
+            "name": "${name}",
+            "coordinates": {
+                    "x": ${coordinates.x},
+                    "y": ${coordinates.y}
+                },
+            "enginePower": ${enginePower},
+            "vehicleType": "$vehicleType",
+            "fuelType": "$fuelType"
+            }
+        """.trimIndent()
     }
 }

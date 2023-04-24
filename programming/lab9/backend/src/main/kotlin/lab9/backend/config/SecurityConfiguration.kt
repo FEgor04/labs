@@ -60,7 +60,7 @@ class SecurityConfiguration {
             }
             .authorizeHttpRequests { request ->
                 request
-                    .requestMatchers(HttpMethod.POST, "/api/signup").permitAll()
+                    .requestMatchers("/api/signup").permitAll()
                     .anyRequest().authenticated()
             }
             .formLogin { form ->
@@ -77,12 +77,20 @@ class SecurityConfiguration {
                     .usernameParameter("username")
                     .passwordParameter("password")
             }
+            .logout { logout ->
+                logout
+                    .logoutUrl("/api/logout")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .logoutSuccessHandler {
+                        req, resp, auth -> resp.status = 200
+                    }
+            }
             .exceptionHandling { ex ->
                 logger.error("Handling exception: $ex")
                 ex.authenticationEntryPoint(HttpStatusEntryPoint((HttpStatus.UNAUTHORIZED)))
             }
             .build()
-
     }
 
     @Bean

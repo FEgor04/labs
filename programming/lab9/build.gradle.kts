@@ -11,3 +11,12 @@ allprojects {
         maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
     }
 }
+
+tasks.register<Copy>("copyTypings") {
+    dependsOn(":common:jsBrowserProductionLibraryDistribution")
+        from("build/js/packages/lab9-common/kotlin") {
+            include("*.d.ts")
+        }
+
+        into("frontend/src/generated")
+    }

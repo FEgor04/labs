@@ -6,12 +6,14 @@ import lab9.backend.logger.KCoolLogger
 import lab9.common.dto.UserDTO
 import lab9.common.requests.CreateUserRequest
 import lab9.common.responses.ShowUserResponse
+import lab9.common.responses.ShowUsersResponse
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
@@ -28,16 +30,24 @@ class UserController(private val userService: UserService) {
         try {
             val newUser = userService.createUser(user.username, user.password)
             logger.info("Successfully created new user at id ${newUser.id}")
-            return ResponseEntity.ok( newUser.toShowUserResponse() )
-        } catch (e: DataIntegrityViolationException) {
+            return ResponseEntity.ok(newUser.toShowUserResponse())
+        } catch (e: UserAlreadyExistsException) {
             logger.error("Could not create user: $e")
             throw UserAlreadyExistsException()
         }
     }
 
     @GetMapping("/users")
-    fun sayHello(): String {
-        return "hello"
+    fun getUsers(
+        @RequestParam(defaultValue = "10") pageSize: Int,
+        @RequestParam(defaultValue = "0") pageNumber: Int
+    ): ShowUsersResponse {
+        val page = userService.getUsersWithLimitAndOffset(pageSize, pageNumber)
+        return ShowUsersResponse(
+            page.content.map { it.toShowUserResponse() }.toTypedArray(),
+            page.totalPages,
+            page.totalElements.toInt()
+        )
     }
 
     @GetMapping("/me")

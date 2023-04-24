@@ -1,2 +1,2 @@
 rootProject.name = "lab9"
-include("backend", "common", "frontend")
+include("backend", "common")
