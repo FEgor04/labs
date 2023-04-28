@@ -35,23 +35,8 @@ class VehicleController(
 
     @GetMapping("")
     fun getVehicles(
-        @RequestParam
-        pageSize: Int,
-        @RequestParam
-        pageNumber: Int,
-        @RequestParam
-        sortingColumn: Int,
-        @RequestParam
-        isAscending: Boolean,
-        @RequestParam
-        filter: VehicleFilter?
+        request: ShowVehiclesRequest
     ): ShowVehiclesResponse {
-        val request = ShowVehiclesRequest(
-            pageSize,
-            pageNumber,
-            filter,
-            VehicleSorting(VehicleColumn.values()[sortingColumn], isAscending)
-        )
         logger.info("Handling GET request at /api/vehicles. pageSize: ${request.pageSize}, pageNumber: ${request.pageNumber}, sorting: ${request.sorting}")
         val vehicles = vehicleService.findAllWithPage(
             request.pageSize,
