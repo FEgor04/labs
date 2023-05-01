@@ -30,7 +30,7 @@ data class Vehicle(
     val name: String,
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
-    val creator: User?,
+    val creator: User,
     @Embedded
     val coordinates: Coordinates,
     @CreationTimestamp
@@ -79,5 +79,4 @@ data class Vehicle(
     override fun toString(): String {
         return this::class.simpleName + "(id = $id )"
     }
-
 }

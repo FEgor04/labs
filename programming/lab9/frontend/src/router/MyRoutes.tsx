@@ -1,5 +1,6 @@
-import {Route, Routes} from "react-router-dom";
-import SignInPage from "../pages/SignIn/index.tsx";
+
+import {Route, Routes, } from "react-router-dom";
+import SignInPage from "../pages/SignIn";
 import VehiclesPage from "../pages/Vehicles";
 
 const MyRoutes = () => {
@@ -12,4 +13,4 @@ const MyRoutes = () => {
     )
 }
 
-export default MyRoutes
+export default MyRoutes;

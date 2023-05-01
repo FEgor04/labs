@@ -84,7 +84,7 @@ export default class VehicleStore {
             pageSize: this.pageSize,
             isAscending: this.isSortAscending,
             sortingColumn: this.sortColumnNumber,
-            filter: this.filter
+            // filter: this.filter
         }).then((response) => {
             this.setVehicles(response)
         }).catch((e) => {

@@ -8,7 +8,7 @@ export type GetVehiclesRequest = {
     pageSize: number
     sortingColumn: number
     isAscending: boolean,
-    filter: Filter | null
+    filter?: Filter | null
 }
 
 export type GetVehiclesResponse = {

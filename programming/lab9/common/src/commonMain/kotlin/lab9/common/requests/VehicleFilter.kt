@@ -21,6 +21,7 @@ sealed class VehicleFilter() {
 
     @Serializable
     sealed class IntFilter : NumberFilter<Int>()
+
     @Serializable
     sealed class LongFilter : NumberFilter<Long>()
 
@@ -38,4 +39,5 @@ sealed class VehicleFilter() {
         override val upperBound: Int?
     ) : IntFilter() {
         override val filterColumn: VehicleColumn = VehicleColumn.COORDINATES_X
-    }}
+    }
+}

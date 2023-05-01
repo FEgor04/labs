@@ -22,19 +22,5 @@ data class CreateVehicleRequest(
     val vehicleType: VehicleType,
     val fuelType: FuelType? = null
 ) {
-    @JsName("toJson")
-    fun toJson(): String {
-        return """
-            {
-            "name": "${name}",
-            "coordinates": {
-                    "x": ${coordinates.x},
-                    "y": ${coordinates.y}
-                },
-            "enginePower": ${enginePower},
-            "vehicleType": "$vehicleType",
-            "fuelType": "$fuelType"
-            }
-        """.trimIndent()
-    }
+
 }

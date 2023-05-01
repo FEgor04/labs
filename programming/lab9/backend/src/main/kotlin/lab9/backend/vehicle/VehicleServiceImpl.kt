@@ -11,6 +11,7 @@ import lab9.common.requests.VehicleSorting
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.security.Principal
@@ -42,6 +43,7 @@ class VehicleServiceImpl(
             vehicleRepository.findAll(spec, page)
         } else {
             vehicleRepository.findAll(page)
+
         }
     }
 

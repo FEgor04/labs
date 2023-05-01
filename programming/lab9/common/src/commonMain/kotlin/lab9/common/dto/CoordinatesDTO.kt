@@ -15,9 +15,4 @@ data class CoordinatesDTO(
     val x: Int,
     val y: Long?,
 ) {
-
-    fun toJson(): String {
-        val res =  Json.encodeToString(this)
-        return res
-    }
 }
