@@ -2,6 +2,7 @@ package lab9.backend.vehicle.requests
 
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
+import kotlinx.serialization.Serializable
 import lab9.common.dto.VehicleColumn
 import lab9.common.requests.VehicleFilter
 import lab9.common.requests.VehicleSorting
@@ -14,4 +15,10 @@ data class GetVehiclesRequest(
     val pageNumber: Int = 0,
     val sorting: VehicleSorting = VehicleSorting(VehicleColumn.ID, true),
     val filter: VehicleFilter? = null
+)
+
+@Serializable
+data class GetVehiclesRequestsSorting(
+    val column: Int,
+    val asc: Boolean
 )

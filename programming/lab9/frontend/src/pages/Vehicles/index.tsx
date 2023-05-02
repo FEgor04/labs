@@ -23,6 +23,7 @@ const VehiclesPage = observer(() => {
         setSorting,
         addFilter,
         filter,
+        clearFilters
     } = globalStore.vehicleStore
     const {t} = useTranslation()
 
@@ -72,7 +73,7 @@ const VehiclesPage = observer(() => {
                 setSorting(2, sortOrder)
                 return 0
             },
-            filterDropdown: props => NumberFilterForm(props, addFilter),
+            filterDropdown: props => NumberFilterForm(props, addFilter, clearFilters),
         },
         {
             title: t('tableYColumn'),

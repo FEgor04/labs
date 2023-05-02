@@ -1,11 +1,16 @@
 import {FilterDropdownProps} from "antd/es/table/interface";
-import {Button, Form, FormInstance, Input, InputNumber, Space} from "antd";
+import {Button, Form, FormInstance, InputNumber, Space} from "antd";
 import React from "react";
 import {XFilter} from "../../api/defs/VehiclesService.tsx";
 
-const NumberFilterForm = (props: FilterDropdownProps, setNumberFilter: (filter: XFilter) => void) => {
+const NumberFilterForm = (props: FilterDropdownProps, setNumberFilter: (filter: XFilter) => void, clearFilter: () => void) => {
     const formRef = React.useRef<FormInstance>(null);
     const onFinish = (values: { lowerBound: number | null, upperBound: null }) => {
+        if(!values.lowerBound && !values.upperBound ) {
+            console.log("Clearing filters")
+            clearFilter()
+            return
+        }
         console.log(values)
         setNumberFilter(new XFilter(values.lowerBound, values.upperBound))
         props.confirm({

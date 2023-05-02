@@ -45,10 +45,9 @@ object VehicleSpecifications {
 
     fun coordinatesFilter(filter: VehicleFilter.IntFilter): Specification<Vehicle> {
         return Specification<Vehicle> { root, query, criteriaBuilder ->
-            val columnName = "x"
-//            val columnName = convertNameToDatabaseColumn(filter.filterColumn)
+            val columnName = convertNameToDatabaseColumn(filter.filterColumn)
             if (filter.lowerBound != null && filter.upperBound != null) {
-                println("Sorting by coordinates!!!! ${filter.toString()}")
+                println("Sorting by coordinates!!!! ${filter}")
                 criteriaBuilder.between(
                     root.get<Vehicle>("coordinates").get(columnName),
                     filter.lowerBound!!,

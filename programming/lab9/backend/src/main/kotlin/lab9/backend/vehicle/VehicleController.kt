@@ -43,7 +43,7 @@ class VehicleController(
             request.pageSize,
             request.pageNumber,
             request.filter,
-            request.sorting ?: VehicleSorting(VehicleColumn.ID, true)
+            request.sorting
         )
         return ShowVehiclesResponse(
             vehicles = vehicles.content.map { it.toShowVehicleResponse() }.toTypedArray(),

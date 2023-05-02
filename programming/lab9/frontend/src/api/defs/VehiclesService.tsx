@@ -57,4 +57,13 @@ export class XFilter extends NumberFilter {
         this.upperBound = upperBound
     }
 
+    toJSON() {
+        return {
+            type: "lab9.common.requests.VehicleFilter.XFilter",
+            filterColumn: "COORDINATES_X",
+            lowerBound: this.lowerBound,
+            upperBound: this.upperBound,
+        }
+    }
+
 }

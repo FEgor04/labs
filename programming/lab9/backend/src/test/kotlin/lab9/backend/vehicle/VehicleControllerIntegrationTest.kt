@@ -1,6 +1,7 @@
 package lab9.backend.vehicle
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.persistence.Column
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import lab9.backend.BackendApplication
@@ -8,26 +9,33 @@ import lab9.backend.entities.Coordinates
 import lab9.backend.entities.Vehicle
 import lab9.backend.users.UserRepository
 import lab9.backend.users.UserService
+import lab9.backend.vehicle.requests.GetVehiclesRequestsSorting
 import lab9.common.dto.VehicleColumn
 import lab9.common.requests.VehicleFilter
+import lab9.common.requests.VehicleSorting
 import lab9.common.responses.ShowVehiclesResponse
 import lab9.common.vehicle.FuelType
 import lab9.common.vehicle.VehicleType
+import org.junit.ClassRule
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.util.TestPropertyValues
+import org.springframework.context.ApplicationContextInitializer
+import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
-import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Testcontainers
-import org.testcontainers.utility.DockerImageName
 import java.time.LocalDate
 import kotlin.random.Random
 
@@ -36,11 +44,8 @@ import kotlin.random.Random
     classes = [BackendApplication::class],
 )
 @AutoConfigureMockMvc
-@TestPropertySource(
-    locations = ["classpath:application-it.properties"]
-)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Testcontainers
+@ContextConfiguration(initializers = [VehicleControllerIntegrationTest.Initializer::class])
 class VehicleControllerIntegrationTest(
     @Autowired
     private val mvc: MockMvc,
@@ -58,8 +63,6 @@ class VehicleControllerIntegrationTest(
         userService.createUser("test", "test")
     }
 
-    val postgres = GenericContainer(DockerImageName.parse("postgresql"))
-        .withExposedPorts(5432)
 
     @Nested
     inner class GetVehiclesTest {
@@ -144,7 +147,7 @@ class VehicleControllerIntegrationTest(
                 val newVehicle = Vehicle(
                     i,
                     i.toString(),
-                    user,
+                    user!!,
                     coordinates = Coordinates(i, i.toLong()),
                     LocalDate.now(),
                     i * 1.0,
@@ -189,7 +192,7 @@ class VehicleControllerIntegrationTest(
                 val newVehicle = Vehicle(
                     random.nextInt(),
                     i.toString(),
-                    user,
+                    user!!,
                     coordinates = Coordinates(i, i.toLong()),
                     LocalDate.now(),
                     i * 1.0,
@@ -207,9 +210,10 @@ class VehicleControllerIntegrationTest(
             )
             val expectedString = Json.encodeToString(expectedResponse)
 
+            val sorting = GetVehiclesRequestsSorting(0, false)
+            val sortingJson = Json.encodeToString(sorting)
             mvc.get("/api/vehicles") {
-                param("column", "id")
-                param("ass", "false")
+                param("sorting", sortingJson)
             }
                 .andExpect {
                     status {
@@ -238,7 +242,7 @@ class VehicleControllerIntegrationTest(
                 val newVehicle = Vehicle(
                     random.nextInt(),
                     i.toString(),
-                    user,
+                    user!!,
                     coordinates = Coordinates(i, i.toLong()),
                     LocalDate.now(),
                     i * 1.0,
@@ -251,21 +255,25 @@ class VehicleControllerIntegrationTest(
 
             val xLowerBound = 5
             val xUpperBound = 10
+            val filteredVehicles = vehicles.filter { it.coordinates.x in (xLowerBound..xUpperBound) }
+                .map { it.toShowVehicleResponse() }
+                .toTypedArray()
             val expectedResponse = ShowVehiclesResponse(
-                vehicles
-                    .filter { it.coordinates.x in (xLowerBound..xUpperBound) }
-                    .map { it.toShowVehicleResponse() }
-                    .toTypedArray(),
+                filteredVehicles,
                 1,
-                10,
+                filteredVehicles.size,
             )
             val expectedString = Json.encodeToString(expectedResponse)
             val filter = VehicleFilter.XFilter(xLowerBound, xUpperBound)
             val filterJson = Json.encodeToString<VehicleFilter>(filter)
+            println(filterJson)
 
             mvc.get("/api/vehicles") {
                 param("filter", filterJson)
             }
+                .andDo {
+                    print()
+                }
                 .andExpect {
                     status {
                         is2xxSuccessful()
@@ -283,11 +291,31 @@ class VehicleControllerIntegrationTest(
 
     }
 
-//    companion object {
-//        @JvmStatic
-//        @BeforeAll
-//        fun setup(vehicleControllerIntegrationTest: VehicleControllerIntegrationTest): Unit {
-//            vehicleControllerIntegrationTest.userService.createUser("test", "test")
-//        }
-//    }
+    companion object {
+        @JvmField
+        @ClassRule
+        val postgresContainer = PostgreSQLContainer("postgres:13.3")
+            .withDatabaseName("integration-tests-db")
+            .withUsername("postgres")
+            .withPassword("postgres")
+            .withExposedPorts(5432)
+
+        init {
+            postgresContainer.start()
+            println("Started postgres container!")
+        }
+    }
+
+    class Initializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
+        override fun initialize(applicationContext: ConfigurableApplicationContext) {
+            TestPropertyValues.of(
+                "spring.datasource.url=${postgresContainer.jdbcUrl}",
+                "spring.datasource.username=${postgresContainer.username}",
+                "spring.datasource.password=${postgresContainer.password}",
+                "spring.datasource.driver-class-name=${postgresContainer.driverClassName}",
+            ).applyTo(applicationContext)
+        }
+
+
+    }
 }
