@@ -1,6 +1,6 @@
 package lab9.backend.application.service
 
-import lab9.backend.application.port.`in`.getuser.GetUserUseCase
+import lab9.backend.application.port.`in`.user.GetUserUseCase
 import lab9.backend.application.port.out.LoadUserPort
 import lab9.backend.domain.User
 import org.springframework.stereotype.Service

@@ -1,6 +1,5 @@
-package lab9.backend.adapter.out.persistence
+package lab9.backend.adapter.out.persistence.user
 
-import lab9.backend.domain.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository

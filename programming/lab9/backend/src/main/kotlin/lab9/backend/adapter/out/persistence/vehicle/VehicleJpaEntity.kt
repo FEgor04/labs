@@ -1,7 +1,6 @@
-package lab9.backend.adapter.out.persistence
+package lab9.backend.adapter.out.persistence.vehicle
 
 import jakarta.persistence.Column
-import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
@@ -9,11 +8,13 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import lab9.backend.adapter.out.persistence.user.UserJpaEntity
+import lab9.backend.domain.User
+import lab9.backend.domain.Vehicle
 import lab9.common.vehicle.FuelType
 import lab9.common.vehicle.VehicleType
 import org.hibernate.Hibernate
 import org.hibernate.annotations.CreationTimestamp
-import java.io.Serializable
 import java.time.LocalDate
 
 @Entity
@@ -34,6 +35,19 @@ data class VehicleJpaEntity(
     val vehicleType: VehicleType,
     val fuelType: FuelType?,
 ) {
+
+    fun toDomainEntity(): Vehicle {
+        return Vehicle.withID(
+            Vehicle.VehicleID(id),
+            name,
+            User.UserID(creator.id!!),
+            coordinates = Vehicle.Coordinates(x, y),
+            creationDate,
+            enginePower,
+            vehicleType,
+            fuelType
+        )
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

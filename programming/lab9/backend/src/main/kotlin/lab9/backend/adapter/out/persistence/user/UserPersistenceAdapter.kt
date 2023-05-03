@@ -1,4 +1,4 @@
-package lab9.backend.adapter.out.persistence
+package lab9.backend.adapter.out.persistence.user
 
 import lab9.backend.application.port.`in`.signup.UserAlreadyExistsException
 import lab9.backend.application.port.out.CreateUserPort

@@ -1,6 +1,5 @@
-package lab9.backend.adapter.out.persistence
+package lab9.backend.adapter.out.persistence.vehicle
 
-import lab9.backend.adapter.out.persistence.VehicleJpaEntity
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository

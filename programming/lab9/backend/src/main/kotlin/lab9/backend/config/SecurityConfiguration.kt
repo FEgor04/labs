@@ -1,6 +1,7 @@
 package lab9.backend.config
 
-import lab9.backend.application.port.`in`.getuser.GetUserUseCase
+import lab9.backend.adapter.out.security.UserDetailsEntity
+import lab9.backend.application.port.`in`.user.GetUserUseCase
 import lab9.backend.logger.KCoolLogger
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -36,6 +37,7 @@ class SecurityConfiguration {
                 }
                 val user = getUserUseCase.getUserByUsername(username)
                 if (user != null) {
+                    return UserDetailsEntity(user)
                 }
                 throw UsernameNotFoundException("User $username not found")
             }

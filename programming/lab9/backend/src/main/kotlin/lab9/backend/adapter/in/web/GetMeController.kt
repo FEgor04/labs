@@ -1,7 +1,6 @@
 package lab9.backend.adapter.`in`.web
 
-import lab9.backend.application.port.`in`.getuser.GetUserUseCase
-import lab9.backend.application.port.`in`.getuser.UserDoesNotExistsException
+import lab9.backend.application.port.`in`.user.GetUserUseCase
 import lab9.common.responses.ShowUserResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

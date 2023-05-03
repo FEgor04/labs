@@ -1,4 +1,4 @@
-package lab9.backend.adapter.out.persistence
+package lab9.backend.adapter.out.persistence.user
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.validation.constraints.NotBlank
+import lab9.backend.adapter.out.persistence.vehicle.VehicleJpaEntity
 import lab9.backend.domain.User
 import org.hibernate.Hibernate
 import org.springframework.validation.annotation.Validated
