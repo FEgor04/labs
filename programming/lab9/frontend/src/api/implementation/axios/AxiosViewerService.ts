@@ -18,11 +18,21 @@ export default class AxiosViewerService implements ViewerService {
         console.log(response)
     }
 
-    signIn(username: string, password: string): Promise<void> {
+    async signIn(username: string, password: string): Promise<void> {
         const formData = new FormData()
         formData.append("username", username)
         formData.append("password", password)
-        return apiInstance.postForm("/login", formData)
+        const response = await apiInstance.postForm("/login", formData)
+        return response.data
     }
+
+    async signUp(username: string, password: string): Promise<void> {
+        const response = await apiInstance.post("/signup", {
+            username,
+            password
+        })
+        return response.data
+    }
+
 
 }

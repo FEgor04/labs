@@ -8,3 +8,17 @@ services:
       POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
+  kafka:
+    image: docker.io/bitnami/kafka:3.4
+    ports:
+      - "9092:9092"
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_INTER_BROKER_USER=user
+      - KAFKA_INTER_BROKER_PASSWORD=user
+
+volumes:
+  kafka_data:
+    driver: local

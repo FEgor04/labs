@@ -2,7 +2,7 @@ package lab9.backend.application.service
 
 import lab9.backend.application.port.`in`.signup.SignUpCommand
 import lab9.backend.application.port.`in`.signup.SignUpUseCase
-import lab9.backend.application.port.out.CreateUserPort
+import lab9.backend.application.port.out.user.CreateUserPort
 import lab9.backend.domain.User
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service

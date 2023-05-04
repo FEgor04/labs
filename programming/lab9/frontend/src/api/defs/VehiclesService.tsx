@@ -1,6 +1,5 @@
-
 export interface VehiclesService {
-    getVehicles(request: GetVehiclesRequest) : Promise<GetVehiclesResponse>
+    getVehicles(request: GetVehiclesRequest): Promise<GetVehiclesResponse>
 }
 
 export type GetVehiclesRequest = {
@@ -24,14 +23,34 @@ export type Vehicle = {
     creationDate: Date,
     enginePower: number,
     vehicleType: VehicleType
-    fuelType: VehicleFuelType | null,
+    fuelType: FuelType | null
     creatorId: number,
     canEdit: boolean,
     canDelete: boolean,
 }
 
-export type VehicleFuelType = "MANPOWER" | "GASOLINE" | "ELECTRICITY" | "PLASMA" | "ANTIMATTER"
-export type VehicleType = "PLANE" | "BICYCLE" | "BOAT" | "SUBMARINE"
+export enum VehicleType {
+    PLANE = "PLANE",
+    BICYCLE = "BICYCLE",
+    BOAT = "BOAT",
+    SUBMARINE = "SUBMARINE",
+}
+
+export const PossibleVehicleTypes: VehicleType[] = [
+    VehicleType.PLANE, VehicleType.BICYCLE, VehicleType.BOAT, VehicleType.SUBMARINE
+]
+
+export enum FuelType {
+    MANPOWER = "MANPOWER",
+    GASOLINE = "GASOLINE",
+    ELECTRICITY = "ELECTRICITY",
+    PLASMA = "PLASMA",
+    ANTIMATTER = "ANTIMATTER"
+}
+
+export const PossibleFuelTypes: FuelType[] = [
+    FuelType.ANTIMATTER, FuelType.GASOLINE, FuelType.ELECTRICITY, FuelType.PLASMA, FuelType.MANPOWER
+]
 
 export type Coordinates = {
     x: number
@@ -51,6 +70,7 @@ export class XFilter extends NumberFilter {
     column = "x"
     lowerBound: number | null;
     upperBound: number | null;
+
     constructor(lowerBound: number | null, upperBound: number | null) {
         super();
         this.lowerBound = lowerBound

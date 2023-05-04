@@ -1,4 +1,4 @@
-package lab9.backend.application.port.out
+package lab9.backend.application.port.out.user
 
 import lab9.backend.application.port.`in`.signup.UserAlreadyExistsException
 import lab9.backend.domain.User

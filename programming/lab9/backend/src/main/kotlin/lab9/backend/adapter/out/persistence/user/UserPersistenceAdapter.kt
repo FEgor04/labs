@@ -1,8 +1,8 @@
 package lab9.backend.adapter.out.persistence.user
 
 import lab9.backend.application.port.`in`.signup.UserAlreadyExistsException
-import lab9.backend.application.port.out.CreateUserPort
-import lab9.backend.application.port.out.LoadUserPort
+import lab9.backend.application.port.out.user.CreateUserPort
+import lab9.backend.application.port.out.user.LoadUserPort
 import lab9.backend.common.PersistenceAdapter
 import lab9.backend.domain.User
 import lab9.backend.logger.KCoolLogger

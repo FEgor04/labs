@@ -9,21 +9,21 @@ type onFinishParams = {
     password: string
 }
 
-const SignInPage = observer(() => {
+const SignUpPage = observer(() => {
     const {viewerStore} = globalStore
     const {t} = useTranslation()
 
     const navigate = useNavigate()
 
     const onFinish = ({username, password}: onFinishParams) => {
-        viewerStore.signIn(username, password, () => {
+        viewerStore.signUp(username, password, () => {
             navigate("/vehicles")
         })
     }
 
     return (
         <div>
-            <h1>Sign In</h1>
+            <h1>Sign Up</h1>
             <Form
                 name="basic"
                 layout="vertical"
@@ -49,7 +49,7 @@ const SignInPage = observer(() => {
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
-                        {t('signIn')}
+                        {t('signUp')}
                     </Button>
                 </Form.Item>
 
@@ -58,11 +58,11 @@ const SignInPage = observer(() => {
                 </p>
 
                 <p style={{alignContent: "center", textAlign: "center"}}>
-                    {t("signInDontHaveAnAccount")} <NavLink to="/signup">Sign Up!</NavLink>
+                    {t("alreadyHaveAnAccount")} <NavLink to="/signin">Sign in!</NavLink>
                 </p>
 
             </Form>
         </div>
     )
 })
-export default SignInPage
+export default SignUpPage

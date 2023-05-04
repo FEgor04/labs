@@ -47,7 +47,8 @@ open class WebIntegrationTest(
                 "spring.datasource.url=${postgresContainer.jdbcUrl}",
                 "spring.datasource.username=${postgresContainer.username}",
                 "spring.datasource.password=${postgresContainer.password}",
-                "spring.datasource-driver-class=${postgresContainer.driverClassName}"
+                "spring.datasource-driver-class=${postgresContainer.driverClassName}",
+                "spring.jpa.hibernate.ddl-auto=update"
             ).applyTo(applicationContext.environment);
         }
     }

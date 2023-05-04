@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.Table
 import lab9.backend.adapter.out.persistence.user.UserJpaEntity
 import lab9.backend.domain.User
 import lab9.backend.domain.Vehicle
@@ -18,10 +19,11 @@ import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDate
 
 @Entity
+@Table(name = "vehicles")
 data class VehicleJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Int,
+    val id: Int? = null,
     @Column(unique = true, nullable = false, name = "name")
     val name: String,
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -37,16 +39,28 @@ data class VehicleJpaEntity(
 ) {
 
     fun toDomainEntity(): Vehicle {
-        return Vehicle.withID(
-            Vehicle.VehicleID(id),
-            name,
-            User.UserID(creator.id!!),
-            coordinates = Vehicle.Coordinates(x, y),
-            creationDate,
-            enginePower,
-            vehicleType,
-            fuelType
-        )
+        return if (id != null) {
+            Vehicle.withID(
+                Vehicle.VehicleID(id),
+                name,
+                User.UserID(creator.id!!),
+                coordinates = Vehicle.Coordinates(x, y),
+                creationDate,
+                enginePower,
+                vehicleType,
+                fuelType
+            )
+        } else {
+            Vehicle.withoutID(
+                name,
+                User.UserID(creator.id!!),
+                coordinates = Vehicle.Coordinates(x, y),
+                creationDate,
+                enginePower,
+                vehicleType,
+                fuelType
+            )
+        }
     }
 
     override fun equals(other: Any?): Boolean {

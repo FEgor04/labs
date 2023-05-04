@@ -51,11 +51,12 @@ export default class ViewerStore {
         this.viewer = null
     }
 
-    signIn(username: string, password: string): void {
+    signIn(username: string, password: string, onSuccess: () => void): void {
         this.service.signIn(username, password).then(() => {
             this.service.getMe().then((me) => {
                 this.setViewer(me)
                 this.setIsSignedIn(true)
+                onSuccess()
             }).catch((e) => {
                 this.setErrors(e)
             })
@@ -71,6 +72,23 @@ export default class ViewerStore {
         }).catch((e) => {
             console.log(`Error on logging out: ${e}`)
             this.errors = e
+        })
+    }
+
+    signUp(username: string, password: string, onSuccess: () => void): void {
+        this.service.signUp(username, password).then(() => {
+            this.service.signIn(username, password).then(() => {
+                this.service.getMe().then((me) => {
+                    this.setViewer(me)
+                    onSuccess()
+                }).catch((e) => {
+                    this.setErrors(e)
+                })
+            }).catch((e) => {
+                this.setErrors(e)
+            })
+        }).catch((error) => {
+            this.setErrors(error)
         })
     }
 }
