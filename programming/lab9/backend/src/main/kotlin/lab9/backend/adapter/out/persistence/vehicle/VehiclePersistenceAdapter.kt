@@ -16,7 +16,7 @@ import java.time.LocalDate
 @PersistenceAdapter
 class VehiclePersistenceAdapter(
     private val vehicleRepository: VehicleRepository,
-): GetVehiclesPort, CreateVehiclePort, DeleteVehiclePort {
+) : GetVehiclesPort, CreateVehiclePort, DeleteVehiclePort {
     override fun getVehicles(query: GetVehiclesQuery): GetVehiclesResponse {
         val page = vehicleRepository.findAll(PageRequest.of(query.pageNumber, query.pageSize))
         return GetVehiclesResponse(
@@ -37,7 +37,7 @@ class VehiclePersistenceAdapter(
                 VehicleJpaEntity(
                     id = null,
                     vehicle.name,
-                    UserJpaEntity(vehicle.creatorID.id, "", "", emptySet()),
+                    UserJpaEntity(vehicle.creatorID.id, "", "", emptySet(), emptySet(), emptySet()),
                     creationDate = LocalDate.now(),
                     x = vehicle.coordinates.x,
                     y = vehicle.coordinates.y,
@@ -46,8 +46,7 @@ class VehiclePersistenceAdapter(
                     fuelType = vehicle.fuelType
                 )
             ).toDomainEntity()
-        }
-        catch(e: DataIntegrityViolationException) {
+        } catch (e: DataIntegrityViolationException) {
             throw VehicleAlreadyExistsException()
         }
     }

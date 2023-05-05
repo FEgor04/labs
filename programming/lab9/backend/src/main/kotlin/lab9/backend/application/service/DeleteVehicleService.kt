@@ -1,6 +1,7 @@
 package lab9.backend.application.service
 
 import lab9.backend.application.port.`in`.vehicles.DeleteVehicleUseCase
+import lab9.backend.application.port.`in`.vehicles.VehicleNotFoundException
 import lab9.backend.application.port.out.vehicle.DeleteVehiclePort
 import lab9.backend.application.port.out.vehicle.GetVehiclesPort
 import lab9.backend.domain.User
@@ -13,6 +14,6 @@ class DeleteVehicleService(
     val getVehiclesPort: GetVehiclesPort
 ): DeleteVehicleUseCase {
     override fun deleteVehicle(vehicleID: Vehicle.VehicleID, actorId: User.UserID) {
-        TODO("Not yet implemented")
+        val vehicle = getVehiclesPort.getVehicle(vehicleID) ?: throw VehicleNotFoundException()
     }
 }

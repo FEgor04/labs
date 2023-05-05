@@ -21,7 +21,7 @@ class UserPersistenceAdapter(
 
     override fun loadUserById(id: User.UserID): User? {
         val jpaUser = userRepository.findById(id.id) ?: return null
-        if(jpaUser.isEmpty) {
+        if (jpaUser.isEmpty) {
             return null
         }
         return jpaUser.get().toDomain()
@@ -30,10 +30,19 @@ class UserPersistenceAdapter(
     override fun createUser(user: User): User {
         logger.info("Saving new user ${user}")
         return try {
-            val jpaUser = userRepository.saveAndFlush(UserJpaEntity(null, user.username, user.password, emptySet()))
+            val jpaUser = userRepository.saveAndFlush(
+                UserJpaEntity(
+                    null,
+                    user.username,
+                    user.password,
+                    emptySet(),
+                    emptySet(),
+                    emptySet(),
+                )
+            )
             logger.info("Successfully saved new user ${user}")
             jpaUser.toDomain()
-        } catch(e: DataIntegrityViolationException) {
+        } catch (e: DataIntegrityViolationException) {
             logger.info("User with such name already exists!")
             throw UserAlreadyExistsException()
         }

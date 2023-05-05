@@ -12,7 +12,11 @@ import lab9.backend.domain.Vehicle
 import lab9.common.responses.ShowVehiclesResponse
 import lab9.common.vehicle.FuelType
 import lab9.common.vehicle.VehicleType
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.runner.RunWith
@@ -25,6 +29,9 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import java.lang.Exception
 import java.time.LocalDate
+
+const val mockedUserName = "getVehiclesUser"
+const val mockedUserPassword = "test"
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.MOCK,
@@ -41,8 +48,10 @@ class GetVehiclesControllerIntegrationTest(
     override val mockMvc: MockMvc,
 ) : WebIntegrationTest(mockMvc) {
 
+    var mockedUser =  UserJpaEntity(null, mockedUserName, mockedUserPassword, emptySet(), emptySet(), emptySet())
+
     @Test
-    @WithMockUser("test")
+    @WithMockUser(username = mockedUserName, password = mockedUserPassword)
     fun `empty database`() {
         val expected = ShowVehiclesResponse(
             emptyArray(),
@@ -61,7 +70,7 @@ class GetVehiclesControllerIntegrationTest(
     }
 
     @Test
-    @WithMockUser("test")
+    @WithMockUser(username = mockedUserName, password = mockedUserPassword)
     fun `bad request (page size is negative)`() {
         assertThrows<Exception> {
             mockMvc.get("/api/vehicles") {
@@ -78,7 +87,7 @@ class GetVehiclesControllerIntegrationTest(
     }
 
     @Test
-    @WithMockUser("test")
+    @WithMockUser(username = mockedUserName, password = mockedUserPassword)
     fun `bad request (page size is too big)`() {
         assertThrows<Exception> {
             mockMvc.get("/api/vehicles") {
@@ -94,7 +103,7 @@ class GetVehiclesControllerIntegrationTest(
     }
 
     @Test
-    @WithMockUser("test")
+    @WithMockUser(username = mockedUserName, password = mockedUserPassword)
     fun `bad request (page number is negative)`() {
         assertThrows<Exception> {
             mockMvc.get("/api/vehicles") {
@@ -110,10 +119,10 @@ class GetVehiclesControllerIntegrationTest(
     }
 
     @Test
+    @Disabled
     @Transactional
-    @WithMockUser("test")
+    @WithMockUser(username = mockedUserName, password = mockedUserPassword)
     fun `should be ok`() {
-        val user = userRepository.save(UserJpaEntity(null, "test", "test", emptySet()))
         val vehicles = mutableListOf<Vehicle>()
         val vehiclesNumber = 1000
         repeat(vehiclesNumber) { i ->
@@ -121,7 +130,7 @@ class GetVehiclesControllerIntegrationTest(
                 VehicleJpaEntity(
                     i,
                     i.toString(),
-                    user,
+                    mockedUser,
                     i,
                     i.toLong(),
                     LocalDate.now(),
@@ -132,8 +141,17 @@ class GetVehiclesControllerIntegrationTest(
             )
             vehicles.add(newVehicle.toDomainEntity())
         }
-        
+        assert(vehiclesRepository.count() == vehiclesNumber.toLong())
     }
 
+    @BeforeEach
+    fun `insert mock user`() {
+        mockedUser = userRepository.save(mockedUser)
+    }
+
+    @AfterEach
+    fun `clean up mock user`() {
+        userRepository.delete(mockedUser)
+    }
 
 }

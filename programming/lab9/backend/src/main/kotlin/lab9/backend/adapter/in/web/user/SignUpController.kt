@@ -1,4 +1,4 @@
-package lab9.backend.adapter.`in`.web
+package lab9.backend.adapter.`in`.web.user
 
 import lab9.backend.application.port.`in`.signup.SignUpCommand
 import lab9.backend.application.port.`in`.signup.SignUpUseCase

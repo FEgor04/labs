@@ -1,4 +1,4 @@
-package lab9.backend.adapter.`in`.web
+package lab9.backend.adapter.`in`.web.vehicle
 
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min

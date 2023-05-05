@@ -52,7 +52,16 @@ class CreateVehicleControllerIntegrationTest(
             vehicleType = VehicleType.BICYCLE,
             fuelType = FuelType.ANTIMATTER
         )
-        userRepository.save(UserJpaEntity(1, "test", "password", emptySet()))
+        userRepository.save(
+            UserJpaEntity(
+                1,
+                "test",
+                "password",
+                emptySet(),
+                emptySet(),
+                emptySet(),
+            )
+        )
         mockMvc.post("/api/vehicles") {
             this.content = Json.encodeToString(request)
             this.contentType = MediaType.APPLICATION_JSON
@@ -77,7 +86,7 @@ class CreateVehicleControllerIntegrationTest(
             vehicleType = VehicleType.BICYCLE,
             fuelType = FuelType.ANTIMATTER
         )
-        val user = userRepository.save(UserJpaEntity(1, "test", "password", emptySet()))
+        val user = userRepository.save(UserJpaEntity(1, "test", "password", emptySet(), emptySet(), emptySet()))
         val vehicle = vehicleRepository.save(
             VehicleJpaEntity(
                 null,

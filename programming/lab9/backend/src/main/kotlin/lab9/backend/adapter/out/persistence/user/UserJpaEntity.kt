@@ -8,27 +8,47 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotBlank
+import lab9.backend.adapter.out.persistence.authorities.AuthorityJpaEntity
 import lab9.backend.adapter.out.persistence.vehicle.VehicleJpaEntity
 import lab9.backend.domain.User
 import org.hibernate.Hibernate
-import org.springframework.validation.annotation.Validated
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 data class UserJpaEntity(
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Int?,
     @Column(unique = true, nullable = false) @NotBlank val username: String,
     @Column(nullable = false) @NotBlank val password: String,
-    @OneToMany
+    @OneToMany(mappedBy = "creator")
     val vehicles: Set<VehicleJpaEntity> = emptySet(),
+
+    @OneToMany(mappedBy = "authorizedTo")
+    val authorizedBy: Set<AuthorityJpaEntity>,
+    @OneToMany(mappedBy = "owner")
+    val givenAuthorityTo: Set<AuthorityJpaEntity>
 ) {
 
     fun toDomain(): User {
-        return if(id != null) {
-            User.withID(User.UserID(id), username, password)
+        return if (id != null) {
+            User.withID(
+                User.UserID(id),
+                username,
+                password,
+                this.authorizedBy.filter { it.canEdit }.map { User.UserID(it.owner.id!!) }.toList(),
+                this.authorizedBy.filter { it.canDelete }.map { User.UserID(it.owner.id!!) }.toList(),
+                this.givenAuthorityTo.filter { it.canEdit }.map { User.UserID(it.authorizedTo.id!!) }.toList(),
+                this.givenAuthorityTo.filter { it.canDelete }.map { User.UserID(it.authorizedTo.id!!) }.toList(),
+            )
         } else {
-            User.withoutID(username, password)
+            User.withoutID(
+                username,
+                password,
+                this.authorizedBy.filter { it.canEdit }.map { User.UserID(it.owner.id!!) }.toList(),
+                this.authorizedBy.filter { it.canDelete }.map { User.UserID(it.owner.id!!) }.toList(),
+                this.givenAuthorityTo.filter { it.canEdit }.map { User.UserID(it.authorizedTo.id!!) }.toList(),
+                this.givenAuthorityTo.filter { it.canDelete }.map { User.UserID(it.authorizedTo.id!!) }.toList(),
+            )
         }
     }
 

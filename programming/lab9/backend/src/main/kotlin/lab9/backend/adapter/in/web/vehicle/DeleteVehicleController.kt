@@ -1,4 +1,4 @@
-package lab9.backend.adapter.`in`.web
+package lab9.backend.adapter.`in`.web.vehicle
 
 import lab9.backend.application.port.`in`.vehicles.DeleteVehicleUseCase
 import org.springframework.stereotype.Controller

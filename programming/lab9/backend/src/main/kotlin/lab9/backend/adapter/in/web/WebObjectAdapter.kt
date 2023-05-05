@@ -1,15 +1,13 @@
 package lab9.backend.adapter.`in`.web
 
-import jakarta.validation.Valid
+import lab9.backend.adapter.`in`.web.vehicle.GetVehiclesRequest
 import lab9.backend.application.port.`in`.vehicles.CreateVehicleQuery
 import lab9.backend.application.port.`in`.vehicles.GetVehiclesQuery
 import lab9.backend.domain.User
 import lab9.backend.domain.Vehicle
 import lab9.common.dto.CoordinatesDTO
 import lab9.common.requests.CreateVehicleRequest
-import lab9.common.requests.ShowVehiclesRequest
 import lab9.common.responses.ShowVehicleResponse
-import lab9.common.responses.ShowVehiclesResponse
 import org.springframework.stereotype.Component
 
 @Component

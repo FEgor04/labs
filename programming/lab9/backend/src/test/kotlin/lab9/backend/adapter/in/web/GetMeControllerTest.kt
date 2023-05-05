@@ -34,7 +34,7 @@ class GetMeControllerTest(
     @Transactional
     @WithMockUser(username = "test", password = "test")
     fun `get existing user`() {
-        val actualUser = userRepository.saveAndFlush(UserJpaEntity(null, "test", "test", emptySet()))
+        val actualUser = userRepository.saveAndFlush(UserJpaEntity(null, "test", "test", emptySet(), emptySet(), emptySet()))
         val expectedContent = ShowUserResponse(actualUser.id!!, actualUser.username)
         mockMvc.get("/api/me").andExpect {
             content {

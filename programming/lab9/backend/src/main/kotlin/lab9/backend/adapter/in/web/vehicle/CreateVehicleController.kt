@@ -1,13 +1,13 @@
-package lab9.backend.adapter.`in`.web
+package lab9.backend.adapter.`in`.web.vehicle
 
 import jakarta.validation.Valid
+import lab9.backend.adapter.`in`.web.WebObjectAdapter
 import lab9.backend.application.port.`in`.user.GetUserUseCase
 import lab9.backend.application.port.`in`.vehicles.CreateVehicleUseCase
 import lab9.backend.application.port.`in`.vehicles.VehicleAlreadyExistsException
 import lab9.backend.domain.Vehicle
 import lab9.backend.logger.KCoolLogger
 import lab9.common.requests.CreateVehicleRequest
-import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

@@ -13,6 +13,15 @@ class SignUpService(
     private val passwordEncoder: PasswordEncoder,
 ) : SignUpUseCase {
     override fun signUp(command: SignUpCommand): User {
-        return createUserPort.createUser(User.withoutID(command.username, passwordEncoder.encode(command.password)))
+        return createUserPort.createUser(
+            User.withoutID(
+                command.username,
+                passwordEncoder.encode(command.password),
+                emptyList(),
+                emptyList(),
+                emptyList(),
+                emptyList(),
+            )
+        )
     }
 }

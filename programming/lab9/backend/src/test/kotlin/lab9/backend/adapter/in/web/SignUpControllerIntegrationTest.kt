@@ -56,7 +56,7 @@ class SignUpControllerIntegrationTest(
     @Transactional
     fun `sign up existing user`() {
         val username = "user"
-        userRepository.save(UserJpaEntity(null, username, "1234", emptySet()))
+        userRepository.save(UserJpaEntity(null, username, "1234", emptySet(), emptySet(), emptySet()))
         userRepository.flush()
         assert(userRepository.count() == 1.toLong())
         mockMvc.post("/api/signup") {
