@@ -9,33 +9,37 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import jakarta.validation.constraints.Min
+import jakarta.validation.constraints.NotBlank
 import lab9.backend.adapter.out.persistence.user.UserJpaEntity
 import lab9.backend.domain.User
 import lab9.backend.domain.Vehicle
-import lab9.common.vehicle.FuelType
-import lab9.common.vehicle.VehicleType
 import org.hibernate.Hibernate
 import org.hibernate.annotations.CreationTimestamp
+import org.springframework.validation.annotation.Validated
 import java.time.LocalDate
 
 @Entity
 @Table(name = "vehicles")
 data class VehicleJpaEntity(
-    @Id
+        @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Int? = null,
-    @Column(unique = true, nullable = false, name = "name")
+        @Column(unique = true, nullable = false, name = "name")
+    @NotBlank
     val name: String,
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+        @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
     val creator: UserJpaEntity,
+        @Min(-523)
     val x: Int,
-    val y: Long?,
-    @CreationTimestamp
+        val y: Long?,
+        @CreationTimestamp
     val creationDate: LocalDate,
+        @Min(0)
     val enginePower: Double,
-    val vehicleType: VehicleType,
-    val fuelType: FuelType?,
+        val vehicleType: Vehicle.VehicleType,
+        val fuelType: Vehicle.FuelType?,
 ) {
 
     fun toDomainEntity(): Vehicle {

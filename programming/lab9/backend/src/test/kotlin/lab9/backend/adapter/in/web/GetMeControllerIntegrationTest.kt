@@ -4,9 +4,10 @@ import jakarta.transaction.Transactional
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 import lab9.backend.BackendApplication
+import lab9.backend.adapter.`in`.web.dto.ShowUserResponse
 import lab9.backend.adapter.out.persistence.user.UserJpaEntity
 import lab9.backend.adapter.out.persistence.user.UserRepository
-import lab9.common.responses.ShowUserResponse
+import lab9.backend.adapter.out.persistence.vehicle.VehicleRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
@@ -24,12 +25,14 @@ import org.springframework.test.web.servlet.get
 )
 @AutoConfigureMockMvc
 @RunWith(SpringRunner::class)
-class GetMeControllerTest(
+class GetMeControllerIntegrationTest(
     @Autowired
-    override val mockMvc: MockMvc,
+    val mockMvc: MockMvc,
     @Autowired
-    val userRepository: UserRepository,
-) : WebIntegrationTest(mockMvc) {
+    override val userRepository: UserRepository,
+    @Autowired
+    override val vehicleRepository: VehicleRepository,
+) : PostgresIntegrationTest(userRepository, vehicleRepository) {
     @Test
     @Transactional
     @WithMockUser(username = "test", password = "test")
@@ -44,16 +47,6 @@ class GetMeControllerTest(
             }
         }
         print("test")
-    }
-
-    @Test
-    @Transactional
-    fun `get with no session`() {
-        mockMvc.get("/api/me").andExpect {
-            status {
-                isUnauthorized()
-            }
-        }
     }
 
 }

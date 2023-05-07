@@ -1,11 +1,13 @@
 package lab9.backend.adapter.`in`.web
 
 import lab9.backend.BackendApplication
+import lab9.backend.adapter.out.persistence.user.UserJpaEntity
+import lab9.backend.adapter.out.persistence.user.UserRepository
+import lab9.backend.adapter.out.persistence.vehicle.VehicleJpaEntity
+import lab9.backend.adapter.out.persistence.vehicle.VehicleRepository
+import lab9.backend.domain.Vehicle
 import org.junit.ClassRule
 import org.junit.runner.RunWith
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
@@ -14,18 +16,32 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.testcontainers.containers.PostgreSQLContainer
+import java.time.LocalDate
+import kotlin.random.Random
 
-@SpringBootTest(
-    webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-    classes = [BackendApplication::class]
-)
-@AutoConfigureMockMvc
-@RunWith(SpringRunner::class)
-@ContextConfiguration(initializers = [WebIntegrationTest.Initializer::class])
-open class WebIntegrationTest(
-    @Autowired
-    protected val mockMvc: MockMvc,
+@ContextConfiguration(initializers = [PostgresIntegrationTest.Initializer::class])
+open class PostgresIntegrationTest(
+    protected open val userRepository: UserRepository,
+    protected open val vehicleRepository: VehicleRepository,
 ) {
+    fun createNewUser(username: String, password: String): UserJpaEntity {
+        return userRepository.save(UserJpaEntity(null, username, password, emptySet(), emptySet(), emptySet()))
+    }
+
+    fun createRandomVehicle(owner: UserJpaEntity): VehicleJpaEntity {
+        return vehicleRepository.save(VehicleJpaEntity(
+            null,
+            name = Random.nextInt().toString(),
+            x = 1,
+            y = 1,
+            creationDate = LocalDate.now(),
+            enginePower = 1.0,
+            vehicleType = Vehicle.VehicleType.BOAT,
+            fuelType = Vehicle.FuelType.ANTIMATTER,
+            creator = owner
+        ))
+    }
+
     companion object {
         @JvmField
         @ClassRule

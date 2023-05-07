@@ -18,4 +18,5 @@ class GetUserAuthoritiesService(
     override fun getUserAuthoritiesToEdit(userId: User.UserID): List<User.UserID> {
         return getUserAuthoritiesToEditPort.getUserAuthoritiesToEdit(userId)
     }
+
 }

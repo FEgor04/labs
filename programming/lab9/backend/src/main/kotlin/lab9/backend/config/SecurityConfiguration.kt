@@ -50,44 +50,46 @@ class SecurityConfiguration {
     fun httpSecurity(http: HttpSecurity): SecurityFilterChain {
         return http
 //            .csrf { csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository()) }
-            .csrf().disable()
-            .cors(Customizer.withDefaults())
-            .headers {
-                it.frameOptions().sameOrigin().httpStrictTransportSecurity().disable()
-            }
-            .authorizeHttpRequests { request ->
-                request
-                    .requestMatchers("/api/signup").permitAll()
-                    .anyRequest().authenticated()
-            }
-            .formLogin { form ->
-                form
-                    .successHandler { req, res, auth ->
-                        logger.info("Handling success")
-                        res.status = HttpStatus.OK.value()
-                    }
-                    .failureHandler { req, res, auth ->
-                        logger.info("Handling secure failure: $auth")
-                        res.status = HttpStatus.UNAUTHORIZED.value()
-                    }
-                    .loginProcessingUrl("/api/login")
-                    .usernameParameter("username")
-                    .passwordParameter("password")
-            }
-            .logout { logout ->
-                logout
-                    .logoutUrl("/api/logout")
-                    .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID")
-                    .logoutSuccessHandler {
-                        req, resp, auth -> resp.status = 200
-                    }
-            }
-            .exceptionHandling { ex ->
-                logger.error("Handling exception: $ex")
-                ex.authenticationEntryPoint(HttpStatusEntryPoint((HttpStatus.UNAUTHORIZED)))
-            }
-            .build()
+                .csrf().disable()
+                .cors(Customizer.withDefaults())
+                .headers {
+                    it.frameOptions().sameOrigin().httpStrictTransportSecurity().disable()
+                }
+                .httpBasic { basic ->
+                }
+                .authorizeHttpRequests { request ->
+                    request
+                            .requestMatchers("/api/signup").permitAll()
+                            .anyRequest().permitAll()
+                }
+                .formLogin { form ->
+                    form
+                            .successHandler { req, res, auth ->
+                                logger.info("Handling success")
+                                res.status = HttpStatus.OK.value()
+                            }
+                            .failureHandler { req, res, auth ->
+                                logger.info("Handling secure failure: $auth")
+                                res.status = HttpStatus.UNAUTHORIZED.value()
+                            }
+                            .loginProcessingUrl("/api/login")
+                            .usernameParameter("username")
+                            .passwordParameter("password")
+                }
+                .logout { logout ->
+                    logout
+                            .logoutUrl("/api/logout")
+                            .invalidateHttpSession(true)
+                            .deleteCookies("JSESSIONID")
+                            .logoutSuccessHandler { req, resp, auth ->
+                                resp.status = 200
+                            }
+                }
+                .exceptionHandling { ex ->
+                    logger.error("Handling exception: $ex")
+                    ex.authenticationEntryPoint(HttpStatusEntryPoint((HttpStatus.UNAUTHORIZED)))
+                }
+                .build()
     }
 
     @Bean

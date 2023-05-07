@@ -1,12 +1,6 @@
 package lab9.backend.adapter.out.persistence.user
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import lab9.backend.adapter.out.persistence.authorities.AuthorityJpaEntity
 import lab9.backend.adapter.out.persistence.vehicle.VehicleJpaEntity
@@ -23,9 +17,9 @@ data class UserJpaEntity(
     @OneToMany(mappedBy = "creator")
     val vehicles: Set<VehicleJpaEntity> = emptySet(),
 
-    @OneToMany(mappedBy = "authorizedTo")
+    @OneToMany(mappedBy = "authorizedTo", fetch = FetchType.EAGER)
     val authorizedBy: Set<AuthorityJpaEntity>,
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     val givenAuthorityTo: Set<AuthorityJpaEntity>
 ) {
 

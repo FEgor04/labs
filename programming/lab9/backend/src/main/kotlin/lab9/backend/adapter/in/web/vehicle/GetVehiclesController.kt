@@ -3,22 +3,18 @@ package lab9.backend.adapter.`in`.web.vehicle
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import lab9.backend.adapter.`in`.web.WebObjectAdapter
+import lab9.backend.adapter.`in`.web.dto.GetVehiclesRequest
+import lab9.backend.adapter.`in`.web.dto.ShowVehiclesResponse
 import lab9.backend.application.port.`in`.authorities.GetUserAuthoritiesUseCase
 import lab9.backend.application.port.`in`.user.GetUserUseCase
 import lab9.backend.application.port.`in`.vehicles.GetVehiclesUseCase
 import lab9.backend.domain.User
 import lab9.backend.logger.KCoolLogger
-import lab9.common.responses.ShowVehiclesResponse
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.FieldError
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.MethodArgumentNotValidException
-import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
@@ -29,7 +25,6 @@ import java.security.Principal
 class GetVehiclesController(
     private val getVehiclesUseCase: GetVehiclesUseCase,
     private val getUserAuthoritiesUseCase: GetUserAuthoritiesUseCase,
-    // TODO : искать authorities пользователя по username
     private val getUserUseCase: GetUserUseCase,
     private val objectAdapter: WebObjectAdapter,
 ) {
@@ -51,7 +46,7 @@ class GetVehiclesController(
             return ResponseEntity.badRequest().build();
         }
         val response = ShowVehiclesResponse(
-            vehicles.vehicles.map { objectAdapter.vehicleToResponse(it) }.toTypedArray(),
+            vehicles = vehicles.vehicles.map { objectAdapter.vehicleToResponse(it) },
             totalPages = vehicles.totalPages,
             totalElements = vehicles.totalElements
         )

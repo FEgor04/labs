@@ -1,17 +1,17 @@
-package lab9.backend.adapter.`in`.web
+package lab9.backend.adapter.`in`.web.vehicle
 
 import jakarta.transaction.Transactional
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 import lab9.backend.BackendApplication
+import lab9.backend.adapter.`in`.web.PostgresIntegrationTest
+import lab9.backend.adapter.`in`.web.dto.CreateVehicleRequest
 import lab9.backend.adapter.out.persistence.user.UserJpaEntity
 import lab9.backend.adapter.out.persistence.user.UserRepository
 import lab9.backend.adapter.out.persistence.vehicle.VehicleJpaEntity
 import lab9.backend.adapter.out.persistence.vehicle.VehicleRepository
-import lab9.common.dto.CoordinatesDTO
-import lab9.common.requests.CreateVehicleRequest
-import lab9.common.vehicle.FuelType
-import lab9.common.vehicle.VehicleType
+import lab9.backend.domain.Vehicle
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
@@ -33,83 +33,80 @@ import java.time.LocalDate
 @RunWith(SpringRunner::class)
 class CreateVehicleControllerIntegrationTest(
     @Autowired
-    override val mockMvc: MockMvc,
+    override val userRepository: UserRepository,
     @Autowired
-    val userRepository: UserRepository,
+    override val vehicleRepository: VehicleRepository,
     @Autowired
-    val vehicleRepository: VehicleRepository,
-) : WebIntegrationTest(mockMvc) {
-
-    @Test
-    @Transactional
-    @WithMockUser(username = "test", password = "test")
-    fun `create new`() {
-        assert(vehicleRepository.count() == 0.toLong())
-        val request = CreateVehicleRequest(
-            name = "teest vehicle",
-            coordinates = CoordinatesDTO(1, 1),
-            enginePower = 2.0,
-            vehicleType = VehicleType.BICYCLE,
-            fuelType = FuelType.ANTIMATTER
-        )
-        userRepository.save(
-            UserJpaEntity(
-                1,
-                "test",
-                "password",
-                emptySet(),
-                emptySet(),
-                emptySet(),
-            )
-        )
-        mockMvc.post("/api/vehicles") {
-            this.content = Json.encodeToString(request)
-            this.contentType = MediaType.APPLICATION_JSON
-        }.andExpect {
-            status {
-                is2xxSuccessful()
-            }
-        }
-        assert(userRepository.count() == 1.toLong())
-        assert(vehicleRepository.count() == 1.toLong())
+    val mockMvc: MockMvc,
+) : PostgresIntegrationTest(userRepository, vehicleRepository) {
+    fun createTestUser(): UserJpaEntity {
+        return userRepository.save(UserJpaEntity(null, "test", "test", emptySet(), emptySet(), emptySet()))
     }
 
     @Test
     @Transactional
     @WithMockUser(username = "test", password = "test")
-    fun `create existing`() {
-        assert(vehicleRepository.count() == 0.toLong())
+    fun `create new`() {
+        createTestUser()
+        assertEquals(0, vehicleRepository.count())
         val request = CreateVehicleRequest(
             name = "teest vehicle",
-            coordinates = CoordinatesDTO(1, 1),
+            x = 1,
+            y = 1,
             enginePower = 2.0,
-            vehicleType = VehicleType.BICYCLE,
-            fuelType = FuelType.ANTIMATTER
+            vehicleType = Vehicle.VehicleType.BICYCLE,
+            fuelType = Vehicle.FuelType.ANTIMATTER
         )
-        val user = userRepository.save(UserJpaEntity(1, "test", "password", emptySet(), emptySet(), emptySet()))
-        val vehicle = vehicleRepository.save(
+        mockMvc.post("/api/vehicles") {
+            contentType = MediaType.APPLICATION_JSON
+            content = Json.encodeToString(request)
+        }.andExpect {
+            status { is2xxSuccessful() }
+        }
+        assertEquals(1, userRepository.count())
+        assertEquals(1, vehicleRepository.count())
+    }
+
+    @AfterEach
+    fun `clean up`() {
+        vehicleRepository.deleteAll()
+        userRepository.deleteAll()
+    }
+
+    @Test
+    @WithMockUser(username = "test", password = "test")
+    fun `create existing`() {
+        assertEquals(0, vehicleRepository.count())
+        val request = CreateVehicleRequest(
+            name = "teest vehicle",
+            x = 1,
+            y = 1,
+            enginePower = 2.0,
+            vehicleType = Vehicle.VehicleType.BICYCLE,
+            fuelType = Vehicle.FuelType.ANTIMATTER
+        )
+        val user = createTestUser()
+        val vehicle = vehicleRepository.saveAndFlush(
             VehicleJpaEntity(
                 null,
                 request.name,
                 user,
-                request.coordinates.x,
-                request.coordinates.y,
+                request.x,
+                request.y,
                 LocalDate.now(),
                 request.enginePower,
                 request.vehicleType,
                 request.fuelType
             )
         )
-        assert(vehicleRepository.count() == 1.toLong())
+        assertEquals(1, vehicleRepository.count())
         mockMvc.post("/api/vehicles") {
-            this.content = Json.encodeToString(request)
-            this.contentType = MediaType.APPLICATION_JSON
-        }.andDo {
-            print()
+            contentType = MediaType.APPLICATION_JSON
+            content = Json.encodeToString(request)
         }.andExpect {
-            status {
-                is4xxClientError()
-            }
+            status { isConflict() }
         }
+        assertEquals(1, vehicleRepository.count())
     }
+
 }

@@ -4,8 +4,10 @@ import jakarta.transaction.Transactional
 import kotlinx.serialization.json.Json
 import lab9.backend.BackendApplication
 import kotlinx.serialization.encodeToString
+import lab9.backend.adapter.`in`.web.dto.ShowUserResponse
 import lab9.backend.adapter.out.persistence.user.UserJpaEntity
 import lab9.backend.adapter.out.persistence.user.UserRepository
+import lab9.backend.adapter.out.persistence.vehicle.VehicleRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
@@ -25,10 +27,12 @@ import org.springframework.test.web.servlet.post
 @RunWith(SpringRunner::class)
 class SignUpControllerIntegrationTest(
     @Autowired
-    private val userRepository: UserRepository,
+    override val userRepository: UserRepository,
     @Autowired
-    override val mockMvc: MockMvc,
-): WebIntegrationTest(mockMvc) {
+    override val vehicleRepository: VehicleRepository,
+    @Autowired
+    val mockMvc: MockMvc,
+): PostgresIntegrationTest(userRepository, vehicleRepository) {
 
     @Test
     @Transactional
@@ -45,6 +49,12 @@ class SignUpControllerIntegrationTest(
         }.andExpect {
             status {
                 is2xxSuccessful()
+            }
+            content {
+                jsonPath("username") {
+                    this.isString()
+                    this.value(username)
+                }
             }
         }
         assert(userRepository.count() == 1.toLong()) {

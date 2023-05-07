@@ -18,7 +18,6 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":common"))
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-integration")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
@@ -26,6 +25,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.apache.kafka:kafka-streams")
@@ -40,7 +40,6 @@ dependencies {
     implementation("org.springframework.integration:spring-integration-webflux")
     implementation("org.springframework.integration:spring-integration-websocket")
     implementation("org.springframework.kafka:spring-kafka")
-    implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation(kotlin("test"))

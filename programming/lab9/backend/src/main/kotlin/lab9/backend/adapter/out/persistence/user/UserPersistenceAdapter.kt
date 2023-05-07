@@ -20,7 +20,7 @@ class UserPersistenceAdapter(
     }
 
     override fun loadUserById(id: User.UserID): User? {
-        val jpaUser = userRepository.findById(id.id) ?: return null
+        val jpaUser = userRepository.findById(id.id)
         if (jpaUser.isEmpty) {
             return null
         }
