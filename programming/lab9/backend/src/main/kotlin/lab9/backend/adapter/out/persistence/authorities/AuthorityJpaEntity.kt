@@ -9,17 +9,17 @@ import jakarta.persistence.Table
 import lab9.backend.adapter.out.persistence.user.UserJpaEntity
 
 @Entity
-@Table(name="authorizations")
+@Table(name = "authorizations")
 data class AuthorityJpaEntity(
     @EmbeddedId
-    val id: AuthorityEntityPK,
+    val id: AuthorityEntityPK?,
     @ManyToOne
     @MapsId("ownerId")
-    @JoinColumn(name="owner_id")
+    @JoinColumn(name = "owner_id")
     val owner: UserJpaEntity,
     @ManyToOne
     @MapsId("authorizedId")
-    @JoinColumn(name="authorized_it")
+    @JoinColumn(name = "authorized_id")
     val authorizedTo: UserJpaEntity,
     val canEdit: Boolean,
     val canDelete: Boolean

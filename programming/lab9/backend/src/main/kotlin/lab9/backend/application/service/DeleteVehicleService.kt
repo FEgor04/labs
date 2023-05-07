@@ -10,6 +10,7 @@ import lab9.backend.application.port.out.vehicle.GetVehiclesPort
 import lab9.backend.domain.Event
 import lab9.backend.domain.User
 import lab9.backend.domain.Vehicle
+import lab9.backend.logger.KCoolLogger
 import org.springframework.stereotype.Service
 
 @Service

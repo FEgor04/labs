@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 interface AuthoritiesRepository : JpaRepository<AuthorityJpaEntity, AuthorityEntityPK> {
     fun getAllByAuthorizedToIdAndCanDeleteIs(authorizedToId: Int, canDelete: Boolean): List<AuthorityJpaEntity>
     fun getAllByAuthorizedToIdAndCanEditIs(authorizedToId: Int, canEdit: Boolean): List<AuthorityJpaEntity>
+    fun findFirstByAuthorizedToIdIsAndOwnerIdIs(authorizedToId: Int, ownerId: Int): AuthorityJpaEntity?
 }

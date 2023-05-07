@@ -8,5 +8,5 @@ import java.util.*
 @Repository
 interface UserRepository: PagingAndSortingRepository<UserJpaEntity, Int>, JpaRepository<UserJpaEntity, Int> {
     fun findByUsername(username: String): UserJpaEntity?
-    override fun findById(id: Int): Optional<UserJpaEntity>
+    fun findFirstById(id: Int): UserJpaEntity?
 }

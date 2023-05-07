@@ -22,7 +22,6 @@ data class UserJpaEntity(
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     val givenAuthorityTo: Set<AuthorityJpaEntity>
 ) {
-
     fun toDomain(): User {
         return if (id != null) {
             User.withID(

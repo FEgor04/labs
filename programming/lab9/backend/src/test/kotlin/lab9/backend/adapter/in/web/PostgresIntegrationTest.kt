@@ -25,21 +25,23 @@ open class PostgresIntegrationTest(
     protected open val vehicleRepository: VehicleRepository,
 ) {
     fun createNewUser(username: String, password: String): UserJpaEntity {
-        return userRepository.save(UserJpaEntity(null, username, password, emptySet(), emptySet(), emptySet()))
+        return userRepository.saveAndFlush(UserJpaEntity(null, username, password, emptySet(), emptySet(), emptySet()))
     }
 
     fun createRandomVehicle(owner: UserJpaEntity): VehicleJpaEntity {
-        return vehicleRepository.save(VehicleJpaEntity(
-            null,
-            name = Random.nextInt().toString(),
-            x = 1,
-            y = 1,
-            creationDate = LocalDate.now(),
-            enginePower = 1.0,
-            vehicleType = Vehicle.VehicleType.BOAT,
-            fuelType = Vehicle.FuelType.ANTIMATTER,
-            creator = owner
-        ))
+        return vehicleRepository.saveAndFlush(
+            VehicleJpaEntity(
+                null,
+                name = Random.nextInt().toString(),
+                x = 1,
+                y = 1,
+                creationDate = LocalDate.now(),
+                enginePower = 1.0,
+                vehicleType = Vehicle.VehicleType.BOAT,
+                fuelType = Vehicle.FuelType.ANTIMATTER,
+                creator = owner
+            )
+        )
     }
 
     companion object {
@@ -64,7 +66,9 @@ open class PostgresIntegrationTest(
                 "spring.datasource.username=${postgresContainer.username}",
                 "spring.datasource.password=${postgresContainer.password}",
                 "spring.datasource-driver-class=${postgresContainer.driverClassName}",
-                "spring.jpa.hibernate.ddl-auto=update"
+                "spring.jpa.hibernate.ddl-auto=update",
+                "spring.jpa.show-sql=true",
+                "spring.jpa.properties.hibernate.format_sql=true"
             ).applyTo(applicationContext.environment);
         }
     }
