@@ -2,12 +2,21 @@ import {observer} from "mobx-react";
 import {Button, Form, Input, InputNumber, Select} from "antd";
 import {useTranslation} from "react-i18next";
 import {PossibleFuelTypes, PossibleVehicleTypes} from "../../api/defs/VehiclesService.tsx";
+import globalStore from "../../store";
 
 const CreateNewForm = observer(() => {
     const {t} = useTranslation()
+    const {vehicleStore} = globalStore
 
     const handleFinish = (values: any) => {
-        console.log(values)
+        vehicleStore.createVehicle({
+            name: values.name,
+            enginePower: values.enginePower,
+            fuelType: values.fuelType,
+            vehicleType: values.vehicleType,
+            x: values.x,
+            y: values.y
+        })
     }
 
     return (

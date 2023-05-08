@@ -12,4 +12,5 @@ data class GetVehiclesRequest(
     @Min(0)
     @Max(100)
     val pageSize: Int = 10,
+    val sorting: GetVehiclesSorting,
 )

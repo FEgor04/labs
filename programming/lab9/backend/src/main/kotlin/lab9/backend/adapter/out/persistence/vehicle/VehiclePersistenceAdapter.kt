@@ -11,6 +11,7 @@ import lab9.backend.common.PersistenceAdapter
 import lab9.backend.domain.Vehicle
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import java.time.LocalDate
 
 @PersistenceAdapter
@@ -18,12 +19,37 @@ class VehiclePersistenceAdapter(
     private val vehicleRepository: VehicleRepository,
 ) : GetVehiclesPort, CreateVehiclePort, DeleteVehiclePort {
     override fun getVehicles(query: GetVehiclesQuery): GetVehiclesResponse {
-        val page = vehicleRepository.findAll(PageRequest.of(query.pageNumber, query.pageSize))
+        val sortDirection: Sort.Direction = if (query.sorting.asc) {
+            Sort.Direction.ASC
+        } else {
+            Sort.Direction.DESC
+        }
+        val page = vehicleRepository.findAll(
+            PageRequest.of(
+                query.pageNumber,
+                query.pageSize,
+                Sort.by(sortDirection, vehicleFieldToJpaColumn(query.sorting.field))
+            )
+        )
         return GetVehiclesResponse(
             vehicles = page.content.map { it.toDomainEntity() }.toList(),
             totalElements = page.totalElements.toInt(),
             totalPages = page.totalPages
         )
+    }
+
+    private fun vehicleFieldToJpaColumn(field: Vehicle.Field): String {
+        return when(field) {
+            Vehicle.Field.ID -> "id"
+            Vehicle.Field.NAME -> "name"
+            Vehicle.Field.X -> "x"
+            Vehicle.Field.Y -> "y"
+            Vehicle.Field.CREATION_DATE -> "creationDate"
+            Vehicle.Field.ENGINE_POWER -> "enginePower"
+            Vehicle.Field.VEHICLE_TYPE -> "vehicleType"
+            Vehicle.Field.FUEL_TYPE -> "fuelType"
+            Vehicle.Field.CREATOR_ID -> "creator_id"
+        }
     }
 
     override fun getVehicle(id: Vehicle.VehicleID): Vehicle? {

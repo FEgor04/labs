@@ -25,7 +25,10 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import kotlin.math.min
+import kotlin.random.Random
 
 const val mockedUserName = "getVehiclesUser"
 const val mockedUserPassword = "test"
@@ -120,7 +123,11 @@ class GetVehiclesControllerIntegrationTest(
             for (pageNumber in 0..(vehicles.size).div(pageSize) step 5) {
                 val expectedVehicles =
                     vehicles.subList(pageNumber * pageSize, min((pageNumber + 1) * pageSize, vehicles.size))
-                        .map { objectAdapter.vehicleToResponse(it.toDomainEntity()) }
+                        .map {
+                            objectAdapter
+                                .vehicleToResponse(it.toDomainEntity())
+                                .copy(canEdit = true, canDelete = true)
+                        }
                 val expectedResponse = ShowVehiclesResponse(
                     vehicles = expectedVehicles,
                     totalPages = (vehicles.size + pageSize - 1).div(pageSize), // округление вверх
@@ -142,23 +149,62 @@ class GetVehiclesControllerIntegrationTest(
         }
     }
 
+    @Test
+    @Transactional
+    @WithMockUser(username = mockedUserName, password = mockedUserPassword)
+    fun `sort by x desc`() {
+        val vehicles = generateVehicles().sortedByDescending { it.x }
+        assert(vehicleRepository.count() == vehicles.size.toLong())
+        val pageNumber = 1;
+        val pageSize = 50
+        val expectedVehicles =
+            vehicles.subList(pageNumber * pageSize, min((pageNumber + 1) * pageSize, vehicles.size))
+                .map { objectAdapter.vehicleToResponse(it.toDomainEntity()).copy(canEdit = true, canDelete = true) }
+        val expectedResponse = ShowVehiclesResponse(
+            vehicles = expectedVehicles,
+            totalPages = (vehicles.size + pageSize - 1).div(pageSize), // округление вверх
+            totalElements = vehicles.size
+        )
+        val expectedJson = Json.encodeToString(expectedResponse)
+        mockMvc.get("/api/vehicles") {
+            param("pageSize", pageSize.toString())
+            param("pageNumber", pageNumber.toString())
+            param("sortingColumn", "X")
+            param("ascending", "false")
+        }.andExpect {
+            content {
+                json(expectedJson)
+            }
+            status {
+                is2xxSuccessful()
+            }
+        }
+    }
+
     @BeforeEach
     fun `insert mock user`() {
         mockedUser = userRepository.save(mockedUser)
     }
 
+    @AfterEach( )
+    fun cleanUp() {
+       vehicleRepository.deleteAll()
+       userRepository.deleteAll()
+    }
+
     private fun generateVehicles(owner: UserJpaEntity = mockedUser, number: Int = 1000): List<VehicleJpaEntity> {
+        val random = Random(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
         val vehicles = mutableListOf<VehicleJpaEntity>()
-        repeat(number) { i ->
+        repeat(number) {
             val newVehicle = vehicleRepository.save(
                 VehicleJpaEntity(
                     null,
-                    i.toString(),
+                    random.nextInt().toString(),
                     owner,
-                    i,
-                    i.toLong(),
+                    random.nextInt(-400, 10000),
+                    random.nextLong(),
                     LocalDate.now(),
-                    i * 1.0,
+                    random.nextDouble(0.0, 10000.0),
                     Vehicle.VehicleType.BICYCLE,
                     Vehicle.FuelType.ANTIMATTER,
                 )
@@ -172,5 +218,4 @@ class GetVehiclesControllerIntegrationTest(
     fun `clean up mock user`() {
         userRepository.delete(mockedUser)
     }
-
 }

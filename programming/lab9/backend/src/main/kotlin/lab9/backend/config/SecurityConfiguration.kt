@@ -55,12 +55,10 @@ class SecurityConfiguration {
                 .headers {
                     it.frameOptions().sameOrigin().httpStrictTransportSecurity().disable()
                 }
-                .httpBasic { basic ->
-                }
                 .authorizeHttpRequests { request ->
                     request
                             .requestMatchers("/api/signup").permitAll()
-                            .anyRequest().permitAll()
+                            .anyRequest().authenticated()
                 }
                 .formLogin { form ->
                     form

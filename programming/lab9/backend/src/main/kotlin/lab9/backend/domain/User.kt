@@ -1,5 +1,7 @@
 package lab9.backend.domain
 
+import kotlinx.serialization.Serializable
+
 data class User private constructor(
     val id: UserID,
     val username: String,
@@ -56,6 +58,7 @@ data class User private constructor(
         )
     }
 
+    @Serializable
     data class UserID(
         val id: Int
     ) {

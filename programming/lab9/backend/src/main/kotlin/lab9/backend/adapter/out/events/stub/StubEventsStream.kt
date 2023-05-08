@@ -10,7 +10,7 @@ import lab9.backend.domain.Event
 import lab9.backend.logger.KCoolLogger
 import org.springframework.stereotype.Component
 
-@Component
+//@Component
 class StubEventsStream : SendEventPort, SubscribeToEventsPort {
     val logger by KCoolLogger()
     val flow: MutableSharedFlow<Event> =

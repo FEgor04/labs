@@ -24,11 +24,18 @@ class WebObjectAdapter {
         )
     }
 
-    fun showVehiclesRequestToQuery(request: GetVehiclesRequest): GetVehiclesQuery {
-        return GetVehiclesQuery(request.pageNumber, request.pageSize)
+    fun sortingRequestToQuery(sorting: GetVehiclesSorting): GetVehiclesQuery.Sorting {
+        return GetVehiclesQuery.Sorting(
+            Vehicle.Field.valueOf(sorting.sortingColumn.uppercase()),
+            sorting.ascending,
+        )
     }
 
-    fun createVehicleRequestToQuery(request: CreateVehicleRequest, creatorId: User.UserID) : CreateVehicleQuery {
+    fun showVehiclesRequestToQuery(request: GetVehiclesRequest): GetVehiclesQuery {
+        return GetVehiclesQuery(request.pageNumber, request.pageSize, sortingRequestToQuery(request.sorting))
+    }
+
+    fun createVehicleRequestToQuery(request: CreateVehicleRequest, creatorId: User.UserID): CreateVehicleQuery {
         return CreateVehicleQuery(
             request.name,
             coordinates = Vehicle.Coordinates(request.x, request.y),

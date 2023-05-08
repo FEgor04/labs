@@ -1,6 +1,6 @@
 import AxiosVehicleService from "../api/implementation/axios/AxiosVehicleService.ts";
 import {action, makeAutoObservable, observable} from "mobx";
-import {Filter, GetVehiclesResponse, VehiclesService} from "../api/defs/VehiclesService.tsx";
+import {CreateVehicleRequest, Filter, GetVehiclesResponse, VehiclesService} from "../api/defs/VehiclesService.tsx";
 
 export default class VehicleStore {
     private service: VehiclesService = new AxiosVehicleService()
@@ -33,6 +33,14 @@ export default class VehicleStore {
         this.filter = filter
     }
 
+    createVehicle(request: CreateVehicleRequest) {
+        this.service.createVehicle(request).then(() => {
+            console.log("Created new vehicle")
+        }).catch((e) => {
+            console.log(`Could not create vehicle: ${e}`)
+        })
+    }
+
     clearFilters() {
         this.filter = null
     }
@@ -41,6 +49,7 @@ export default class VehicleStore {
         if(!direction) {
             this.setSortingColumn(0)
             this.setIsSortingAscending(true)
+            this.updateData()
         } else {
             this.setSortingColumn(column)
             this.setIsSortingAscending(direction == "ascend")

@@ -1,5 +1,6 @@
 export interface VehiclesService {
     getVehicles(request: GetVehiclesRequest): Promise<GetVehiclesResponse>
+    createVehicle(request: CreateVehicleRequest): Promise<void>
 }
 
 export type GetVehiclesRequest = {
@@ -8,6 +9,15 @@ export type GetVehiclesRequest = {
     sortingColumn: number
     isAscending: boolean,
     filter?: Filter | null
+}
+
+export type CreateVehicleRequest = {
+    name: string
+    x: number
+    y: number | null
+    enginePower: number
+    vehicleType: string
+    fuelType: string
 }
 
 export type GetVehiclesResponse = {

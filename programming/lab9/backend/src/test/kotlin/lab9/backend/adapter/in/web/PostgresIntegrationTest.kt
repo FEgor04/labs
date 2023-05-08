@@ -67,8 +67,8 @@ open class PostgresIntegrationTest(
                 "spring.datasource.password=${postgresContainer.password}",
                 "spring.datasource-driver-class=${postgresContainer.driverClassName}",
                 "spring.jpa.hibernate.ddl-auto=update",
-                "spring.jpa.show-sql=true",
-                "spring.jpa.properties.hibernate.format_sql=true"
+//                "spring.jpa.show-sql=true",
+//                "spring.jpa.properties.hibernate.format_sql=true"
             ).applyTo(applicationContext.environment);
         }
     }

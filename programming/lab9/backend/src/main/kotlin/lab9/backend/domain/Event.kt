@@ -1,15 +1,21 @@
 package lab9.backend.domain
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 sealed class Event {
+    @Serializable
     data class NewVehicle(
         val vehicleId: Vehicle.VehicleID,
     ) :
         Event()
 
+    @Serializable
     data class VehicleDeleted(
         val vehicleId: Vehicle.VehicleID, val deletedBy: User.UserID,
     ) : Event()
 
+    @Serializable
     data class AccessGranted(
         val byWhom: User.UserID,
         val toWho: User.UserID,

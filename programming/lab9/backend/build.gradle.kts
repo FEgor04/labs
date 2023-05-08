@@ -40,6 +40,7 @@ dependencies {
     implementation("org.springframework.integration:spring-integration-webflux")
     implementation("org.springframework.integration:spring-integration-websocket")
     implementation("org.springframework.kafka:spring-kafka")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation(kotlin("test"))

@@ -4,5 +4,5 @@ import lab9.backend.domain.Event
 
 @FunctionalInterface
 interface SendEventPort {
-    fun send(notification: Event)
+    fun send(event: Event)
 }
