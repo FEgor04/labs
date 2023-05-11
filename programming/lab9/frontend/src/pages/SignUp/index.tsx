@@ -32,24 +32,24 @@ const SignUpPage = observer(() => {
             >
 
                 <Form.Item
-                    label={t('username')}
+                    label={t('signUp.username')}
                     name="username"
-                    rules={[{required: true, message: t('usernameMessage')!}]}
+                    rules={[{required: true, message: t('signUp.usernameMessage')!}]}
                 >
                     <Input/>
                 </Form.Item>
 
                 <Form.Item
-                    label={t('password')}
+                    label={t('signUp.password')}
                     name="password"
-                    rules={[{required: true, message: t('passwordMessage')!}]}
+                    rules={[{required: true, message: t('signUp.passwordMessage')!}]}
                 >
                     <Input.Password/>
                 </Form.Item>
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
-                        {t('signUp')}
+                        {t('signUp.submit')}
                     </Button>
                 </Form.Item>
 
@@ -58,7 +58,7 @@ const SignUpPage = observer(() => {
                 </p>
 
                 <p style={{alignContent: "center", textAlign: "center"}}>
-                    {t("alreadyHaveAnAccount")} <NavLink to="/signin">Sign in!</NavLink>
+                    {t("signUp.alreadyHaveAnAccount")} <NavLink to="/signin">{t('signUp.signIn')}</NavLink>
                 </p>
 
             </Form>

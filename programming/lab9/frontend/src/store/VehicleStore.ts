@@ -1,9 +1,12 @@
 import AxiosVehicleService from "../api/implementation/axios/AxiosVehicleService.ts";
 import {action, makeAutoObservable, observable} from "mobx";
 import {CreateVehicleRequest, Filter, GetVehiclesResponse, VehiclesService} from "../api/defs/VehiclesService.tsx";
+import UpdateVehicleStore from "./UpdateVehicleStore.ts";
+import {notification} from "antd";
+import globalStore from "./index.ts";
 
 export default class VehicleStore {
-    private service: VehiclesService = new AxiosVehicleService()
+    private vehiclesService: VehiclesService = new AxiosVehicleService()
     currentPage = 1
     pageSize = 10
     vehicles: GetVehiclesResponse | null = null
@@ -12,6 +15,8 @@ export default class VehicleStore {
     sortColumnNumber = 0
     isSortAscending = true
     filter: Filter | null = null
+    updateVehicleStore: UpdateVehicleStore = new UpdateVehicleStore(this.vehiclesService)
+
 
 
     constructor() {
@@ -25,6 +30,7 @@ export default class VehicleStore {
             currentPage: observable,
             addFilter: action.bound,
             clearFilters: action.bound,
+            deleteVehicle: action.bound,
             filter: observable,
         })
     }
@@ -34,8 +40,7 @@ export default class VehicleStore {
     }
 
     createVehicle(request: CreateVehicleRequest) {
-        this.service.createVehicle(request).then(() => {
-            console.log("Created new vehicle")
+        this.vehiclesService.createVehicle(request).then(() => {
         }).catch((e) => {
             console.log(`Could not create vehicle: ${e}`)
         })
@@ -54,11 +59,9 @@ export default class VehicleStore {
             this.setSortingColumn(column)
             this.setIsSortingAscending(direction == "ascend")
         }
-        console.log(`Set sorting to ${this.sortColumnNumber} ${this.isSortAscending}`)
     }
 
     setCurrentPage(page: number) {
-        console.log(`Current page is ${this.currentPage}. Setting it to ${page}`)
         this.currentPage = page
     }
 
@@ -88,7 +91,7 @@ export default class VehicleStore {
 
     updateData() {
         this.setIsLoading(true)
-        this.service.getVehicles({
+        this.vehiclesService.getVehicles({
             pageNumber: this.currentPage - 1,
             pageSize: this.pageSize,
             isAscending: this.isSortAscending,
@@ -104,6 +107,12 @@ export default class VehicleStore {
     }
 
     deleteVehicle(vehicleId: number) {
-        console.log(`Deleting vehicle ${vehicleId}`)
+        this.vehiclesService.deleteVehicle(vehicleId).then(r => {
+        }).catch(e => {
+            notification.open({
+                message: "Ошибка!",
+                type: "error"
+            })
+        })
     }
 }

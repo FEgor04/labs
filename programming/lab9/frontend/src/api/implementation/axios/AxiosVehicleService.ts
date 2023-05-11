@@ -2,7 +2,7 @@ import {apiInstance} from "./AxiosViewerService.ts";
 import {
     CreateVehicleRequest,
     GetVehiclesRequest,
-    GetVehiclesResponse,
+    GetVehiclesResponse, Vehicle,
     VehiclesService
 } from "../../defs/VehiclesService.tsx";
 
@@ -18,7 +18,6 @@ const columnNumberToName = (columnNumber: number) => {
     columnNamesMap.set(7, "VEHICLE_TYPE")
     columnNamesMap.set(8, "CREATOR_ID")
     if(columnNamesMap.has(columnNumber)) {
-        console.log(columnNumber, columnNamesMap.get(columnNumber))
         return columnNamesMap.get(columnNumber)
     }
     return "ID"
@@ -26,8 +25,6 @@ const columnNumberToName = (columnNumber: number) => {
 
 export default class AxiosVehicleService implements VehiclesService {
     async getVehicles(request: GetVehiclesRequest): Promise<GetVehiclesResponse> {
-        console.log(JSON.stringify(request))
-        console.log(columnNumberToName(request.sortingColumn))
         const newParams = {
             pageSize: request.pageSize,
             pageNumber: request.pageNumber,
@@ -35,7 +32,6 @@ export default class AxiosVehicleService implements VehiclesService {
             ascending: request.isAscending,
             filter: JSON.stringify(request.filter),
         }
-        console.log(`New params is: ${JSON.stringify(newParams)}`)
         const response = await apiInstance.get<GetVehiclesResponse>("/vehicles", {
             params: newParams,
             // paramsSerializer: params => {
@@ -47,8 +43,22 @@ export default class AxiosVehicleService implements VehiclesService {
 
     async createVehicle(request: CreateVehicleRequest): Promise<void> {
         const response = await apiInstance.post("/vehicles", request)
-        console.log(response)
         return
+    }
+
+    async deleteVehicle(vehicleId: number): Promise<void> {
+        const response = await apiInstance.delete(`/vehicles/${vehicleId}`)
+        return
+    }
+
+    async updateVehicle(vehicleId: number, data: CreateVehicleRequest): Promise<void> {
+        const response = await apiInstance.put(`/vehicles/${vehicleId}`, data)
+        return
+    }
+
+    async getVehicle(vehicleId: number): Promise<Vehicle> {
+        const response = await apiInstance.get(`/vehicles/${vehicleId}`)
+        return response.data
     }
 
 }

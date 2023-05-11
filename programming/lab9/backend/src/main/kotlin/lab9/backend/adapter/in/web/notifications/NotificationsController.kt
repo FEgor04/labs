@@ -1,45 +1,76 @@
 package lab9.backend.adapter.`in`.web.notifications
 
-import jakarta.servlet.http.HttpServletRequest
-import lab9.backend.domain.Event
-import org.springframework.http.MediaType
-import org.springframework.kafka.annotation.KafkaListener
-import org.springframework.scheduling.annotation.Async
-import org.springframework.stereotype.Controller
+import jakarta.annotation.PostConstruct
+import kotlinx.coroutines.flow.*
+import kotlinx.serialization.encodeToString
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
+import lab9.backend.application.port.`in`.notifications.GetNotificationsFlowUseCase
+import lab9.backend.application.port.`in`.user.GetUserUseCase
+import lab9.backend.domain.Notification
+import lab9.backend.domain.User
+import lab9.backend.logger.KCoolLogger
+import org.apache.kafka.common.utils.CopyOnWriteMap
+import org.springframework.context.annotation.Bean
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
-import java.util.concurrent.CopyOnWriteArraySet
+import java.security.Principal
+import java.util.*
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.Executors
 
 @RestController
-class NotificationsController {
-    private val clients: MutableSet<SseEmitter> = CopyOnWriteArraySet()
+@RequestMapping("/api")
+class NotificationsController(
+        private val getNotificationsFlowUseCase: GetNotificationsFlowUseCase,
+        private val getUserUseCase: GetUserUseCase,
+) {
+    private val logger by KCoolLogger()
+    private val listenThread = Executors.newSingleThreadExecutor()
+    val clients: MutableMap<UUID, MutableSharedFlow<String>> = CopyOnWriteMap()
 
-    @RequestMapping("/notifications-stream", method = [RequestMethod.GET])
-    fun events(request: HttpServletRequest): SseEmitter {
-        val emitter = SseEmitter()
-        clients.add(emitter)
-        emitter.onTimeout {
-            clients.remove(emitter)
+    @GetMapping("/notifications-stream")
+    fun streamNotifications(principal: Principal?): Flow<String> {
+        val uuid = UUID.randomUUID()
+        val user: User? = if (principal != null) {
+            getUserUseCase.getUserByUsername(principal.name)
+        } else {
+            null
         }
-        emitter.onCompletion {
-            clients.remove(emitter)
+        logger.info("New connection on notifications stream. User: ${user?.id}@$uuid")
+        val flow = MutableSharedFlow<String>()
+        clients[uuid] = flow
+        flow.onCompletion {
+            logger.info("Flow $uuid is complete")
         }
-        return emitter
+        return flow.asSharedFlow()
     }
 
-    @Async
-    @KafkaListener()
-    fun handleEvent(event: Event) {
-        val deadEmitters: MutableList<SseEmitter> = ArrayList()
-        clients.forEach { emitter ->
-            try {
-                emitter.send(event, MediaType.APPLICATION_JSON)
-            } catch (ignore: Exception) {
-                deadEmitters.add(emitter)
+    @PostConstruct
+    fun startListening() {
+        listenThread.execute {
+            runBlocking {
+                getNotificationsFlowUseCase.getNotificationsFlow().collect { notification ->
+                    val deadClients = CopyOnWriteArrayList<UUID>()
+                    clients.forEach {
+                        val client = it.key
+                        val flow = it.value
+                        try {
+                            flow.emit(notificationJsonEncoder(notification))
+                        }
+                        catch(e: Exception) {
+                            logger.warn("Client $client is dead. Reason: $e")
+                            deadClients.add(client)
+                        }
+                    }
+                    deadClients.forEach {
+                        clients.remove(it)
+                    }
+                }
             }
         }
-        clients.removeAll(deadEmitters.toSet())
     }
+
+    private fun notificationJsonEncoder(notification: Notification): String = Json.encodeToString(notification)
 }

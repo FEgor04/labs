@@ -3,7 +3,7 @@ package lab9.backend.application.service
 import lab9.backend.application.port.`in`.vehicles.CreateVehicleQuery
 import lab9.backend.application.port.`in`.vehicles.CreateVehicleUseCase
 import lab9.backend.application.port.out.vehicle.CreateVehiclePort
-import lab9.backend.application.port.out.notification.SendEventPort
+import lab9.backend.application.port.out.events.SendEventPort
 import lab9.backend.domain.Event
 import lab9.backend.domain.Vehicle
 import org.springframework.stereotype.Service
@@ -26,9 +26,12 @@ class CreateVehicleService(
                 query.fuelType,
             )
         )
-        sendEventPort.send(Event.NewVehicle(
-            newVehicle.id,
-        ))
+        sendEventPort.send(
+            Event.NewVehicle(
+                newVehicle.id,
+                query.creatorID
+            )
+        )
         return newVehicle
     }
 }

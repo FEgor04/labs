@@ -1,9 +1,11 @@
 import {observer} from "mobx-react";
 import globalStore from "../../store";
-import {Button, Dropdown, MenuProps} from "antd";
+import { Button, Dropdown, MenuProps} from "antd";
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const UserInformation = observer(() => {
+    const {t} = useTranslation()
     const {viewer, isSignedIn} = globalStore.viewerStore
     const navigate = useNavigate()
 
@@ -13,21 +15,21 @@ const UserInformation = observer(() => {
                 navigate("/signin")
             }}
             >
-                Sign In
+                {t('header.logIn')}
             </Button>
         )
     }
 
     const items: MenuProps['items'] = [
         {
-            label: "Log Out",
+            label: t('header.logOut'),
             key: "logOut",
             onClick: () => {
                 console.log("Logging out")
                 globalStore.viewerStore.logOut()
                 navigate("/")
             }
-        }
+        },
     ]
 
     const menuProps = {

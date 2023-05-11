@@ -25,7 +25,7 @@ data class VehicleJpaEntity(
         @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Int? = null,
-        @Column(unique = true, nullable = false, name = "name")
+        @Column(unique = false, nullable = false, name = "name")
     @NotBlank
     val name: String,
         @ManyToOne(optional = false, fetch = FetchType.LAZY)

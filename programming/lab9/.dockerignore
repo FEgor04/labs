@@ -1,0 +1,15 @@
+common/build
+backend/build
+frontend/node_modules
+.idea
+frontend/.idea
+docker-compose.yml
+.dockerignore
+.gitignore
+.jpb
+build
+gradlew
+.envrc
+.env
+kotlin-js-store
+.gradle

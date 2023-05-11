@@ -7,11 +7,11 @@ const HeaderLinks = () => {
 
     const items: MenuProps['items'] = [
         {
-            label: t('vehiclesPage'),
+            label: t('header.vehicles'),
             key: "vehicles",
         },
         {
-            label: "Users",
+            label: t('header.users'),
             key: "users"
         },
     ]

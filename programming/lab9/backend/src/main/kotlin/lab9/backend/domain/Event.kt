@@ -7,6 +7,7 @@ sealed class Event {
     @Serializable
     data class NewVehicle(
         val vehicleId: Vehicle.VehicleID,
+        val authorID: User.UserID,
     ) :
         Event()
 
@@ -16,10 +17,16 @@ sealed class Event {
     ) : Event()
 
     @Serializable
-    data class AccessGranted(
+    data class AccessChanged(
         val byWhom: User.UserID,
         val toWho: User.UserID,
         val canEdit: Boolean,
         val canDelete: Boolean
     ) : Event()
+
+    @Serializable
+    data class VehicleUpdated(
+        val vehicleID: Vehicle.VehicleID,
+        val actorId: User.UserID,
+    ): Event()
 }

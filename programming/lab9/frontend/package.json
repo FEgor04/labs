@@ -6,16 +6,19 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@react-buddy/ide-toolbox": "^2.3.1",
     "@react-buddy/palette-antd": "^5.3.0",
     "@types/qs": "^6.9.7",
+    "@types/rsocket-core": "^0.0.7",
+    "@types/rsocket-websocket-client": "^0.0.4",
     "antd": "^5.4.6",
     "axios": "^1.4.0",
     "i18next": "^22.4.15",
+    "i18next-browser-languagedetector": "^7.0.1",
+    "i18next-http-backend": "^2.2.0",
     "mobx": "^6.9.0",
     "mobx-react": "^7.6.0",
     "qs": "^6.11.1",
@@ -23,17 +26,16 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^12.2.2",
     "react-router": "^6.10.0",
-    "react-router-dom": "^6.10.0"
+    "react-router-dom": "^6.10.0",
+    "rsocket-core": "^1.0.0-alpha.3",
+    "rsocket-flowable": "^0.0.27",
+    "rsocket-tcp-client": "^1.0.0-alpha.3",
+    "rsocket-websocket-client": "^1.0.0-alpha.3"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
-    "@typescript-eslint/eslint-plugin": "^5.57.1",
-    "@typescript-eslint/parser": "^5.57.1",
     "@vitejs/plugin-react-swc": "^3.0.0",
-    "eslint": "^8.38.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.3.4",
     "typescript": "^5.0.2",
     "vite": "^4.3.2"
   }

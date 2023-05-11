@@ -4,16 +4,21 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import lab9.backend.application.port.out.notification.SendEventPort
-import lab9.backend.application.port.out.notification.SubscribeToEventsPort
+import lab9.backend.application.port.out.events.SendEventPort
+import lab9.backend.application.port.out.events.SubscribeToEventsPort
 import lab9.backend.domain.Event
 import lab9.backend.logger.KCoolLogger
+import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Component
 
 //@Component
+//@Primary
+/**
+ * In-memory stream для ивентов
+ */
 class StubEventsStream : SendEventPort, SubscribeToEventsPort {
-    val logger by KCoolLogger()
-    val flow: MutableSharedFlow<Event> =
+    private val logger by KCoolLogger()
+    private val flow: MutableSharedFlow<Event> =
         MutableSharedFlow(
             extraBufferCapacity = 1000,
             onBufferOverflow = BufferOverflow.DROP_OLDEST

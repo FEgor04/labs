@@ -3,10 +3,13 @@ package lab9.backend.adapter.out.persistence.vehicle
 import lab9.backend.adapter.out.persistence.user.UserJpaEntity
 import lab9.backend.application.port.`in`.vehicles.GetVehiclesQuery
 import lab9.backend.application.port.`in`.vehicles.GetVehiclesResponse
+import lab9.backend.application.port.`in`.vehicles.UpdateVehicleQuery
 import lab9.backend.application.port.`in`.vehicles.VehicleAlreadyExistsException
+import lab9.backend.application.port.`in`.vehicles.VehicleNotFoundException
 import lab9.backend.application.port.out.vehicle.CreateVehiclePort
 import lab9.backend.application.port.out.vehicle.DeleteVehiclePort
 import lab9.backend.application.port.out.vehicle.GetVehiclesPort
+import lab9.backend.application.port.out.vehicle.UpdateVehiclePort
 import lab9.backend.common.PersistenceAdapter
 import lab9.backend.domain.Vehicle
 import org.springframework.dao.DataIntegrityViolationException
@@ -17,7 +20,7 @@ import java.time.LocalDate
 @PersistenceAdapter
 class VehiclePersistenceAdapter(
     private val vehicleRepository: VehicleRepository,
-) : GetVehiclesPort, CreateVehiclePort, DeleteVehiclePort {
+) : GetVehiclesPort, CreateVehiclePort, DeleteVehiclePort, UpdateVehiclePort {
     override fun getVehicles(query: GetVehiclesQuery): GetVehiclesResponse {
         val sortDirection: Sort.Direction = if (query.sorting.asc) {
             Sort.Direction.ASC
@@ -39,7 +42,7 @@ class VehiclePersistenceAdapter(
     }
 
     private fun vehicleFieldToJpaColumn(field: Vehicle.Field): String {
-        return when(field) {
+        return when (field) {
             Vehicle.Field.ID -> "id"
             Vehicle.Field.NAME -> "name"
             Vehicle.Field.X -> "x"
@@ -79,6 +82,24 @@ class VehiclePersistenceAdapter(
 
     override fun delete(vehicleID: Vehicle.VehicleID) {
         return vehicleRepository.deleteById(vehicleID.id)
+    }
+
+    override fun updateVehicle(query: UpdateVehicleQuery): Vehicle {
+        val previousVehicle = vehicleRepository.findFirstById(query.vehicleID.id) ?: throw VehicleNotFoundException()
+        val newVehicle = vehicleRepository.save(
+            VehicleJpaEntity(
+                id = previousVehicle.id,
+                creator = previousVehicle.creator,
+                name = query.name,
+                x = query.coordinates.x,
+                y = query.coordinates.y,
+                creationDate = previousVehicle.creationDate,
+                vehicleType = query.vehicleType,
+                fuelType = query.fuelType,
+                enginePower = query.enginePower
+            )
+        )
+        return newVehicle.toDomainEntity()
     }
 
 }

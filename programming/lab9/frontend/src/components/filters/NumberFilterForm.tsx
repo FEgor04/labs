@@ -7,11 +7,9 @@ const NumberFilterForm = (props: FilterDropdownProps, setNumberFilter: (filter: 
     const formRef = React.useRef<FormInstance>(null);
     const onFinish = (values: { lowerBound: number | null, upperBound: null }) => {
         if(!values.lowerBound && !values.upperBound ) {
-            console.log("Clearing filters")
             clearFilter()
             return
         }
-        console.log(values)
         setNumberFilter(new XFilter(values.lowerBound, values.upperBound))
         props.confirm({
             closeDropdown: true

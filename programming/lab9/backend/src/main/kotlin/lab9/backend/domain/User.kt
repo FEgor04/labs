@@ -10,7 +10,7 @@ data class User private constructor(
     val authorizedToDeleteBy: List<UserID>,
     val hasGivenAuthorizationToEditTo: List<UserID>,
     val hasGivenAuthorizationToDeleteTo: List<UserID>,
-) {
+): java.io.Serializable {
     fun hasID(): Boolean = id != UserID.NoID
 
     companion object {
@@ -61,7 +61,7 @@ data class User private constructor(
     @Serializable
     data class UserID(
         val id: Int
-    ) {
+    ): java.io.Serializable {
         companion object {
             val NoID = UserID(-1)
         }

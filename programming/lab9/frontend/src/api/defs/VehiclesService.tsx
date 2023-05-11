@@ -1,6 +1,13 @@
 export interface VehiclesService {
     getVehicles(request: GetVehiclesRequest): Promise<GetVehiclesResponse>
+
     createVehicle(request: CreateVehicleRequest): Promise<void>
+
+    deleteVehicle(vehicleId: number): Promise<void>
+
+    updateVehicle(vehicleId: number, data: CreateVehicleRequest): Promise<void>
+
+    getVehicle(vehicleId: number): Promise<Vehicle>
 }
 
 export type GetVehiclesRequest = {

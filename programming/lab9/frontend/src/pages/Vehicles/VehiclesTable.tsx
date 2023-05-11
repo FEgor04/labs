@@ -6,6 +6,7 @@ import {Vehicle} from "../../api/defs/VehiclesService.tsx";
 import NumberFilterForm from "../../components/filters/NumberFilterForm.tsx";
 import {Button, Space, Table, TableProps} from "antd";
 import {observer} from "mobx-react";
+import {useNavigate} from "react-router-dom";
 
 const VehiclesTable = observer(() => {
     const {isSignedIn} = globalStore.viewerStore
@@ -26,6 +27,7 @@ const VehiclesTable = observer(() => {
         clearFilters
     } = globalStore.vehicleStore
     const {t} = useTranslation()
+    const navigate = useNavigate()
 
 
     useEffect(() => {
@@ -37,14 +39,14 @@ const VehiclesTable = observer(() => {
     if (!isSignedIn) {
         return (
             <h1 style={{textAlign: "center"}}>
-                You need to sign in first
+                {t('table.needToSignIn')}
             </h1>
         )
     }
 
     const columns: ColumnsType<Vehicle> = [
         {
-            title: t('tableIdColumn'),
+            title: t('table.idColumn'),
             dataIndex: "id",
             key: "id",
             defaultSortOrder: "ascend",
@@ -54,7 +56,7 @@ const VehiclesTable = observer(() => {
             },
         },
         {
-            title: t('tableNameColumn'),
+            title: t('table.nameColumn'),
             dataIndex: "name",
             key: "name",
             sorter: (a, b, sortOrder) => {
@@ -63,7 +65,7 @@ const VehiclesTable = observer(() => {
             },
         },
         {
-            title: t('tableXColumn'),
+            title: t('table.xColumn'),
             dataIndex: "x",
             key: "x",
             render: (_, record) => (
@@ -76,7 +78,7 @@ const VehiclesTable = observer(() => {
             filterDropdown: props => NumberFilterForm(props, addFilter, clearFilters),
         },
         {
-            title: t('tableYColumn'),
+            title: t('table.yColumn'),
             dataIndex: "y",
             key: "y",
             render: (_, record) => (
@@ -94,7 +96,7 @@ const VehiclesTable = observer(() => {
             ]
         },
         {
-            title: t('tableCreationDateColumn'),
+            title: t('table.creationDateColumn'),
             dataIndex: "creationDate",
             key: "creationDate",
             render: (_, record) => (
@@ -106,7 +108,7 @@ const VehiclesTable = observer(() => {
             },
         },
         {
-            title: t('tableEnginePowerColumn'),
+            title: t('table.enginePowerColumn'),
             dataIndex: "enginePower",
             key: "enginePower",
             sorter: (a, b, sortOrder) => {
@@ -115,7 +117,7 @@ const VehiclesTable = observer(() => {
             },
         },
         {
-            title: t('tableFuelTypeColumn'),
+            title: t('table.fuelTypeColumn'),
             dataIndex: "fuelType",
             key: "fuelType",
             sorter: (a, b, sortOrder) => {
@@ -124,7 +126,7 @@ const VehiclesTable = observer(() => {
             },
         },
         {
-            title: t('tableVehicleTypeColumn'),
+            title: t('table.vehicleTypeColumn'),
             dataIndex: "vehicleType",
             key: "vehicleType",
             sorter: (a, b, sortOrder) => {
@@ -134,7 +136,7 @@ const VehiclesTable = observer(() => {
         },
 
         {
-            title: t('tableCreatorColumn'),
+            title: t('table.creatorColumn'),
             dataIndex: "creatorId",
             key: "creatorId",
             sorter: (a, b, sortOrder) => {
@@ -143,15 +145,21 @@ const VehiclesTable = observer(() => {
             },
         },
         {
-            title: t('tableActionColumn'),
+            title: t('table.actionColumn'),
             key: "action",
             render: (_, record) => (
                 <Space>
-                    <Button danger={true} onClick={() => {
+                    <Button disabled={!record.canDelete} danger={true} onClick={() => {
                         deleteVehicle(record.id)
                     }}
                     >
-                        Delete
+                        {t('table.actions.delete')}
+                    </Button>
+
+                    <Button disabled={!record.canEdit} type="primary" onClick={() => {
+                        navigate(`/vehicles/${record.id}`)
+                    }}>
+                        {t('table.actions.update')}
                     </Button>
                 </Space>
             )

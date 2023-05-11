@@ -1,0 +1,65 @@
+{
+  "header": {
+    "vehicles": "Vehicles",
+    "users": "Users",
+    "logIn": "Log In",
+    "logOut": "Log Out"
+  },
+  "signIn": {
+    "header": "Sign In",
+    "username": "Username",
+    "password": "Password",
+    "signUp": "Sign Up!",
+    "dontHaveAnAccount": "Dont have an account yet?",
+    "submit": "Sign In",
+    "usernameMessage": "Username should not be empty",
+    "passwordMessage": "Password should not be empty"
+  },
+  "signUp": {
+    "header": "Sign Up",
+    "username": "Username",
+    "password": "Password",
+    "signIn": "Sign In",
+    "alreadyHaveAnAccount": "Already have an account?",
+    "submit": "Sign Up",
+    "usernameMessage": "Username should not be empty",
+    "passwordMessage": "Password should not be empty"
+  },
+  "table": {
+    "idColumn": "ID",
+    "nameColumn": "Name",
+    "xColumn": "X",
+    "yColumn": "Y",
+    "creationDateColumn": "Creation Date",
+    "fuelTypeColumn": "Fuel Type",
+    "vehicleTypeColumn": "Vehicle Type",
+    "creatorColumn": "Creator",
+    "actionColumn": "Action",
+    "enginePowerColumn": "Engine Power",
+    "actions": {
+      "delete": "Delete",
+      "update": "Update"
+    },
+    "needToSignIn": "You need to sign in first!"
+  },
+  "update": "Update",
+  "delete": "Delete",
+  "notification": {
+    "accessChanged": {
+      "message": "Access Changed!",
+      "description": "User {{fromUser}} changed access of user {{toUser}}. Can edit: {{canEdit}}, can delete: {{canDelete}}"
+    },
+    "newVehicle": {
+      "message": "New Vehicle",
+      "description": "User {{authorId}} created a new vehicle with ID {{vehicleId}}"
+    },
+    "vehicleUpdated": {
+      "message": "New Vehicle",
+      "description": "User {{updatedBy}} updated a vehicle with ID {{vehicleId}}"
+    },
+    "vehicleDeleted": {
+      "message": "Deleted vehicle",
+      "description": "User {{deletedBy}} deleted a vehicle with ID {{vehicleId}}"
+    }
+  }
+}

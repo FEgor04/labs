@@ -1,24 +1,82 @@
 version: "3.9"
 services:
+
   postgres:
     image: postgres:13.3
     environment:
       POSTGRES_DB: "postgres"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
+    networks:
+      - backend
     ports:
       - "5432:5432"
-  kafka:
-    image: docker.io/bitnami/kafka:3.4
-    ports:
-      - "9092:9092"
-    volumes:
-      - "kafka_data:/bitnami"
-    environment:
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_INTER_BROKER_USER=user
-      - KAFKA_INTER_BROKER_PASSWORD=user
 
-volumes:
-  kafka_data:
-    driver: local
+  redis:
+    image: redis
+    networks:
+      - backend
+    ports:
+      - "6379:6379"
+
+  frontend:
+    build:
+      dockerfile: Frontend.dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - frontend
+
+  backend:
+    image: fegor04/itmo-lab9
+    restart: always
+    networks:
+      - backend
+      - frontend
+    deploy:
+      replicas: 2
+    depends_on:
+      - redis
+      - broker
+      - postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=postgres
+      - KAFKA_HOST=broker
+      - KAFKA_PORT=29092
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  broker:
+    image: confluentinc/cp-kafka:7.4.0
+    hostname: broker
+    container_name: broker
+    networks:
+      - backend
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9101
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@broker:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://broker:29092,CONTROLLER://broker:29093,PLAINTEXT_HOST://0.0.0.0:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+    ports:
+      - "29092:29092"
+      - "9092:9092"
+
+networks:
+  backend:
+
+  frontend:

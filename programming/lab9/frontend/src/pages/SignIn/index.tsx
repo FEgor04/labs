@@ -23,7 +23,7 @@ const SignInPage = observer(() => {
 
     return (
         <div>
-            <h1>Sign In</h1>
+            <h1>{t('signIn.header')}</h1>
             <Form
                 name="basic"
                 layout="vertical"
@@ -32,24 +32,24 @@ const SignInPage = observer(() => {
             >
 
                 <Form.Item
-                    label={t('username')}
+                    label={t('signIn.username')}
                     name="username"
-                    rules={[{required: true, message: t('usernameMessage')!}]}
+                    rules={[{required: true, message: t('signIn.usernameMessage')!}]}
                 >
                     <Input/>
                 </Form.Item>
 
                 <Form.Item
-                    label={t('password')}
+                    label={t('signIn.password')}
                     name="password"
-                    rules={[{required: true, message: t('passwordMessage')!}]}
+                    rules={[{required: true, message: t('signIn.passwordMessage')!}]}
                 >
                     <Input.Password/>
                 </Form.Item>
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
-                        {t('signIn')}
+                        {t('signIn.submit')}
                     </Button>
                 </Form.Item>
 
@@ -58,7 +58,7 @@ const SignInPage = observer(() => {
                 </p>
 
                 <p style={{alignContent: "center", textAlign: "center"}}>
-                    {t("signInDontHaveAnAccount")} <NavLink to="/signup">Sign Up!</NavLink>
+                    {t("signIn.dontHaveAnAccount")} <NavLink to="/signup">{t('signIn.signUp')}</NavLink>
                 </p>
 
             </Form>

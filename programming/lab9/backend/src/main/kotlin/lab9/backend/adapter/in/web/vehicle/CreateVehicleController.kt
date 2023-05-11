@@ -33,9 +33,9 @@ class CreateVehicleController(
     ): ResponseEntity<ShowVehicleResponse> {
         logger.info("Handling POST /api/vehicles request. Vehicle name: ${request.name}")
         val user = getUserUseCase.getUserByUsername(principal.name) ?: return ResponseEntity.status(401).build()
-        logger.info("User is $${user.username}#${user.id}")
+        logger.info("User is ${user.username}#${user.id}")
         val newVehicle = createVehicleUseCase.create(objectAdapter.createVehicleRequestToQuery(request, user.id))
         logger.info("Successfully created new vehicle")
-        return ResponseEntity.ok(objectAdapter.vehicleToResponse(newVehicle))
+        return ResponseEntity.ok(objectAdapter.vehicleToResponse(newVehicle).copy(canEdit = true, canDelete = true))
     }
 }

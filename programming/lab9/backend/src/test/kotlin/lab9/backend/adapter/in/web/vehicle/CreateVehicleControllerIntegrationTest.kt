@@ -26,18 +26,18 @@ import org.springframework.test.web.servlet.post
 import java.time.LocalDate
 
 @SpringBootTest(
-    webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-    classes = [BackendApplication::class]
+        webEnvironment = SpringBootTest.WebEnvironment.MOCK,
+        classes = [BackendApplication::class]
 )
 @AutoConfigureMockMvc
 @RunWith(SpringRunner::class)
 class CreateVehicleControllerIntegrationTest(
-    @Autowired
-    override val userRepository: UserRepository,
-    @Autowired
-    override val vehicleRepository: VehicleRepository,
-    @Autowired
-    val mockMvc: MockMvc,
+        @Autowired
+        override val userRepository: UserRepository,
+        @Autowired
+        override val vehicleRepository: VehicleRepository,
+        @Autowired
+        val mockMvc: MockMvc,
 ) : PostgresIntegrationTest(userRepository, vehicleRepository) {
     fun createTestUser(): UserJpaEntity {
         return userRepository.save(UserJpaEntity(null, "test", "test", emptySet(), emptySet(), emptySet()))
@@ -50,12 +50,12 @@ class CreateVehicleControllerIntegrationTest(
         createTestUser()
         assertEquals(0, vehicleRepository.count())
         val request = CreateVehicleRequest(
-            name = "teest vehicle",
-            x = 1,
-            y = 1,
-            enginePower = 2.0,
-            vehicleType = Vehicle.VehicleType.BICYCLE,
-            fuelType = Vehicle.FuelType.ANTIMATTER
+                name = "teest vehicle",
+                x = 1,
+                y = 1,
+                enginePower = 2.0,
+                vehicleType = Vehicle.VehicleType.BICYCLE,
+                fuelType = Vehicle.FuelType.ANTIMATTER
         )
         mockMvc.post("/api/vehicles") {
             contentType = MediaType.APPLICATION_JSON
@@ -78,35 +78,35 @@ class CreateVehicleControllerIntegrationTest(
     fun `create existing`() {
         assertEquals(0, vehicleRepository.count())
         val request = CreateVehicleRequest(
-            name = "teest vehicle",
-            x = 1,
-            y = 1,
-            enginePower = 2.0,
-            vehicleType = Vehicle.VehicleType.BICYCLE,
-            fuelType = Vehicle.FuelType.ANTIMATTER
+                name = "teest vehicle",
+                x = 1,
+                y = 1,
+                enginePower = 2.0,
+                vehicleType = Vehicle.VehicleType.BICYCLE,
+                fuelType = Vehicle.FuelType.ANTIMATTER
         )
         val user = createTestUser()
         val vehicle = vehicleRepository.saveAndFlush(
-            VehicleJpaEntity(
-                null,
-                request.name,
-                user,
-                request.x,
-                request.y,
-                LocalDate.now(),
-                request.enginePower,
-                request.vehicleType,
-                request.fuelType
-            )
+                VehicleJpaEntity(
+                        null,
+                        request.name,
+                        user,
+                        request.x,
+                        request.y,
+                        LocalDate.now(),
+                        request.enginePower,
+                        request.vehicleType,
+                        request.fuelType
+                )
         )
         assertEquals(1, vehicleRepository.count())
         mockMvc.post("/api/vehicles") {
             contentType = MediaType.APPLICATION_JSON
             content = Json.encodeToString(request)
         }.andExpect {
-            status { isConflict() }
+            status { isOk() }
         }
-        assertEquals(1, vehicleRepository.count())
+        assertEquals(2, vehicleRepository.count())
     }
 
 }

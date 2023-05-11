@@ -22,15 +22,16 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-integration")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.springframework.boot:spring-boot-starter-rsocket")
+    implementation("org.springframework.security:spring-security-rsocket")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.apache.kafka:kafka-streams")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.springframework.integration:spring-integration-http")
     implementation("org.springframework.integration:spring-integration-jdbc")
     implementation("org.springframework.integration:spring-integration-jpa")
@@ -41,6 +42,16 @@ dependencies {
     implementation("org.springframework.integration:spring-integration-websocket")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.session:spring-session-data-redis")
+
+    // https://mvnrepository.com/artifact/redis.clients/jedis
+    implementation("redis.clients:jedis:4.4.0")
+
+
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation(kotlin("test"))
@@ -53,8 +64,11 @@ dependencies {
     implementation(platform("org.testcontainers:testcontainers-bom:1.18.0")) //import bom
     testImplementation("org.testcontainers:testcontainers:1.18.0")
     testImplementation("org.testcontainers:junit-jupiter:1.18.0")
+    testImplementation("app.cash.turbine:turbine:0.12.3")
     // https://mvnrepository.com/artifact/org.testcontainers/postgresql
     testImplementation("org.testcontainers:postgresql:1.18.0")
+    // https://mvnrepository.com/artifact/org.testcontainers/kafka
+    testImplementation("org.testcontainers:kafka:1.18.0")
 
 
 }
