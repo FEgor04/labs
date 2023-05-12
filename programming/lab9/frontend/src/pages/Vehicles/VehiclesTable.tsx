@@ -2,7 +2,7 @@ import globalStore from "../../store";
 import {useTranslation} from "react-i18next";
 import {useEffect} from "react";
 import {ColumnsType} from "antd/es/table";
-import {Vehicle} from "../../api/defs/VehiclesService.tsx";
+import {Vehicle} from "../../api/defs/VehiclesService.ts";
 import NumberFilterForm from "../../components/filters/NumberFilterForm.tsx";
 import {Button, Space, Table, TableProps} from "antd";
 import {observer} from "mobx-react";
@@ -68,6 +68,7 @@ const VehiclesTable = observer(() => {
             title: t('table.xColumn'),
             dataIndex: "x",
             key: "x",
+            align: "right",
             render: (_, record) => (
                 <span>{record.coordinates.x}</span>
             ),
@@ -81,6 +82,7 @@ const VehiclesTable = observer(() => {
             title: t('table.yColumn'),
             dataIndex: "y",
             key: "y",
+            align: "right",
             render: (_, record) => (
                 <span>{record.coordinates.y}</span>
             ),
@@ -111,6 +113,7 @@ const VehiclesTable = observer(() => {
             title: t('table.enginePowerColumn'),
             dataIndex: "enginePower",
             key: "enginePower",
+            align: "right",
             sorter: (a, b, sortOrder) => {
                 setSorting(5, sortOrder)
                 return 0
@@ -147,6 +150,7 @@ const VehiclesTable = observer(() => {
         {
             title: t('table.actionColumn'),
             key: "action",
+            align: "right",
             render: (_, record) => (
                 <Space>
                     <Button disabled={!record.canDelete} danger={true} onClick={() => {
@@ -178,7 +182,6 @@ const VehiclesTable = observer(() => {
     return (
         <Table columns={columns} dataSource={vehicles?.vehicles} rowKey={"id"} loading={isLoading}
                bordered={true}
-               tableLayout="fixed"
                onChange={onChange}
                pagination={{
                    total: vehicles?.totalElements,

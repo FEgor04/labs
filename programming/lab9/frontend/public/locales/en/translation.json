@@ -15,6 +15,15 @@
     "usernameMessage": "Username should not be empty",
     "passwordMessage": "Password should not be empty"
   },
+  "usersTable": {
+    "usernameColumn": "User Name",
+    "permissionsColumn": "Permissions",
+    "permissions": {
+      "canEdit": "Can edit?",
+      "canDelete": "Can delete?",
+      "save": "Save"
+    }
+  },
   "signUp": {
     "header": "Sign Up",
     "username": "Username",

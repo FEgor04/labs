@@ -12,37 +12,28 @@ import org.springframework.stereotype.Component
 
 @Component
 class AuthoritiesPersistenceAdapterPort(
-    private val authoritiesRepository: AuthoritiesRepository,
-    private val userRepository: UserRepository,
-) : GetUserAuthoritiesToDeletePort, GetUserAuthoritiesToEditPort, SetUserAuthoritiesPort {
+        private val authoritiesRepository: AuthoritiesRepository,
+        private val userRepository: UserRepository,
+) : GetUserAuthoritiesToDeletePort, GetUserAuthoritiesToEditPort, SetUserAuthoritiesPort, GetUserGivenAuthoritiesPort {
     private val logger by KCoolLogger()
 
     override fun getUserAuthoritiesToDelete(userID: User.UserID): List<User.UserID> {
-        printAll()
-        logger.info("Finding all user's that has given delete authority to User#${userID.id}")
         return authoritiesRepository
-            .getAllByAuthorizedToIdAndCanDeleteIs(userID.id, true)
-            .map { User.UserID(it.owner.id!!) }
-    }
-
-    fun printAll() {
-        logger.info("Printing all entries in authorties repository")
-        authoritiesRepository.findAll().forEach {
-            logger.info("$it")
-        }
+                .getAllByAuthorizedToIdAndCanDeleteIs(userID.id, true)
+                .map { User.UserID(it.owner.id!!) }
     }
 
     override fun getUserAuthoritiesToEdit(userID: User.UserID): List<User.UserID> {
         return authoritiesRepository
-            .getAllByAuthorizedToIdAndCanEditIs(userID.id, true)
-            .map { User.UserID(it.owner.id!!) }
+                .getAllByAuthorizedToIdAndCanEditIs(userID.id, true)
+                .map { User.UserID(it.owner.id!!) }
     }
 
     override fun setUserAuthoritiesToDelete(
-        userID: User.UserID,
-        ownerId: User.UserID,
-        canDelete: Boolean,
-        canEdit: Boolean
+            userID: User.UserID,
+            ownerId: User.UserID,
+            canDelete: Boolean,
+            canEdit: Boolean
     ) {
 
         val owner = userRepository.findFirstById(ownerId.id)
@@ -53,19 +44,31 @@ class AuthoritiesPersistenceAdapterPort(
         val previousAuthority = authoritiesRepository.findFirstByAuthorizedToIdIsAndOwnerIdIs(userID.id, ownerId.id)
         if (previousAuthority == null) {
             authoritiesRepository.save(
-                AuthorityJpaEntity(
-                    id = AuthorityEntityPK(ownerId = ownerId.id, authorizedId = userID.id),
-                    owner = owner,
-                    authorizedTo = user,
-                    canDelete = canDelete,
-                    canEdit = canEdit,
-                )
+                    AuthorityJpaEntity(
+                            id = AuthorityEntityPK(ownerId = ownerId.id, authorizedId = userID.id),
+                            owner = owner,
+                            authorizedTo = user,
+                            canDelete = canDelete,
+                            canEdit = canEdit,
+                    )
             )
         } else {
             authoritiesRepository.save(
-                previousAuthority.copy(canDelete = canDelete, canEdit = canEdit)
+                    previousAuthority.copy(canDelete = canDelete, canEdit = canEdit)
             )
         }
 
+    }
+
+    override fun getUserGivenAuthoritiesToEdit(userID: User.UserID): List<User.UserID> {
+        return authoritiesRepository.getAllByOwnerIdIsAndCanEditIs(userID.id, true).map {
+            User.UserID(it.authorizedTo.id!!)
+        }
+    }
+
+    override fun getUserGivenAuthoritiesToDelete(userID: User.UserID): List<User.UserID> {
+        return authoritiesRepository.getAllByOwnerIdIsAndCanDeleteIs(userID.id, true).map {
+            User.UserID(it.authorizedTo.id!!)
+        }
     }
 }

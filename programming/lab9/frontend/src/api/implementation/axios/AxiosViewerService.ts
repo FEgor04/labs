@@ -1,4 +1,4 @@
-import {ViewerService} from "../../defs/ViewerService.tsx";
+import {ViewerService} from "../../defs/ViewerService.ts";
 import {Viewer} from "../../../shared/Viewer.ts";
 import axios from "axios";
 

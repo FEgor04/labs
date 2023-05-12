@@ -30,62 +30,63 @@ import java.security.Principal
 @Validated
 @RequestMapping("/api/vehicles")
 class GetVehiclesController(
-    private val getVehiclesUseCase: GetVehiclesUseCase,
-    private val getUserAuthoritiesUseCase: GetUserAuthoritiesUseCase,
-    private val getUserUseCase: GetUserUseCase,
-    private val objectAdapter: WebObjectAdapter,
-    private val checkUserAuthoritiesUseCase: CheckAuthoritiesUseCase,
+        private val getVehiclesUseCase: GetVehiclesUseCase,
+        private val getUserAuthoritiesUseCase: GetUserAuthoritiesUseCase,
+        private val getUserUseCase: GetUserUseCase,
+        private val objectAdapter: WebObjectAdapter,
+        private val checkUserAuthoritiesUseCase: CheckAuthoritiesUseCase,
 ) {
     private val logger by KCoolLogger()
 
     @GetMapping("/{id}")
     fun getSingleVehicle(
-        @PathVariable id: Int,
-        principal: Principal,
+            @PathVariable id: Int,
+            principal: Principal,
     ): ShowVehicleResponse {
         val user = getUserUseCase.getUserByUsername(principal.name) ?: throw PermissionDeniedException()
         val vehicle = getVehiclesUseCase.getVehicleById(Vehicle.VehicleID(id)) ?: throw VehicleNotFoundException()
-        return objectAdapter.vehicleToResponse(vehicle).copy(
-            canEdit = checkUserAuthoritiesUseCase.checkUserCanEditVehicle(user.id, vehicle.id),
-            canDelete = checkUserAuthoritiesUseCase.checkUserCanDeleteVehicle(user.id, vehicle.id),
-        )
+        return objectAdapter.vehicleToResponse(
+                vehicle,
+                canEdit = checkUserAuthoritiesUseCase.checkUserCanEditVehicle(userID = user.id, vehicleID = vehicle.id),
+                canDelete = checkUserAuthoritiesUseCase.checkUserCanDeleteVehicle(userID = user.id, vehicleID = vehicle.id),
+
+                )
     }
 
     @GetMapping("")
     fun getVehicles(
-        @RequestParam(defaultValue = "10") @Min(0) @Max(100) pageSize: Int,
-        @RequestParam(defaultValue = "0") @Min(0) pageNumber: Int,
-        @RequestParam(defaultValue = "ID") sortingColumn: String,
-        @RequestParam(defaultValue = "true") ascending: Boolean,
-        principal: Principal,
+            @RequestParam(defaultValue = "10") @Min(0) @Max(100) pageSize: Int,
+            @RequestParam(defaultValue = "0") @Min(0) pageNumber: Int,
+            @RequestParam(defaultValue = "ID") sortingColumn: String,
+            @RequestParam(defaultValue = "true") ascending: Boolean,
+            principal: Principal,
     ): ResponseEntity<ShowVehiclesResponse> {
         val sorting = GetVehiclesSorting(sortingColumn, ascending)
         logger.info("Handling GET /api/vehicles with pageSize = $pageSize, pageNumber=$pageNumber, sorting = $sorting")
         val request = GetVehiclesRequest(pageSize = pageSize, pageNumber = pageNumber, sorting = sorting)
         val vehicles = getVehiclesUseCase.getVehicles(
-            objectAdapter.showVehiclesRequestToQuery(request)
+                objectAdapter.showVehiclesRequestToQuery(request)
         )
         val user = getUserUseCase.getUserByUsername(principal.name)
         if (user == null) {
             logger.warn("Could not get user from principal. Username: ${principal.name}")
             return ResponseEntity.badRequest().build();
         }
-        val response = ShowVehiclesResponse(
-            vehicles = vehicles.vehicles.map { objectAdapter.vehicleToResponse(it) },
-            totalPages = vehicles.totalPages,
-            totalElements = vehicles.totalElements
-        )
         val principalEditAuthorities = getUserAuthoritiesUseCase.getUserAuthoritiesToEdit(user.id)
-        val principalDeleteAuthorities = getUserAuthoritiesUseCase.getUserAuthoritiesToEdit(user.id)
-        return ResponseEntity.ok(
-            response.copy(
-                vehicles = response.vehicles.map { vehicle ->
-                    vehicle.copy(
-                        canEdit = principalEditAuthorities.contains(User.UserID(vehicle.creatorId)) || user.id.id == vehicle.creatorId,
-                        canDelete = principalDeleteAuthorities.contains(User.UserID(vehicle.creatorId)) || user.id.id == vehicle.creatorId,
+        val principalDeleteAuthorities = getUserAuthoritiesUseCase.getUserAuthoritiesToDelete(user.id)
+        val response = ShowVehiclesResponse(
+                vehicles = vehicles.content.map {
+                    objectAdapter.vehicleToResponse(
+                            it,
+                            canEdit = it.creatorID in principalEditAuthorities || it.creatorID == user.id,
+                            canDelete = it.creatorID in principalDeleteAuthorities || it.creatorID == user.id,
                     )
-                }
-            )
+                },
+                totalPages = vehicles.totalPages,
+                totalElements = vehicles.totalElements
+        )
+        return ResponseEntity.ok(
+                response
         )
     }
 }

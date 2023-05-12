@@ -4,6 +4,7 @@ import VehiclesPage from "../pages/Vehicles";
 import SignUpPage from "../pages/SignUp";
 import CreateNewForm from "../pages/Vehicles/CreateNewForm.tsx";
 import EditVehicleForm from "../pages/Vehicles/EditVehicleForm.tsx";
+import UsersPage from "../pages/Users";
 
 const MyRoutes = () => {
     return (
@@ -13,6 +14,7 @@ const MyRoutes = () => {
             <Route path="/vehicles/new" element={(<CreateNewForm/>)}/>
             <Route path="/vehicles/:id" element={<EditVehicleForm/>}/>
             <Route path="/vehicles" element={(<VehiclesPage/>)}/>
+            <Route path="/users" element={(<UsersPage/>)}/>
             <Route path="/" element={(<div>Hello</div>)}/>
         </Routes>
     )

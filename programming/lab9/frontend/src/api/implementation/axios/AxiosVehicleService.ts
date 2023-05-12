@@ -4,7 +4,7 @@ import {
     GetVehiclesRequest,
     GetVehiclesResponse, Vehicle,
     VehiclesService
-} from "../../defs/VehiclesService.tsx";
+} from "../../defs/VehiclesService.ts";
 
 const columnNumberToName = (columnNumber: number) => {
     const columnNamesMap = new Map<number, string>

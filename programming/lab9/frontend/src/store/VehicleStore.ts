@@ -1,6 +1,6 @@
 import AxiosVehicleService from "../api/implementation/axios/AxiosVehicleService.ts";
 import {action, makeAutoObservable, observable} from "mobx";
-import {CreateVehicleRequest, Filter, GetVehiclesResponse, VehiclesService} from "../api/defs/VehiclesService.tsx";
+import {CreateVehicleRequest, Filter, GetVehiclesResponse, VehiclesService} from "../api/defs/VehiclesService.ts";
 import UpdateVehicleStore from "./UpdateVehicleStore.ts";
 import {notification} from "antd";
 import globalStore from "./index.ts";

@@ -1,6 +1,6 @@
 import {action, makeObservable, observable} from "mobx";
 import {Viewer} from "../shared/Viewer.ts";
-import {ViewerService} from "../api/defs/ViewerService.tsx";
+import {ViewerService} from "../api/defs/ViewerService.ts";
 import AxiosViewerService from "../api/implementation/axios/AxiosViewerService.ts";
 
 export default class ViewerStore {

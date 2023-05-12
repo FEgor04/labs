@@ -1,11 +1,7 @@
 package lab9.backend.adapter.out.persistence.vehicle
 
 import lab9.backend.adapter.out.persistence.user.UserJpaEntity
-import lab9.backend.application.port.`in`.vehicles.GetVehiclesQuery
-import lab9.backend.application.port.`in`.vehicles.GetVehiclesResponse
-import lab9.backend.application.port.`in`.vehicles.UpdateVehicleQuery
-import lab9.backend.application.port.`in`.vehicles.VehicleAlreadyExistsException
-import lab9.backend.application.port.`in`.vehicles.VehicleNotFoundException
+import lab9.backend.application.port.`in`.vehicles.*
 import lab9.backend.application.port.out.vehicle.CreateVehiclePort
 import lab9.backend.application.port.out.vehicle.DeleteVehiclePort
 import lab9.backend.application.port.out.vehicle.GetVehiclesPort
@@ -21,7 +17,7 @@ import java.time.LocalDate
 class VehiclePersistenceAdapter(
     private val vehicleRepository: VehicleRepository,
 ) : GetVehiclesPort, CreateVehiclePort, DeleteVehiclePort, UpdateVehiclePort {
-    override fun getVehicles(query: GetVehiclesQuery): GetVehiclesResponse {
+    override fun getVehicles(query: GetVehiclesQuery): PagedResponse<Vehicle> {
         val sortDirection: Sort.Direction = if (query.sorting.asc) {
             Sort.Direction.ASC
         } else {
@@ -34,8 +30,8 @@ class VehiclePersistenceAdapter(
                 Sort.by(sortDirection, vehicleFieldToJpaColumn(query.sorting.field))
             )
         )
-        return GetVehiclesResponse(
-            vehicles = page.content.map { it.toDomainEntity() }.toList(),
+        return PagedResponse<Vehicle>(
+            content = page.content.map { it.toDomainEntity() }.toList(),
             totalElements = page.totalElements.toInt(),
             totalPages = page.totalPages
         )

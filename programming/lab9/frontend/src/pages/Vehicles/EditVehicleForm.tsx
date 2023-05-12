@@ -2,7 +2,7 @@ import {observer} from "mobx-react";
 import {useTranslation} from "react-i18next";
 import globalStore from "../../store";
 import {Button, Form, Input, InputNumber, Select} from "antd";
-import {PossibleFuelTypes, PossibleVehicleTypes, Vehicle} from "../../api/defs/VehiclesService.tsx";
+import {PossibleFuelTypes, PossibleVehicleTypes, Vehicle} from "../../api/defs/VehiclesService.ts";
 import {useParams} from "react-router";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";

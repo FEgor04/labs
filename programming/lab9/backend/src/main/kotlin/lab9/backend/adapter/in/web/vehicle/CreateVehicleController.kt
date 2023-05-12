@@ -36,6 +36,6 @@ class CreateVehicleController(
         logger.info("User is ${user.username}#${user.id}")
         val newVehicle = createVehicleUseCase.create(objectAdapter.createVehicleRequestToQuery(request, user.id))
         logger.info("Successfully created new vehicle")
-        return ResponseEntity.ok(objectAdapter.vehicleToResponse(newVehicle).copy(canEdit = true, canDelete = true))
+        return ResponseEntity.ok(objectAdapter.vehicleToResponse(newVehicle, true, true))
     }
 }

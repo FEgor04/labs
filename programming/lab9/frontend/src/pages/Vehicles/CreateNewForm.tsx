@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import {Button, Form, Input, InputNumber, Select} from "antd";
 import {useTranslation} from "react-i18next";
-import {PossibleFuelTypes, PossibleVehicleTypes} from "../../api/defs/VehiclesService.tsx";
+import {PossibleFuelTypes, PossibleVehicleTypes} from "../../api/defs/VehiclesService.ts";
 import globalStore from "../../store";
 
 const CreateNewForm = observer(() => {

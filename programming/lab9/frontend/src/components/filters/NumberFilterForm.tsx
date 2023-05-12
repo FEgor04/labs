@@ -1,7 +1,7 @@
 import {FilterDropdownProps} from "antd/es/table/interface";
 import {Button, Form, FormInstance, InputNumber, Space} from "antd";
 import React from "react";
-import {XFilter} from "../../api/defs/VehiclesService.tsx";
+import {XFilter} from "../../api/defs/VehiclesService.ts";
 
 const NumberFilterForm = (props: FilterDropdownProps, setNumberFilter: (filter: XFilter) => void, clearFilter: () => void) => {
     const formRef = React.useRef<FormInstance>(null);
