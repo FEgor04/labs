@@ -42,6 +42,7 @@ export default class AxiosVehicleService implements VehiclesService {
     }
 
     async createVehicle(request: CreateVehicleRequest): Promise<void> {
+        request.fuelType = request.fuelType.length == 0 ? null : request.fuelType
         const response = await apiInstance.post("/vehicles", request)
         return
     }

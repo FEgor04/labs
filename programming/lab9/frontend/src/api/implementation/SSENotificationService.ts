@@ -6,7 +6,7 @@ import {
 import {isElementOfType} from "react-dom/test-utils";
 
 export class SSENotificationService implements NotificationService {
-    private eventSource = new EventSource("/api/notifications-stream")
+    private eventSource
     private callbacks: NotificationCallback[] = []
 
     addCallback(callback: NotificationCallback): void {
@@ -14,6 +14,20 @@ export class SSENotificationService implements NotificationService {
     }
 
     constructor() {
+        this.setup()
+    }
+
+    private handleMessage(msg: MessageEvent<any>) {
+        console.log()
+        const notification = parseNotifications(msg.data)
+        console.log(`New notification: ${JSON.stringify(notification)}`)
+        this.callbacks.forEach(cb => {
+            cb(notification)
+        })
+    }
+
+    private setup() {
+        this.eventSource = new EventSource("/api/notifications-stream")
         this.eventSource.onerror = (e: Event) => {
             console.log(`Event source error: ${e}`)
         }
@@ -24,13 +38,9 @@ export class SSENotificationService implements NotificationService {
         this.eventSource.onopen = e => console.log(`SSE connection open`)
     }
 
-    private handleMessage(msg: MessageEvent<any>) {
-        console.log()
-        const notification = parseNotifications(msg.data)
-        console.log(`New notification: ${JSON.stringify(notification)}`)
-        this.callbacks.forEach(cb => {
-            cb(notification)
-        })
+    reconnect(): void {
+        this.eventSource.close()
+        this.setup()
     }
 
 }

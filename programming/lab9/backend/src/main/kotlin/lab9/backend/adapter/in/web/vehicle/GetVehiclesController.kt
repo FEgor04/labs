@@ -27,8 +27,8 @@ import java.security.Principal
 
 
 @RestController
-@Validated
 @RequestMapping("/api/vehicles")
+@Validated
 class GetVehiclesController(
         private val getVehiclesUseCase: GetVehiclesUseCase,
         private val getUserAuthoritiesUseCase: GetUserAuthoritiesUseCase,

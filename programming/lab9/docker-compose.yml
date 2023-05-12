@@ -36,7 +36,7 @@ services:
       - backend
       - frontend
     deploy:
-      replicas: 2
+      replicas: 1
     depends_on:
       - redis
       - broker

@@ -2,6 +2,7 @@ import {action, makeObservable, observable} from "mobx";
 import {Viewer} from "../shared/Viewer.ts";
 import {ViewerService} from "../api/defs/ViewerService.ts";
 import AxiosViewerService from "../api/implementation/axios/AxiosViewerService.ts";
+import globalStore from "./index.ts";
 
 export default class ViewerStore {
     viewer?: Viewer | null
@@ -31,7 +32,6 @@ export default class ViewerStore {
             setIsSignedIn: action,
             setViewerToNull: action,
             setViewer: action,
-
         })
     }
 
@@ -56,6 +56,7 @@ export default class ViewerStore {
             this.service.getMe().then((me) => {
                 this.setViewer(me)
                 this.setIsSignedIn(true)
+                globalStore.notificationsStore.reconnect()
                 onSuccess()
             }).catch((e) => {
                 this.setErrors(e)

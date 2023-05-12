@@ -8,6 +8,7 @@ import {
 
 export interface NotificationService {
     addCallback(callback: NotificationCallback): void
+    reconnect(): void
 }
 
 export type NotificationCallback = (notification: Notification) => void

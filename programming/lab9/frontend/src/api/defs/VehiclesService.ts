@@ -96,7 +96,7 @@ export class XFilter extends NumberFilter {
 
     toJSON() {
         return {
-            type: "lab9.common.requests.VehicleFilter.XFilter",
+            type: "lab9.backend.adapter.`in`.web.dto.VehicleFilter",
             filterColumn: "COORDINATES_X",
             lowerBound: this.lowerBound,
             upperBound: this.upperBound,

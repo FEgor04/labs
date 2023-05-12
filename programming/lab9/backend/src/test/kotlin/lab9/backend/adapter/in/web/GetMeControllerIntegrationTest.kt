@@ -38,7 +38,7 @@ class GetMeControllerIntegrationTest(
     @WithMockUser(username = "test", password = "test")
     fun `get existing user`() {
         val actualUser = userRepository.saveAndFlush(UserJpaEntity(null, "test", "test", emptySet(), emptySet(), emptySet()))
-        val expectedContent = ShowUserResponse(actualUser.id!!, actualUser.username)
+        val expectedContent = ShowUserResponse(actualUser.id!!, actualUser.username, true, true, true, true)
         mockMvc.get("/api/me").andExpect {
             content {
                 json(

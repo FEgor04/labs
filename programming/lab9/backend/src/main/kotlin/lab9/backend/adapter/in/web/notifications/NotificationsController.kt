@@ -27,7 +27,10 @@ class NotificationsController(
         private val getUserUseCase: GetUserUseCase,
 ) {
     private val logger by KCoolLogger()
-    private val listenThread = Executors.newSingleThreadExecutor()
+    private val listenThread = Executors.newSingleThreadExecutor {
+        r -> Thread(r, "sse-notification-listener")
+    }
+    private val flow = getNotificationsFlowUseCase.getNotificationsFlow()
     val clients: MutableMap<UUID, MutableSharedFlow<String>> = CopyOnWriteMap()
 
     @GetMapping("/notifications-stream")
@@ -44,6 +47,9 @@ class NotificationsController(
         flow.onCompletion {
             logger.info("Flow $uuid is complete")
         }
+        flow.onSubscription {
+            logger.info("Subscription on flow $uuid")
+        }
         return flow.asSharedFlow()
     }
 
@@ -58,6 +64,7 @@ class NotificationsController(
                         val flow = it.value
                         try {
                             flow.emit(notificationJsonEncoder(notification))
+                            logger.info("Emitted notification ${notification} to $client")
                         }
                         catch(e: Exception) {
                             logger.warn("Client $client is dead. Reason: $e")

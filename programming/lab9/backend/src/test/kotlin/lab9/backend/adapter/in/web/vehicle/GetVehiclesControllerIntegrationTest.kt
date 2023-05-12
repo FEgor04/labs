@@ -2,6 +2,7 @@ package lab9.backend.adapter.`in`.web.vehicle
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
+import jakarta.validation.Valid
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.decodeFromString
@@ -30,6 +31,7 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.util.UriComponentsBuilder
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -122,8 +124,7 @@ class GetVehiclesControllerIntegrationTest(
             println("======TESTING FOR PAGE SIZE = $pageSize PAGE NUMBER = $pageNumber======")
             val expectedVehicles = vehicles.subList(pageNumber * pageSize, min((pageNumber + 1) * pageSize, vehicles.size)).map { vehicle ->
                 objectAdapter
-                        .vehicleToResponse(vehicle.toDomainEntity())
-                        .copy(canEdit = true, canDelete = true)
+                        .vehicleToResponse(vehicle.toDomainEntity(), true, true)
             }
             val expectedResponse = ShowVehiclesResponse(vehicles = expectedVehicles, totalPages = (vehicles.size + pageSize - 1).div(pageSize), // округление вверх
                     totalElements = vehicles.size)
@@ -152,7 +153,7 @@ class GetVehiclesControllerIntegrationTest(
             val pageNumber = it.second
             println("======TESTING FOR PAGE SIZE = $pageSize PAGE NUMBER = $pageNumber======")
             val expectedVehicles = vehicles.page(pageNumber, pageSize).map {
-                objectAdapter.vehicleToResponse(it.toDomainEntity()).copy(canEdit = true, canDelete = true)
+                objectAdapter.vehicleToResponse(it.toDomainEntity(), true, true)
             }
             val expectedResponse = ShowVehiclesResponse(vehicles = expectedVehicles, totalPages = (vehicles.size + pageSize - 1).div(pageSize), // округление вверх
                     totalElements = vehicles.size)
