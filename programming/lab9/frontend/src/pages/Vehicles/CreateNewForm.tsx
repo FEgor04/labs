@@ -1,8 +1,8 @@
 import {observer} from "mobx-react";
 import {Button, Form, Input, InputNumber, Select} from "antd";
 import {useTranslation} from "react-i18next";
-import {PossibleFuelTypes, PossibleVehicleTypes} from "../../api/defs/VehiclesService.ts";
 import globalStore from "../../store";
+import {PossibleFuelTypes, PossibleVehicleTypes} from "../../api/defs/vehicles/Vehicle.ts";
 
 const CreateNewForm = observer(() => {
     const {t} = useTranslation()
@@ -22,7 +22,7 @@ const CreateNewForm = observer(() => {
     return (
         <div>
             <h1>
-                Create new
+                {t('createVehicle.title')}
             </h1>
             <Form
                 name="basic"
@@ -32,7 +32,7 @@ const CreateNewForm = observer(() => {
             >
                 <Form.Item
                     name="name"
-                    label={t("name")}
+                    label={t("vehicle.name")}
                     required
                 >
                     <Input/>
@@ -40,22 +40,21 @@ const CreateNewForm = observer(() => {
 
                 <Form.Item
                     name="x"
-                    label={t("x")}
+                    label={t("vehicle.x")}
                     required
-                    // rules={[{min: -527, required: true}]}
                 >
                     <InputNumber/>
                 </Form.Item>
                 <Form.Item
                     name="y"
-                    label={t("y")}
+                    label={t("vehicle.y")}
                 >
                     <InputNumber/>
                 </Form.Item>
 
                 <Form.Item
                     name="enginePower"
-                    label={t("enginePower")}
+                    label={t("vehicle.enginePower")}
                     rules={[{required: true}]}
                 >
                     <InputNumber type="number"/>
@@ -63,12 +62,12 @@ const CreateNewForm = observer(() => {
 
                 <Form.Item
                     name="vehicleType"
-                    label={t("vehicleType")}
+                    label={t("vehicle.vehicleType.title")}
                     required
                 >
                     <Select>
                         {PossibleVehicleTypes.map((name) => (
-                            <Select.Option key={name.toString()} value={name}>{name}</Select.Option>
+                            <Select.Option key={name} value={name}>{t(`vehicle.vehicleType.${name}`)}</Select.Option>
                         ))}
                     </Select>
                 </Form.Item>
@@ -76,21 +75,21 @@ const CreateNewForm = observer(() => {
 
                 <Form.Item
                     name="fuelType"
-                    label={t("fuelType")}
+                    label={t("vehicle.fuelType.title")}
                 >
 
                     <Select>
                         <>
-                            <Select.Option value={""}>{}</Select.Option>
+                            <Select.Option key={"null"} value={""}>{t(`vehicle.fuelType.null`)}</Select.Option>
                             {PossibleFuelTypes.map((name) => (
-                                <Select.Option key={name} value={name}>{name}</Select.Option>
+                                <Select.Option key={name} value={name}>{t(`vehicle.fuelType.${name}`)}</Select.Option>
                             ))}
                         </>
                     </Select>
                 </Form.Item>
 
                 <Button type={"primary"} htmlType="submit">
-                    Create
+                    {t('createVehicle.submit')}
                 </Button>
             </Form>
         </div>

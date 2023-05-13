@@ -3,6 +3,7 @@ import {Viewer} from "../shared/Viewer.ts";
 import {ViewerService} from "../api/defs/ViewerService.ts";
 import AxiosViewerService from "../api/implementation/axios/AxiosViewerService.ts";
 import globalStore from "./index.ts";
+import {AxiosError} from "axios";
 
 export default class ViewerStore {
     viewer?: Viewer | null
@@ -35,8 +36,8 @@ export default class ViewerStore {
         })
     }
 
-    setErrors(errors: Error) {
-        this.errors = errors.message
+    setErrors(errors: string) {
+        this.errors = errors
     }
 
     setIsSignedIn(isSignedIn: boolean) {
@@ -59,10 +60,19 @@ export default class ViewerStore {
                 globalStore.notificationsStore.reconnect()
                 onSuccess()
             }).catch((e) => {
+                console.log(e)
                 this.setErrors(e)
             })
-        }).catch((error) => {
-            this.setErrors(error)
+        }).catch((e: AxiosError) => {
+            if (e.message.includes("401")) {
+                this.setErrors("errors.signIn.401")
+            } else if (e.message.includes("500") || e.message.includes("502")) {
+                this.setErrors("errors.signIn.5xx")
+            } else if (e.message.includes("400")) {
+                this.setErrors("errors.signIn.400")
+            } else {
+                this.setErrors(e.message)
+            }
         })
     }
 
@@ -82,14 +92,22 @@ export default class ViewerStore {
                 this.service.getMe().then((me) => {
                     this.setViewer(me)
                     onSuccess()
-                }).catch((e) => {
-                    this.setErrors(e)
+                }).catch((e: Error) => {
+                    this.setErrors(e.message)
                 })
-            }).catch((e) => {
-                this.setErrors(e)
+            }).catch((e: Error) => {
+                this.setErrors(e.message)
             })
-        }).catch((error) => {
-            this.setErrors(error)
+        }).catch((e: Error) => {
+            if (e.message.includes("409")) {
+                this.setErrors("errors.signUp.409")
+            } else if (e.message.includes("500") || e.message.includes("502")) {
+                this.setErrors("errors.signUp.5xx")
+            } else if (e.message.includes("400")) {
+                this.setErrors("errors.signUp.400")
+            } else {
+                this.setErrors(e.message)
+            }
         })
     }
 }

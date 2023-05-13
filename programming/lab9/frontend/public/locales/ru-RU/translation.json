@@ -1,0 +1,101 @@
+{
+  "header": {
+    "vehicles": "Тачки",
+    "users": "Пользователи",
+    "logIn": "Войти",
+    "logOut": "Выйти",
+    "setLanguage": "Язык"
+  },
+  "signIn": {
+    "header": "Войти",
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "signUp": "Зарегистрироваться!",
+    "dontHaveAnAccount": "Еще нет аккаунта?",
+    "submit": "Войти",
+    "usernameMessage": "Имя пользователя не может быть пустым",
+    "passwordMessage": "Пароль не может быть пустым",
+    "errors": {
+      "401": "Неправильное имя пользователя или пароль",
+      "400": "Неправильный запрос",
+      "5xx": "Внутренняя ошибка сервера. Попробуйте позже."
+    }
+  },
+  "usersTable": {
+    "usernameColumn": "Имя пользователя",
+    "permissionsColumn": "Права доступа",
+    "permissions": {
+      "canEdit": "Может редактировать?",
+      "canDelete": "Может удалять?",
+      "save": "Сохранить"
+    }
+  },
+  "signUp": {
+    "header": "Зарегистрироваться",
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "signIn": "Войти",
+    "alreadyHaveAnAccount": "Уже есть аккаунт?",
+    "submit": "Зарегистрироваться",
+    "usernameMessage": "Имя пользователя не может быть пустым",
+    "passwordMessage": "Пароль не может быть пустым",
+    "errors": {
+      "409": "Пользователь с таким именем уже существует",
+      "400": "Неправильный запрос",
+      "5xx": "Внутренняя ошибка сервера. Попробуйте позже."
+    }
+  },
+  "table": {
+    "actionColumn": "Действия",
+    "actions": {
+      "delete": "Удалить",
+      "update": "Изменить"
+    },
+    "needToSignIn": "You need to sign in first!"
+  },
+  "update": "Изменить",
+  "delete": "Удалить",
+  "notification": {
+    "accessChanged": {
+      "message": "Изменены права доступа!",
+      "description": "Пользователь {{fromUser}} изменил права доступа пользователя {{toUser}}. Может редактировать: {{canEdit}}, может удалять: {{canDelete}}"
+    },
+    "newVehicle": {
+      "message": "Создан новый транспорт",
+      "description": "Пользователь {{authorId}} создал новый транспорт #{{vehicleId}}"
+    },
+    "vehicleUpdated": {
+      "message": "Транспорт изменен",
+      "description": "Пользователь {{updatedBy}} изменил транспорт #{{vehicleId}}"
+    },
+    "vehicleDeleted": {
+      "message": "Транспорт удален",
+      "description": "Пользователь {{deletedBy}} удалил транспорт #{{vehicleId}}"
+    }
+  },
+  "vehicle": {
+    "id": "ID",
+    "name": "Название",
+    "enginePower": "МОЩЩЬ",
+    "y": "Y",
+    "x": "X",
+    "creationDate": "Дата создания",
+    "creator": "Создатель",
+    "fuelType": {
+      "title": "Тип топлива",
+      "GASOLINE": "Бензин",
+      "null": "Не указано",
+      "MANPOWER": "Человеческая сила",
+      "ELECTRICITY": "Электричество",
+      "PLASMA": "Плазма",
+      "ANTIMATTER": "Антиматерия"
+    },
+    "vehicleType": {
+      "title": "Тип транспорта",
+      "PLANE": "Самолет",
+      "BOAT": "Лодка",
+      "SUBMARINE": "Субмарина",
+      "BICYCLE": "Велосипед"
+    }
+  }
+}

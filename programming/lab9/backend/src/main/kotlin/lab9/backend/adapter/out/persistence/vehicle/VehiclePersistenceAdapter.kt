@@ -16,6 +16,7 @@ import java.time.LocalDate
 @PersistenceAdapter
 class VehiclePersistenceAdapter(
     private val vehicleRepository: VehicleRepository,
+    private val vehicleQuerySpecificationResolver: VehicleQuerySpecificationResolver,
 ) : GetVehiclesPort, CreateVehiclePort, DeleteVehiclePort, UpdateVehiclePort {
     override fun getVehicles(query: GetVehiclesQuery): PagedResponse<Vehicle> {
         val sortDirection: Sort.Direction = if (query.sorting.asc) {
@@ -23,12 +24,14 @@ class VehiclePersistenceAdapter(
         } else {
             Sort.Direction.DESC
         }
+        val pageRequest = PageRequest.of(
+            query.pageNumber,
+            query.pageSize,
+            Sort.by(sortDirection, vehicleFieldToJpaColumn(query.sorting.field))
+        )
         val page = vehicleRepository.findAll(
-            PageRequest.of(
-                query.pageNumber,
-                query.pageSize,
-                Sort.by(sortDirection, vehicleFieldToJpaColumn(query.sorting.field))
-            )
+            vehicleQuerySpecificationResolver.resolve(query),
+            pageRequest
         )
         return PagedResponse<Vehicle>(
             content = page.content.map { it.toDomainEntity() }.toList(),

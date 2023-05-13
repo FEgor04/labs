@@ -1,9 +1,10 @@
 import AxiosVehicleService from "../api/implementation/axios/AxiosVehicleService.ts";
 import {action, makeAutoObservable, observable} from "mobx";
-import {CreateVehicleRequest, Filter, GetVehiclesResponse, VehiclesService} from "../api/defs/VehiclesService.ts";
+import {CreateVehicleRequest, GetVehiclesResponse, VehiclesService} from "../api/defs/VehiclesService.ts";
 import UpdateVehicleStore from "./UpdateVehicleStore.ts";
 import {notification} from "antd";
 import globalStore from "./index.ts";
+import {Filter} from "../api/defs/vehicles/filter/Filter.ts";
 
 export default class VehicleStore {
     private vehiclesService: VehiclesService = new AxiosVehicleService()

@@ -32,7 +32,7 @@ const SignUpPage = observer(() => {
             >
 
                 <Form.Item
-                    label={t('signUp.username')}
+                    label={t('user.username')}
                     name="username"
                     rules={[{required: true, message: t('signUp.usernameMessage')!}]}
                 >
@@ -40,7 +40,7 @@ const SignUpPage = observer(() => {
                 </Form.Item>
 
                 <Form.Item
-                    label={t('signUp.password')}
+                    label={t('user.password')}
                     name="password"
                     rules={[{required: true, message: t('signUp.passwordMessage')!}]}
                 >
@@ -54,7 +54,7 @@ const SignUpPage = observer(() => {
                 </Form.Item>
 
                 <p style={{textAlign: "center", color: "red"}}>
-                    {viewerStore.errors}
+                    {t(viewerStore.errors)}
                 </p>
 
                 <p style={{alignContent: "center", textAlign: "center"}}>

@@ -1,5 +1,6 @@
-import {CreateVehicleRequest, Vehicle, VehiclesService} from "../api/defs/VehiclesService.ts";
+import {CreateVehicleRequest, VehiclesService} from "../api/defs/VehiclesService.ts";
 import {makeAutoObservable} from "mobx";
+import {Vehicle} from "../api/defs/vehicles/Vehicle.ts";
 
 export default class UpdateVehicleStore {
     private service: VehiclesService

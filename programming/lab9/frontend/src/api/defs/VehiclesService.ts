@@ -1,3 +1,6 @@
+import {Vehicle} from "./vehicles/Vehicle.ts";
+import {Filter} from "./vehicles/filter/Filter.ts";
+
 export interface VehiclesService {
     getVehicles(request: GetVehiclesRequest): Promise<GetVehiclesResponse>
 
@@ -33,74 +36,3 @@ export type GetVehiclesResponse = {
     vehicles: Array<Vehicle>
 }
 
-export type Vehicle = {
-    id: number
-    name: string
-    coordinates: Coordinates
-    creationDate: Date,
-    enginePower: number,
-    vehicleType: VehicleType
-    fuelType: FuelType | null
-    creatorId: number,
-    canEdit: boolean,
-    canDelete: boolean,
-}
-
-export enum VehicleType {
-    PLANE = "PLANE",
-    BICYCLE = "BICYCLE",
-    BOAT = "BOAT",
-    SUBMARINE = "SUBMARINE",
-}
-
-export const PossibleVehicleTypes: VehicleType[] = [
-    VehicleType.PLANE, VehicleType.BICYCLE, VehicleType.BOAT, VehicleType.SUBMARINE
-]
-
-export enum FuelType {
-    MANPOWER = "MANPOWER",
-    GASOLINE = "GASOLINE",
-    ELECTRICITY = "ELECTRICITY",
-    PLASMA = "PLASMA",
-    ANTIMATTER = "ANTIMATTER"
-}
-
-export const PossibleFuelTypes: FuelType[] = [
-    FuelType.ANTIMATTER, FuelType.GASOLINE, FuelType.ELECTRICITY, FuelType.PLASMA, FuelType.MANPOWER
-]
-
-export type Coordinates = {
-    x: number
-    y: number | null
-}
-
-export abstract class Filter {
-    abstract column: string
-}
-
-abstract class NumberFilter extends Filter {
-    abstract lowerBound: number | null
-    abstract upperBound: number | null
-}
-
-export class XFilter extends NumberFilter {
-    column = "x"
-    lowerBound: number | null;
-    upperBound: number | null;
-
-    constructor(lowerBound: number | null, upperBound: number | null) {
-        super();
-        this.lowerBound = lowerBound
-        this.upperBound = upperBound
-    }
-
-    toJSON() {
-        return {
-            type: "lab9.backend.adapter.`in`.web.dto.VehicleFilter",
-            filterColumn: "COORDINATES_X",
-            lowerBound: this.lowerBound,
-            upperBound: this.upperBound,
-        }
-    }
-
-}

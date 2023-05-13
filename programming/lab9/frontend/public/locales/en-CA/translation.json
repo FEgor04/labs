@@ -1,0 +1,140 @@
+{
+  "header": {
+    "vehicles": "Vehicles",
+    "users": "Users",
+    "logIn": "Log In",
+    "logOut": "Log Out",
+    "setLanguage": "Language"
+  },
+  "signIn": {
+    "header": "Sign In",
+    "signUp": "Sign Up!",
+    "dontHaveAnAccount": "Dont have an account yet?",
+    "submit": "Sign In",
+    "usernameMessage": "Username should not be empty",
+    "passwordMessage": "Password should not be empty"
+  },
+  "createVehicle": {
+    "title": "Create vehicle",
+    "submit": "Submit"
+  },
+  "editVehicle": {
+    "title": "Edit Vehicle",
+    "submit": "Submit"
+  },
+  "vehiclesTable": {
+    "numberFilter": {
+      "greaterThan": "Value should be greater than:",
+      "lessThan": "Value should be less than: "
+    },
+    "patternFilter": {
+      "shouldMatch": "Value should contain substring: "
+    },
+    "filter":{
+      "submit": "OK",
+      "reset": "Reset"
+    }
+  },
+  "usersTable": {
+    "permissions": {
+      "title": "Permissions",
+      "canEdit": "Can edit?",
+      "canDelete": "Can delete?",
+      "save": "Save"
+    }
+  },
+  "signUp": {
+    "header": "Sign Up",
+    "signIn": "Sign In",
+    "alreadyHaveAnAccount": "Already have an account?",
+    "submit": "Sign Up"
+  },
+  "table": {
+    "actionColumn": "Action",
+    "actions": {
+      "delete": "Delete",
+      "update": "Update"
+    },
+    "needToSignIn": "You need to sign in first!"
+  },
+  "update": "Update",
+  "delete": "Delete",
+  "notification": {
+    "accessChanged": {
+      "message": "Access Changed!",
+      "description": "User {{fromUser}} changed access of user {{toUser}}. Can edit: {{canEdit}}, can delete: {{canDelete}}"
+    },
+    "newVehicle": {
+      "message": "New Vehicle",
+      "description": "User {{authorId}} created a new vehicle with ID {{vehicleId}}"
+    },
+    "vehicleUpdated": {
+      "message": "New Vehicle",
+      "description": "User {{updatedBy}} updated a vehicle with ID {{vehicleId}}"
+    },
+    "vehicleDeleted": {
+      "message": "Deleted vehicle",
+      "description": "User {{deletedBy}} deleted a vehicle with ID {{vehicleId}}"
+    }
+  },
+  "vehicle": {
+    "id": "ID",
+    "name": "Name",
+    "enginePower": "Engine Power",
+    "y": "Y",
+    "x": "X",
+    "creationDate": "Creation Date",
+    "creator": "Creator",
+    "fuelType": {
+      "title": "Fuel Type",
+      "GASOLINE": "Gasoline",
+      "null": "N/A",
+      "MANPOWER": "Manpower",
+      "ELECTRICITY": "Electricity",
+      "PLASMA": "Plasma",
+      "ANTIMATTER": "Antimatter"
+    },
+    "vehicleType": {
+      "title": "Vehicle Type",
+      "PLANE": "Plane",
+      "BOAT": "Boat",
+      "SUBMARINE": "Submarine",
+      "BICYCLE": "Bicycle"
+    }
+  },
+  "user": {
+    "id": "ID",
+    "username": "User Name",
+    "password": "Password"
+  },
+  "languages": {
+    "ru-RU": {
+      "localizedName": "Русский",
+      "globalName": "Russian"
+    },
+    "en-CA": {
+      "localizedName": "English (Canada)",
+      "globalName": "English (Canada)"
+    },
+    "tr-TR": {
+      "localizedName": "Türk Dili",
+      "globalName": "Turkish"
+    },
+    "lv-LV": {
+      "localizedName": "Latviski",
+      "globalName": "Latvian"
+    }
+  },
+  "errors": {
+    "signIn": {
+      "401": "Wrong username or password",
+      "400": "Bad request",
+      "5xx": "Internal server error. Try again later"
+    },
+    "signUp": {
+      "409": "User with such name already exists",
+      "400": "Bad request",
+      "5xx": "Internal server error. Try again later"
+    }
+  }
+}

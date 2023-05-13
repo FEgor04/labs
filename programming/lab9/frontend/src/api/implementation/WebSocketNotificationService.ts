@@ -46,8 +46,9 @@ export class WebSocketNotificationService implements NotificationService {
     }
 
     reconnect(): void {
-        this.client.forceDisconnect()
-        this.setup()
+        this.client.deactivate().then(() => {
+            this.setup()
+        })
     }
 
 }

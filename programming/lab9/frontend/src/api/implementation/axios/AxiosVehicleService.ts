@@ -2,9 +2,9 @@ import {apiInstance} from "./AxiosViewerService.ts";
 import {
     CreateVehicleRequest,
     GetVehiclesRequest,
-    GetVehiclesResponse, Vehicle,
-    VehiclesService
+    GetVehiclesResponse, VehiclesService
 } from "../../defs/VehiclesService.ts";
+import {Vehicle} from "../../defs/vehicles/Vehicle.ts";
 
 const columnNumberToName = (columnNumber: number) => {
     const columnNamesMap = new Map<number, string>
@@ -30,7 +30,7 @@ export default class AxiosVehicleService implements VehiclesService {
             pageNumber: request.pageNumber,
             sortingColumn: columnNumberToName(request.sortingColumn),
             ascending: request.isAscending,
-            filter: JSON.stringify(request.filter),
+            filter: JSON.stringify(request.filter).replace("[", "{AAAA{").replace("]", "}AAAA}"),
         }
         const response = await apiInstance.get<GetVehiclesResponse>("/vehicles", {
             params: newParams,
@@ -53,6 +53,7 @@ export default class AxiosVehicleService implements VehiclesService {
     }
 
     async updateVehicle(vehicleId: number, data: CreateVehicleRequest): Promise<void> {
+        data.fuelType = data.fuelType.length == 0 ? null : data.fuelType
         const response = await apiInstance.put(`/vehicles/${vehicleId}`, data)
         return
     }

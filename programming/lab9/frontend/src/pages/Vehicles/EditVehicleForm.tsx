@@ -2,10 +2,10 @@ import {observer} from "mobx-react";
 import {useTranslation} from "react-i18next";
 import globalStore from "../../store";
 import {Button, Form, Input, InputNumber, Select} from "antd";
-import {PossibleFuelTypes, PossibleVehicleTypes, Vehicle} from "../../api/defs/VehiclesService.ts";
 import {useParams} from "react-router";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {PossibleFuelTypes, PossibleVehicleTypes, Vehicle} from "../../api/defs/vehicles/Vehicle.ts";
 
 const EditVehicleForm = observer(() => {
     const {t} = useTranslation()
@@ -49,7 +49,7 @@ const EditVehicleForm = observer(() => {
     return (
         <div>
             <h1>
-                {t('updateVehicle')}
+                {t('editVehicle.title')}
             </h1>
             <Form
                 name="basic"
@@ -58,7 +58,7 @@ const EditVehicleForm = observer(() => {
                 onFinish={handleFinish}
             >
                 <Form.Item name="id"
-                           label="ID"
+                           label={t('vehicle.id')}
                            initialValue={prevVehicle?.id}
                 >
                     <Input disabled/>
@@ -75,7 +75,7 @@ const EditVehicleForm = observer(() => {
 
                 <Form.Item
                     name="x"
-                    label={t("x")}
+                    label={t("vehicle.x")}
                     required
                     initialValue={prevVehicle?.coordinates.x}
                     // rules={[{min: -527, required: true}]}
@@ -84,7 +84,7 @@ const EditVehicleForm = observer(() => {
                 </Form.Item>
                 <Form.Item
                     name="y"
-                    label={t("y")}
+                    label={t("vehicle.y")}
                     initialValue={prevVehicle?.coordinates.y}
                 >
                     <InputNumber/>
@@ -92,7 +92,7 @@ const EditVehicleForm = observer(() => {
 
                 <Form.Item
                     name="enginePower"
-                    label={t("enginePower")}
+                    label={t("vehicle.enginePower")}
                     rules={[{required: true}]}
                     initialValue={prevVehicle?.enginePower}
                 >
@@ -101,13 +101,13 @@ const EditVehicleForm = observer(() => {
 
                 <Form.Item
                     name="vehicleType"
-                    label={t("vehicleType")}
+                    label={t("vehicle.vehicleType.title")}
                     initialValue={prevVehicle?.vehicleType}
                     required
                 >
                     <Select>
                         {PossibleVehicleTypes.map((name) => (
-                            <Select.Option key={name.toString()} value={name}>{name}</Select.Option>
+                            <Select.Option key={name} value={name}>{t(`vehicle.vehicleType.${name}`)}</Select.Option>
                         ))}
                     </Select>
                 </Form.Item>
@@ -115,22 +115,22 @@ const EditVehicleForm = observer(() => {
 
                 <Form.Item
                     name="fuelType"
-                    label={t("fuelType")}
-                    initialValue={prevVehicle?.fuelType}
+                    label={t("vehicle.fuelType.title")}
+                    initialValue={prevVehicle?.fuelType == null ? "" : prevVehicle?.fuelType}
                 >
 
                     <Select>
                         <>
-                            <Select.Option value={""}>{}</Select.Option>
+                            <Select.Option key={"null"} value={""}>{t(`vehicle.fuelType.null`)}</Select.Option>
                             {PossibleFuelTypes.map((name) => (
-                                <Select.Option key={name} value={name}>{name}</Select.Option>
+                                <Select.Option key={name} value={name}>{t(`vehicle.fuelType.${name}`)}</Select.Option>
                             ))}
                         </>
                     </Select>
                 </Form.Item>
 
                 <Button type={"primary"} htmlType="submit">
-                    Create
+                    {t('editVehicle.submit')}
                 </Button>
             </Form>
         </div>

@@ -2,6 +2,7 @@ import {Header} from "antd/es/layout/layout";
 import HeaderLinks from "../components/header/HeaderLinks.tsx";
 import {NavLink} from "react-router-dom";
 import UserInformation from "../components/header/UserInformation.tsx";
+import LanguageChoose from "../components/header/LanguageChoose.tsx";
 
 const headerStyle: React.CSSProperties = {
     color: "white",
@@ -25,6 +26,7 @@ const MyHeader = () => {
                 </NavLink>
             </div>
             <div style={{float: "right", verticalAlign: "middle", content: ""}}>
+                <LanguageChoose/>
                 <UserInformation/>
             </div>
             <HeaderLinks/>

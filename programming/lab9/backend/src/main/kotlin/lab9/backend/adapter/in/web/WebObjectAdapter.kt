@@ -54,7 +54,7 @@ class WebObjectAdapter {
     }
 
     fun showVehiclesRequestToQuery(request: GetVehiclesRequest): GetVehiclesQuery {
-        return GetVehiclesQuery(request.pageNumber, request.pageSize, sortingRequestToQuery(request.sorting))
+        return GetVehiclesQuery(request.pageNumber, request.pageSize, sortingRequestToQuery(request.sorting), request.filter)
     }
 
     fun createVehicleRequestToQuery(request: CreateVehicleRequest, creatorId: User.UserID): CreateVehicleQuery {

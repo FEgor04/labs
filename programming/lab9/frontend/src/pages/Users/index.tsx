@@ -10,24 +10,34 @@ import PermissionsComponent from "./PermissionsComponent.tsx";
 const UsersPage = observer(() => {
     const {t} = useTranslation()
     const usersStore = globalStore.usersStore
-    const currentUser = globalStore.viewerStore.viewer
+    const {isSignedIn, viewer: currentUser} = globalStore.viewerStore
     useEffect(() => {
-        usersStore.updateData()
+        if (isSignedIn) {
+            usersStore.updateData()
+        }
     }, [usersStore.currentPage, usersStore.pageSize])
+
+    if(!isSignedIn) {
+        return (
+            <h1>
+                {t('table.needToSignIn')}
+            </h1>
+        )
+    }
 
     const usersTableColumns: ColumnsType<User> = [
         {
-            title: t('table.idColumn'),
+            title: t('user.id'),
             dataIndex: "id",
             key: "id",
         },
         {
-            title: t('usersTable.usernameColumn'),
+            title: t('user.username'),
             dataIndex: "username",
             key: "username"
         },
         {
-            title: t('usersTable.permissionsColumn'),
+            title: t('usersTable.permissions.title'),
             dataIndex: "permissions",
             key: "id",
             align: "right",
@@ -38,7 +48,7 @@ const UsersPage = observer(() => {
                         currentUserId={currentUser.id}
                         onSave={(canDelete, canEdit) => {
                             usersStore.grantPermissions(record.id, canEdit, canDelete)
-                    }}
+                        }}
                     />
                 )
             }
@@ -50,6 +60,7 @@ const UsersPage = observer(() => {
             columns={usersTableColumns}
             loading={usersStore.isLoading}
             dataSource={usersStore.users}
+            scroll={{x: true}}
             pagination={{
                 current: usersStore.currentPage,
                 pageSize: usersStore.pageSize,

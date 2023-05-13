@@ -20,14 +20,8 @@ class ExceptionRestControllerAdvice {
     }
 
     @ExceptionHandler(UserAlreadyExistsException::class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    fun handleUserAlreadyExistsException(ex: Exception): ExceptionResponseMessage {
-        return ExceptionResponseMessage.fromException(ex, HttpStatus.CONFLICT.value())
-    }
-
-    @ExceptionHandler(VehicleAlreadyExistsException::class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
-    fun handleVehicleAlreadyExistsException(ex: Exception): ExceptionResponseMessage {
+    fun handleUserAlreadyExistsException(ex: Exception): ExceptionResponseMessage {
         return ExceptionResponseMessage.fromException(ex, HttpStatus.CONFLICT.value())
     }
 
@@ -37,7 +31,7 @@ class ExceptionRestControllerAdvice {
         return ExceptionResponseMessage.fromException(ex, HttpStatus.CONFLICT.value())
     }
 
-     @ExceptionHandler(PermissionDeniedException::class)
+    @ExceptionHandler(PermissionDeniedException::class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     fun handlePermissionDeniedException(ex: Exception): ExceptionResponseMessage {
         return ExceptionResponseMessage.fromException(ex, HttpStatus.CONFLICT.value())
