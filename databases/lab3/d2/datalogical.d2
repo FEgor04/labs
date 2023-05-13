@@ -1,0 +1,285 @@
+HUMANS: {
+  shape: sql_table
+  ID: SERIAL {constraint: primary_key}
+  NAME: VARCHAR(50)
+}
+
+SCIENTISTS: {
+  shape: sql_table
+  ID: SERIAL {constraint: primary_key}
+  NAME: VARCHAR(50)
+}
+
+CREATURES: {
+  shape: sql_table
+  ID: SERIAL {constraint: primary_key}
+  NAME: VARCHAR(50)
+}
+
+CAGES: {
+  shape: sql_table
+  ID: SERIAL {constraint: primary_key}
+  CREATURE_ID: INTEGER {constraint: foreign_key}
+}
+
+FUNDS: {
+  shape: sql_table
+  ID: SERIAL {constraint: primary_key}
+  OWNER_ID: INTEGER {constraint: foreign_key}
+}
+
+NEGOTIATIONS: {
+  shape: sql_table
+  ID: SERIAL {constraint: primary_key}
+  AGENDA: TEXT
+  START: TIMESTAMP
+  END: TIMESTAMP
+}
+
+ACTIONS: {
+  shape: sql_table
+  ID: SERIAL {constraint: primary_key}
+  DESCRIPTION: TEXT
+  START: TIMESTAMP
+  END: TIMESTAMP
+}
+
+ACTION_MOMENTS: {
+  shape: sql_table
+  ID: SERIAL {constraint: primary_key}
+  ACTION_ID: INTEGER {constraint: foreign_key}
+  DESCRIPTION: TEXT
+  TIME: TIMESTAMP
+}
+
+THINGS: {
+  shape: sql_table
+  ID: SERIAL {constraint: primary_key}
+  DESCRIPTION: TEXT
+}
+
+CAGE_LOOKS_LIKE: {
+  shape: sql_table
+  CAGE_ID: INTEGER {constraint: foreign_key}
+  THING_ID: INTEGER {constraint: foreign_key}
+}
+
+ACTION_SUBJECT: {
+  shape: sql_table
+  ACTION_ID: INTEGER {constraint: foreign_key}
+  SCIENTIST_ID: INTEGER {constraint: foreign_key}
+}
+
+NEGOTIATION_ACTIONS: {
+  shape: sql_table
+  ACTION_ID: INTEGER {constraint: foreign_key}
+  NEG_ID: INTEGER {constraint: foreign_key}
+}
+
+ACTION_CAGE_OBJECT: {
+  shape: sql_table
+  ACTION_ID: INTEGER {constraint: foreign_key}
+  CAGE_ID: INTEGER {constraint: foreign_key}
+}
+
+ACTION_THING_OBJECT: {
+  shape: sql_table
+  ACTION_ID: INTEGER {constraint: foreign_key}
+  THING_ID: INTEGER {constraint: foreign_key}
+}
+
+NEGOTIATION_PARTICIPANTS: {
+  shape: sql_table
+  NEG_ID: INTEGER {constraint: foreign_key}
+  SCIENTIST_ID: INTEGER {constraint: foreign_key}
+}
+
+NEGOTIATION_HUMAN_PARTICIPANTS: {
+  shape: sql_table
+  NEG_ID: INTEGER {constraint: foreign_key}
+  HUMAN_ID: INTEGER {constraint: foreign_key}
+}
+
+
+CREATURE_CREATORS: {
+  shape: sql_table
+  SCIENTIST_ID: INTEGER {constraint: foreign_key}
+  CREATURE_ID: INTEGER {constraint: foreign_key}
+}
+
+SCIENTISTS.ID <-> CREATURE_CREATORS.SCIENTIST_ID {
+  target-arrowhead: {
+    shape: cf-many
+  }
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+CREATURE_CREATORS.SCIENTIST_ID <-> CREATURES.ID {
+  target-arrowhead: {
+    shape: cf-one-required
+  }
+  source-arrowhead: {
+    shape: cf-many
+  }
+}
+
+FUNDS.OWNER_ID <-> SCIENTISTS.ID {
+  target-arrowhead: {
+    shape: cf-one-required
+  }
+  source-arrowhead: {
+    shape: cf-many
+  }
+}
+
+NEGOTIATIONS.ID <-> NEGOTIATION_PARTICIPANTS.NEG_ID {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+}
+NEGOTIATION_PARTICIPANTS.SCIENTIST_ID <-> SCIENTISTS.ID {
+  target-arrowhead: {
+    shape: cf-one-required
+  }
+  source-arrowhead: {
+    shape: cf-many
+  }
+}
+
+ACTIONS.ID <-> ACTION_SUBJECT.ACTION_ID  {
+  target-arrowhead: {
+    shape: cf-many
+  }
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+}
+ACTION_SUBJECT.SCIENTIST_ID <-> SCIENTISTS.ID {
+  target-arrowhead: {
+    shape: cf-one-required
+  }
+  source-arrowhead: {
+    shape: cf-many
+  }
+}
+
+ACTIONS.ID <-> NEGOTIATION_ACTIONS.ACTION_ID {
+  target-arrowhead: {
+    shape: cf-many
+  }
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+NEGOTIATIONS.ID <-> NEGOTIATION_ACTIONS.NEG_ID {
+  target-arrowhead: {
+    shape: cf-many
+  }
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+CAGES.CREATURE_ID <-> CREATURES.ID {
+  target-arrowhead: {
+    shape: cf-one
+  }
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+CAGES.ID <-> THINGS.ID: накрыта {
+  target-arrowhead: {
+    shape: cf-one
+  }
+  source-arrowhead: {
+    shape: cf-one
+  }
+}
+
+CAGES.ID <-> CAGE_LOOKS_LIKE.CAGE_ID {
+  target-arrowhead: {
+    shape: cf-many
+  }
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+THINGS.ID <-> CAGE_LOOKS_LIKE.CAGE_ID {
+  target-arrowhead: {
+    shape: cf-many
+  }
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+ACTIONS.ID <-> ACTION_CAGE_OBJECT.ACTION_ID {
+  target-arrowhead: {
+    shape: cf-many
+  }
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+CAGES.ID <-> ACTION_CAGE_OBJECT.CAGE_ID {
+  target-arrowhead: {
+    shape: cf-many
+  }
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+ACTIONS.ID <-> ACTION_THING_OBJECT.ACTION_ID {
+  target-arrowhead: {
+    shape: cf-many
+  }
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+THINGS.ID <-> ACTION_THING_OBJECT.THING_ID {
+  target-arrowhead: {
+    shape: cf-many
+  }
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+NEGOTIATION_HUMAN_PARTICIPANTS.HUMAN_ID <-> HUMANS.ID {
+  source-arrowhead: {
+    shape: cf-many
+  }
+  target-arrowhead: {
+    shape: cf-one-required
+  }
+}
+NEGOTIATION_HUMAN_PARTICIPANTS.NEG_ID <-> NEGOTIATIONS.ID {
+  source-arrowhead: {
+    shape: cf-many
+  }
+  target-arrowhead: {
+    shape: cf-one-required
+  }
+}
+
+ACTIONS.ID <-> ACTION_MOMENTS.ACTION_ID { 
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+}

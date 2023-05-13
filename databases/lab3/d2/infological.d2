@@ -1,0 +1,160 @@
+Ученый: {
+  shape: sql_table
+  Имя {constraint: primary_key}
+}
+
+Существо: {
+  shape: sql_table
+  Имя {constraint: primary_key}
+}
+
+Фонд: {
+  shape: sql_table
+  ID {constraint: primary_key}
+  Владелец {constraint: foreign_key}
+}
+
+Клетка: {
+  shape: sql_table
+  Хранимое существо {constraint: foreign_key}
+}
+
+Вещь: {
+  shape: sql_table
+  Описание {constraint: primary_key}
+}
+
+Действие: {
+  shape: sql_table
+  Описание {constraint: primary_key} 
+  Время начала
+  Время конца
+}
+
+"Моменты действия": {
+  shape: sql_table
+  Описание {constraint: primary_key}
+  Время
+}
+
+
+Переговоры: {
+  shape: sql_table
+  Время проведения {constraint: primary_key}
+  Цель
+}
+
+Люди: {
+  shape: sql_table
+  Имя: {constraint: primary_key}
+}
+
+Люди.Имя <-> Переговоры."Время проведения": {
+  source-arrowhead {
+    shape: cf-many
+  }
+  target-arrowhead {
+    shape: cf-many
+  }
+}
+
+
+Существо.Имя <-> Ученый.Имя: Создатели {
+  target-arrowhead {
+    shape: cf-many
+  }
+  source-arrowhead {
+    shape: cf-many
+  }
+}
+
+Фонд.Владелец <-> Ученый.Имя: Владелец фонда { 
+  target-arrowhead {
+    shape: cf-one
+  }
+  source-arrowhead {
+    shape: cf-many
+  }
+}
+
+
+Клетка."Хранимое существо" <-> Существо.Имя: Находится в клетке {
+  target-arrowhead {
+    shape: cf-one
+  }
+  source-arrowhead {
+    shape: cf-one
+  }
+}
+
+Клетка."Хранимое существо" <-> Вещь.Описание: "похожа на" {
+  target-arrowhead {
+    shape: cf-many
+  }
+  source-arrowhead {
+    shape: cf-many
+  }
+}
+
+Клетка."Хранимое существо" <-> Вещь.Описание: "накрыта" {
+  target-arrowhead {
+    shape: cf-one
+  }
+  source-arrowhead {
+    shape: cf-one
+  }
+}
+
+Ученый.Имя <-> Действие.Описание: субъект {
+  target-arrowhead {
+    shape: cf-many
+  }
+  source-arrowhead {
+    shape: cf-many
+  }
+}
+
+Действие.Описание <-> Вещь.Описание: объект {
+  target-arrowhead {
+    shape: cf-many
+  }
+  source-arrowhead {
+    shape: cf-many
+  }
+}
+
+Действие.Описание <-> Клетка."Хранимое существо": объект {
+  target-arrowhead {
+    shape: cf-many
+  }
+  source-arrowhead {
+    shape: cf-many
+  }
+}
+
+Ученый.Имя <-> Переговоры."Время проведения": участник {
+   target-arrowhead {
+    shape: cf-many
+  }
+  source-arrowhead {
+    shape: cf-many
+  } 
+}
+
+Переговоры."Время проведения" <-> Действие.Описание: на каких переговорах {
+   target-arrowhead {
+    shape: cf-many
+  }
+  source-arrowhead {
+    shape: cf-many
+  } 
+}
+
+Действие <-> "Моменты действия": {
+  target-arrowhead {
+    shape: cf-many
+  }
+  source-arrowhead {
+    shape: cf-one
+  }
+}
