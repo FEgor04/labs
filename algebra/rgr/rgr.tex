@@ -1,0 +1,155 @@
+\documentclass{article}
+\usepackage[T2A]{fontenc}
+\usepackage{amsmath} 
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage[english,russian]{babel}
+\everymath{\displaystyle}
+\usepackage[usenames]{color}
+\usepackage{graphicx}
+
+\usepackage{epigraph}
+
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  top=25mm, 
+  right=2cm,
+  bottom=25mm, 
+  left=2cm
+}
+
+\newcommand{\lin}{Lin}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot[C]{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+\usepackage{tikzsymbols}
+
+\newcommand\lword[1]{\leavevmode\nobreak\hskip0pt plus\linewidth\penalty50\hskip0pt plus-\linewidth\nobreak\textbf{#1}}
+\title{Поиск ЖНФ и жорданова базиса}
+\author{Федоров Егор, P3115, вариант 44}
+\date{}
+
+\begin{document}
+  \maketitle
+  \epigraph{
+    Невозможно объяснить, что такое \texttt{Матрица}. Ты должен увидеть это сам.
+  }{Морфеус, <<Матрица>>}
+
+  Исходная матрица:
+  \[
+  A = 
+    \begin{pmatrix}
+  2 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 2 & 0 & 0 & 0 & 0 \\
+  2 & 0 & 2 & 0 & 0 & 0 \\
+  0 & 3 & 0 & 2 & 0 & 0 \\
+  1 & 0 & 0 & 3 & 2 & 0 \\
+  0 & 2 & 1 & 0 & 0 & 2 \\
+      \end{pmatrix}
+  \]
+
+  Найдем характеристический многочлен матрицы $\chi_\varphi(t) = A - E t$.
+  Так как выше диагонали матрицы находятся одни нули, то определитель матрицы будет
+  равен произведению чисел на диагонали. Таким образом, $\chi_\varphi(t) = (2-t)^6$.
+  Значит оператор имеет единственное собственное число $2$ кратности $6$.
+
+  Тогда $B = A - 2 E = \begin{pmatrix}
+  0 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 0 \\
+  2 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 3 & 0 & 0 & 0 & 0 \\
+  1 & 0 & 0 & 3 & 0 & 0 \\
+  0 & 2 & 1 & 0 & 0 & 0 \\
+  \end{pmatrix}$.
+  Приведем матрицу $B$ к ступенчатому виду.
+  \[
+    B = \begin{pmatrix}
+  0 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 0 \\
+  2 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 3 & 0 & 0 & 0 & 0 \\
+  1 & 0 & 0 & 3 & 0 & 0 \\
+  0 & 2 & 1 & 0 & 0 & 0 \\
+  \end{pmatrix}
+  \sim
+  \begin{pmatrix}
+  2 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 3 & 0 & 0 & 0 & 0 \\
+  0 & 2 & 1 & 0 & 0 & 0 \\
+  1 & 0 & 0 & 3 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 0 \\
+  \end{pmatrix}
+  \sim
+  \begin{pmatrix}
+  2 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 3 & 0 & 0 & 0 & 0 \\
+  0 & 2 & 1 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 3 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 0 \\
+  \end{pmatrix}
+  \sim
+  \begin{pmatrix}
+  2 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 3 & 0 & 0 & 0 & 0 \\
+  0 & 0 & 1 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 3 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 0 \\
+  \end{pmatrix}
+  \]
+
+  Очевидно, что $\ker(B) = \lin\left(\left(0, 0, 0, 0, 1, 0\right)^T, \left(0, 0, 0, 0, 0, 1\right)^T\right)$.
+
+  Найдем $\ker(B^2)$.
+
+  \[
+    B ^2 = B \cdot B =
+    \begin{pmatrix}
+      0 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 0 \\
+      2 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 3 & 0 & 0 & 0 & 0 \\
+      1 & 0 & 0 & 3 & 0 & 0 \\
+      0 & 2 & 1 & 0 & 0 & 0 \\
+    \end{pmatrix}
+    \cdot
+    \begin{pmatrix}
+      0 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 0 \\
+      2 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 3 & 0 & 0 & 0 & 0 \\
+      1 & 0 & 0 & 3 & 0 & 0 \\
+      0 & 2 & 1 & 0 & 0 & 0 \\
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      0 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 9 & 0 & 0 & 0 & 0 \\
+      2 & 0 & 0 & 0 & 0 & 0 \\
+    \end{pmatrix}
+    \sim
+    \begin{pmatrix}
+      2 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 9 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 0 \\
+    \end{pmatrix}
+  \]
+
+
+
+
+
+\end{document}
