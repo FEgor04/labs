@@ -1,5 +1,5 @@
 import {observer} from "mobx-react";
-import {Button, Form, Input, InputNumber, Select} from "antd";
+import {Button, Form, Input, InputNumber, Select, Space} from "antd";
 import {useTranslation} from "react-i18next";
 import globalStore from "../../store";
 import {PossibleFuelTypes, PossibleVehicleTypes} from "../../api/defs/vehicles/Vehicle.ts";
@@ -88,9 +88,11 @@ const CreateNewForm = observer(() => {
                     </Select>
                 </Form.Item>
 
-                <Button type={"primary"} htmlType="submit">
-                    {t('createVehicle.submit')}
-                </Button>
+                <Space>
+                    <Button type={"primary"} htmlType="submit">
+                        {t('createVehicle.submit')}
+                    </Button>
+                </Space>
             </Form>
         </div>
     )

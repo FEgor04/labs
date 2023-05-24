@@ -1,12 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.0.5"
+    id("org.springframework.boot") version "3.1.0"
     id("io.spring.dependency-management") version "1.1.0"
     kotlin("jvm")
     kotlin("plugin.serialization")
-    kotlin("plugin.spring") version "1.8.20"
-    kotlin("plugin.jpa") version "1.8.20"
+    kotlin("plugin.spring") version "1.8.21"
+    kotlin("plugin.jpa") version "1.8.21"
 }
 
 group = "lab9"

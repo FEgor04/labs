@@ -4,6 +4,7 @@ import React from "react";
 import {VehicleColumn} from "../../api/defs/vehicles/Vehicle.ts";
 import {Filter} from "../../api/defs/vehicles/filter/Filter.ts";
 import {NumberFilter} from "../../api/defs/vehicles/filter/NumberFilter.ts";
+import {useTranslation} from "react-i18next";
 
 export type FilterProps = {
     props: FilterDropdownProps,
@@ -13,6 +14,7 @@ export type FilterProps = {
 }
 
 const NumberFilterForm = ({props, setFilter, clearFilter, column}: FilterProps) => {
+    const {t} = useTranslation()
     const formRef = React.useRef<FormInstance>(null);
     const onFinish = (values: { lowerBound: number | null, upperBound: number | null }) => {
         if (!values.lowerBound && !values.upperBound) {
@@ -36,16 +38,16 @@ const NumberFilterForm = ({props, setFilter, clearFilter, column}: FilterProps) 
     return (
         <Space align="center" style={{padding: ".5rem"}}>
             <Form onFinish={onFinish} ref={formRef}>
-                <Form.Item label={"Value should be greater than"} name="lowerBound">
+                <Form.Item label={t('vehiclesTable.numberFilter.greaterThan')} name="lowerBound">
                     <InputNumber/>
                 </Form.Item>
 
-                <Form.Item label={"Value should be lower than"} name="upperBound">
+                <Form.Item label={t('vehiclesTable.numberFilter.lowerThan')} name="upperBound">
                     <InputNumber/>
                 </Form.Item>
                 <Space style={{display: "flex", justifyContent: "space-between"}} align="center">
-                    <Button onClick={onReset}>Reset</Button>
-                    <Button type="primary" htmlType="submit">OK</Button>
+                    <Button onClick={onReset}>{t('vehiclesTable.filter.reset')}</Button>
+                    <Button type="primary" htmlType="submit">{t('vehiclesTable.filter.submit')}</Button>
                 </Space>
             </Form>
         </Space>

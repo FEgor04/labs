@@ -39,11 +39,12 @@ const UsersPage = observer(() => {
         {
             title: t('usersTable.permissions.title'),
             dataIndex: "permissions",
-            key: "id",
+            key: "permissions",
             align: "right",
             render: (value, record) => {
                 return (
                     <PermissionsComponent
+                        key={record.id}
                         user={record}
                         currentUserId={currentUser.id}
                         onSave={(canDelete, canEdit) => {

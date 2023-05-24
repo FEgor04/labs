@@ -3,6 +3,7 @@ import HeaderLinks from "../components/header/HeaderLinks.tsx";
 import {NavLink} from "react-router-dom";
 import UserInformation from "../components/header/UserInformation.tsx";
 import LanguageChoose from "../components/header/LanguageChoose.tsx";
+import {useTranslation} from "react-i18next";
 
 const headerStyle: React.CSSProperties = {
     color: "white",
@@ -11,6 +12,7 @@ const headerStyle: React.CSSProperties = {
 
 
 const MyHeader = () => {
+    const {t} = useTranslation()
     return (
         <Header style={headerStyle}>
             <div style={{float: "left", marginRight: "8rem"}}>
@@ -22,7 +24,7 @@ const MyHeader = () => {
                              letterSpacing: ".3rem",
                              fontWeight: "bolder"
                          }}>
-                    LAB 9
+                    {t('header.title')}
                 </NavLink>
             </div>
             <div style={{float: "right", verticalAlign: "middle", content: ""}}>

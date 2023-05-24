@@ -1,3 +1,5 @@
+// noinspection AllyJsxHardcodedStringInspection
+
 import {Fragment} from "react";
 import {
     Category,

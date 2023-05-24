@@ -16,7 +16,7 @@ export default class VehicleStore {
     sortColumnNumber = 0
     isSortAscending = true
     filter: Filter | null = null
-    updateVehicleStore: UpdateVehicleStore = new UpdateVehicleStore(this.vehiclesService)
+    updateVehicleStore: UpdateVehicleStore = new UpdateVehicleStore(this.vehiclesService, this)
 
 
 
@@ -55,7 +55,6 @@ export default class VehicleStore {
         if(!direction) {
             this.setSortingColumn(0)
             this.setIsSortingAscending(true)
-            this.updateData()
         } else {
             this.setSortingColumn(column)
             this.setIsSortingAscending(direction == "ascend")

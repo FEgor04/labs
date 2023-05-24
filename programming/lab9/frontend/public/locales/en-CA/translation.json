@@ -4,7 +4,8 @@
     "users": "Users",
     "logIn": "Log In",
     "logOut": "Log Out",
-    "setLanguage": "Language"
+    "setLanguage": "Language",
+    "title": "LAB 9"
   },
   "signIn": {
     "header": "Sign In",
@@ -23,14 +24,20 @@
     "submit": "Submit"
   },
   "vehiclesTable": {
+    "createNew": "Create new",
+    "visualizer": "Visualizer",
     "numberFilter": {
       "greaterThan": "Value should be greater than:",
       "lessThan": "Value should be less than: "
     },
+    "dateFilter": {
+      "greaterThan": "Creation date should be after or at:",
+      "lessThan": "Creation date should be before or at: "
+    },
     "patternFilter": {
       "shouldMatch": "Value should contain substring: "
     },
-    "filter":{
+    "filter": {
       "submit": "OK",
       "reset": "Reset"
     }
@@ -55,7 +62,10 @@
       "delete": "Delete",
       "update": "Update"
     },
-    "needToSignIn": "You need to sign in first!"
+    "needToSignIn": "You need to sign in first!",
+    "triggerAsc": "Click to sort ascending",
+    "triggerDesc": "Click to sort descending",
+    "cancelSort": "Click to cancel sort"
   },
   "update": "Update",
   "delete": "Delete",
@@ -135,6 +145,18 @@
       "409": "User with such name already exists",
       "400": "Bad request",
       "5xx": "Internal server error. Try again later"
+    },
+    "updateVehicle": {
+      "unknown": "Unknown error happened: {{error}}",
+      "403": "You are not allowed to edit vehicles owned by user#{{id}}",
+      "404": "Vehicle#{{id}} does not exists!"
+    },
+    "5xx": "Internal server error. Try again later"
+  },
+  "visualizer": {
+    "canNotEdit": {
+      "message": "You are not allowed to edit this vehicle",
+      "description": "You are not allowed to edit vehicles owned by #{{creatorId}}"
     }
   }
 }

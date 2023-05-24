@@ -10,6 +10,7 @@ import lab9.backend.logger.KCoolLogger
 import org.springframework.context.annotation.Bean
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @Component

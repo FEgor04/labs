@@ -13,19 +13,8 @@ const EditVehicleForm = observer(() => {
     const idStr = useParams()["id"]
     const id = parseInt(idStr!)
     const {updateVehicleStore} = globalStore.vehicleStore
-    const [prevVehicle, setPrevVehicle] = useState<Vehicle>()
-    const [isLoading, setLoading] = useState<boolean>()
     useEffect(() => {
-        console.log(`Loading vehicle ${id}`)
-        setLoading(true)
-        updateVehicleStore.getVehicle(id).then(veh => {
-            setPrevVehicle(veh)
-            console.log(prevVehicle)
-        }).catch(e => {
-            console.log(e)
-        }).finally(() => {
-            setLoading(false)
-        })
+        updateVehicleStore.setId(id)
     }, [id])
 
     const handleFinish = (values: any) => {
@@ -38,10 +27,10 @@ const EditVehicleForm = observer(() => {
             y: values.y
         })
     }
-    if(isLoading) {
+    if(updateVehicleStore.isLoading) {
         return (
             <h1>
-                Загрузка
+                {t('loading')}
             </h1>
         )
     }
@@ -59,7 +48,7 @@ const EditVehicleForm = observer(() => {
             >
                 <Form.Item name="id"
                            label={t('vehicle.id')}
-                           initialValue={prevVehicle?.id}
+                           initialValue={updateVehicleStore.previousVehicle?.id}
                 >
                     <Input disabled/>
                 </Form.Item>
@@ -68,7 +57,7 @@ const EditVehicleForm = observer(() => {
                     name="name"
                     label={t("name")}
                     required
-                    initialValue={prevVehicle?.name}
+                    initialValue={updateVehicleStore.previousVehicle?.name}
                 >
                     <Input/>
                 </Form.Item>
@@ -77,7 +66,7 @@ const EditVehicleForm = observer(() => {
                     name="x"
                     label={t("vehicle.x")}
                     required
-                    initialValue={prevVehicle?.coordinates.x}
+                    initialValue={updateVehicleStore.previousVehicle?.coordinates.x}
                     // rules={[{min: -527, required: true}]}
                 >
                     <InputNumber/>
@@ -85,7 +74,7 @@ const EditVehicleForm = observer(() => {
                 <Form.Item
                     name="y"
                     label={t("vehicle.y")}
-                    initialValue={prevVehicle?.coordinates.y}
+                    initialValue={updateVehicleStore.previousVehicle?.coordinates.y}
                 >
                     <InputNumber/>
                 </Form.Item>
@@ -94,7 +83,7 @@ const EditVehicleForm = observer(() => {
                     name="enginePower"
                     label={t("vehicle.enginePower")}
                     rules={[{required: true}]}
-                    initialValue={prevVehicle?.enginePower}
+                    initialValue={updateVehicleStore.previousVehicle?.enginePower}
                 >
                     <InputNumber type="number"/>
                 </Form.Item>
@@ -102,7 +91,7 @@ const EditVehicleForm = observer(() => {
                 <Form.Item
                     name="vehicleType"
                     label={t("vehicle.vehicleType.title")}
-                    initialValue={prevVehicle?.vehicleType}
+                    initialValue={updateVehicleStore.previousVehicle?.vehicleType}
                     required
                 >
                     <Select>
@@ -116,7 +105,7 @@ const EditVehicleForm = observer(() => {
                 <Form.Item
                     name="fuelType"
                     label={t("vehicle.fuelType.title")}
-                    initialValue={prevVehicle?.fuelType == null ? "" : prevVehicle?.fuelType}
+                    initialValue={updateVehicleStore.previousVehicle?.fuelType == null ? "" : updateVehicleStore.previousVehicle?.fuelType}
                 >
 
                     <Select>
@@ -132,6 +121,8 @@ const EditVehicleForm = observer(() => {
                 <Button type={"primary"} htmlType="submit">
                     {t('editVehicle.submit')}
                 </Button>
+
+
             </Form>
         </div>
     )

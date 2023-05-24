@@ -23,7 +23,7 @@ const SignUpPage = observer(() => {
 
     return (
         <div>
-            <h1>Sign Up</h1>
+            <h1>{t('signUp.header')}</h1>
             <Form
                 name="basic"
                 layout="vertical"

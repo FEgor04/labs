@@ -34,18 +34,15 @@ class SecurityConfiguration(
 
     @Bean
     fun userDetailsService(getUserUseCase: GetUserUseCase): UserDetailsService {
-        return object : UserDetailsService {
-            override fun loadUserByUsername(username: String?): UserDetails {
-                if (username == null) {
-                    throw UsernameNotFoundException("Username should not be null")
-                }
-                val user = getUserUseCase.getUserByUsername(username)
-                if (user != null) {
-                    return UserDetailsEntity(user)
-                }
-                throw UsernameNotFoundException("User $username not found")
+        return UserDetailsService { username ->
+            if (username == null) {
+                throw UsernameNotFoundException("Username should not be null")
             }
-
+            val user = getUserUseCase.getUserByUsername(username)
+            if (user != null) {
+                return@UserDetailsService UserDetailsEntity(user)
+            }
+            throw UsernameNotFoundException("User $username not found")
         }
     }
 

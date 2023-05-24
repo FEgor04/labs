@@ -13,6 +13,7 @@ import FuelTypeFilterForm from "../../components/filters/FuelTypeFilterForm.tsx"
 import {Vehicle, VehicleColumn} from "../../api/defs/vehicles/Vehicle.ts";
 import {PatternFilter} from "../../api/defs/vehicles/filter/PatternFilter.ts";
 import DateFilterForm from "../../components/filters/DateFilterForm.tsx";
+import {VehicleLocaleLoader} from "./VehicleLocaleLoader.ts";
 
 const VehiclesTable = observer(() => {
     const {isSignedIn} = globalStore.viewerStore
@@ -32,18 +33,14 @@ const VehiclesTable = observer(() => {
         filter,
         clearFilters
     } = globalStore.vehicleStore
+    useEffect(() => {
+        updateData()
+    }, [currentPage, pageSize, sortColumnNumber, isSortAscending, isSignedIn, filter])
     const {t, i18n} = useTranslation()
     const currentLocale = new Intl.Locale(i18n.language)
     const numberFormatter = getNumberFormatter()
     const dateTimeFormatter = getDateTimeFormatter()
     const navigate = useNavigate()
-
-
-    useEffect(() => {
-        if (isSignedIn) {
-            updateData()
-        }
-    }, [pageSize, currentPage, sortColumnNumber, isSortAscending, isSignedIn, filter])
 
 
     const columns: ColumnsType<Vehicle> = [
@@ -230,9 +227,12 @@ const VehiclesTable = observer(() => {
         }
     }
 
+    const locale = new VehicleLocaleLoader().loadVehicleTableLocale()
+
     return (
         <Table columns={columns}
                dataSource={vehicles?.vehicles}
+               locale={locale}
                rowKey={"id"}
                loading={isLoading}
                bordered={true}
