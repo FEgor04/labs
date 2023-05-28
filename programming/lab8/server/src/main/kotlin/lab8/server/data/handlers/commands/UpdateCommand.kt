@@ -10,12 +10,7 @@ class UpdateCommand(private val useCase: CommandsHandlerUseCase) :
 
     override suspend fun execute(requestDTO: RequestDTO): UpdateVehicleByIdResponse {
         requestDTO as UpdateVehicleByIdRequestDTO
-        try {
-            useCase.update(requestDTO.id, requestDTO.veh, requestDTO.user)
-        }
-        catch(e: Exception) {
-            return UpdateVehicleByIdResponse(e.toString())
-        }
+        useCase.update(requestDTO.id, requestDTO.veh, requestDTO.user)
         return UpdateVehicleByIdResponse(null)
     }
 }

@@ -21,7 +21,7 @@ class PropertiesConfiguration(private val properties: Properties) :
         get() = HikariConfig("config/hikari.properties")
     override val loadBalancerPort: Int
         get() = properties.getInt("loadBalancer.port", 5555)
-    override val syncDelay: Long = properties.getLong("loadBalancer.syncDelay", 250)
+    override val syncDelay: Long = properties.getLong("loadBalancer.syncDelay", 1000)
     override val workersNumber: Int = properties.getInt("loadBalancer.workers", 10)
     override val producersNumber: Int = properties.getInt("loadBalancer.producers", 10)
     override val consumersNumber: Int = properties.getInt("loadBalancer.consumers", 10)

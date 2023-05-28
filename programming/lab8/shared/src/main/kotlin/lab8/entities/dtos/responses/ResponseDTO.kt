@@ -20,11 +20,6 @@ data class AuthResponseDTO(val user: User, override val error: String?) : Respon
 }
 
 @Serializable
-data class SignUpResponse(val user: User, override val error: String?): ResponseDTO() {
-    override val name = "sign_up"
-}
-
-@Serializable
 data class ErrorResponseDTO(override val name: String, override val error: String?) : ResponseDTO()
 
 @Serializable

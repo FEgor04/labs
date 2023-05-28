@@ -19,6 +19,4 @@ class PropertiesConfiguration(private val properties: Properties) : ClientConfig
         properties.getProperty("loadBalancer.host", "localhost"),
         properties.getInt("loadBalancer.port", 5555),
     )
-
-    override val synchronizerPort: Int = properties.getInt("synchronizer.port", 2280)
 }

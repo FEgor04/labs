@@ -20,11 +20,6 @@ data class AuthRequestDTO(override val user: User) : ModifyRequest() {
 }
 
 @Serializable
-data class SignUpRequest(override val user: User): ModifyRequest() {
-    override val name = "sign_up"
-}
-
-@Serializable
 data class AddRequestDTO(
     val vehicle: Vehicle,
     override val user: User,

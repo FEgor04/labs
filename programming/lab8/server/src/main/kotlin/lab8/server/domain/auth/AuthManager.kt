@@ -1,10 +1,8 @@
 package lab8.server.domain.auth
-import lab8.exceptions.ServerException.UserAlreadyExistsException
 
 interface AuthManager {
     /**
      * Создает нового пользователя
-     * @throws ServerException.UserAlreadyExistsException если пользователь с таким имененем уже существует
      */
     suspend fun createUser(login: String, password: String): Int
 

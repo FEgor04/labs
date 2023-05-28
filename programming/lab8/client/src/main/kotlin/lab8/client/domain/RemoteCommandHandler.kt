@@ -10,26 +10,23 @@ import lab8.entities.vehicle.VehicleType
  */
 @Suppress("TooManyFunctions")
 interface RemoteCommandHandler {
-    val user: User
-
     /**
      * Добавляет в коллекцию новый транспорт. Возвращает его ID
      */
-    suspend fun add(vehicle: Vehicle): Int
-    suspend fun show(): List<Vehicle>
-    suspend fun clear()
-    suspend fun countByType(type: VehicleType?): Int
-    suspend fun countLessThanEnginePower(power: Double): Int
-    suspend fun getCollectionInfo(): InfoResponseDTO
-    suspend fun getMinById(): Vehicle?
-    suspend fun removeGreater(vehicle: Vehicle): Int
-    suspend fun remove(id: Int)
-    suspend fun removeLower(veh: Vehicle): Int
-    suspend fun replaceIfLower(id: Int, element: Vehicle): ReplaceIfLowerResults
-    suspend fun updateVehicleById(newVehicle: Vehicle)
+    fun add(vehicle: Vehicle): Int
+    fun show(): List<Vehicle>
+    fun clear()
+    fun countByType(type: VehicleType?): Int
+    fun countLessThanEnginePower(power: Double): Int
+    fun getCollectionInfo(): InfoResponseDTO
+    fun getMinById(): Vehicle?
+    fun removeGreater(vehicle: Vehicle): Int
+    fun remove(id: Int)
+    fun removeLower(veh: Vehicle): Int
+    fun replaceIfLower(id: Int, element: Vehicle): ReplaceIfLowerResults
+    fun updateVehicleById(newVehicle: Vehicle)
     fun exit()
-    suspend fun await()
-    suspend fun tryToLogin(user: User): User
-    suspend fun createUser(user: User): User
-    suspend fun logout()
+    fun await()
+
+    fun tryToLogin(user: User)
 }

@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "lab8"
-include("client", "server", "lb", "shared", "synchronizer")
+include("client", "server", "lb", "shared", "synchornizer")

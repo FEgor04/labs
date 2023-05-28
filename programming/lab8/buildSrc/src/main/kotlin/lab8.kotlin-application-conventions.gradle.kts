@@ -7,7 +7,6 @@ plugins {
     id("lab8.kotlin-common-conventions")
     // Apply the application plugin to add support for building a CLI application in Java.
     application
-
 }
 
 tasks.register<Jar>("fatJar") {

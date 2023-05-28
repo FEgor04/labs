@@ -27,6 +27,5 @@ class PropertiesFileConfiguration(properties: Properties) : ServerConfiguration 
     override val workersNumber: Int = properties.getInt("server.workers.number", 10)
     override val producersNumber: Int = properties.getInt("server.producers.number", 10)
     override val consumersNumber: Int = properties.getInt("server.consumers.number", 10)
-    override val syncPort: Int = properties.getInt("synchronizer.port", 2280)
     override val prometheusPort: Int = properties.getInt("server.prometheus.port", 1337)
 }

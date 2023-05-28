@@ -76,17 +76,16 @@ class BetterDatagramSocket(
             withContext(Dispatchers.IO) {
                 socket.receive(dp)
             }
+            logger.info("Seding ACK for chunk #$chunkNumber.")
             socketAddress = dp.socketAddress
             if (dp.data[dp.length - 1] == isFinalChunkByte) {
-                logger.info("It was the final chunk. Leaving")
                 totalData += dp.data.take(dp.length - 1)
                 break
             } else {
-                logger.info("Sending ACK for chunk #$chunkNumber.")
                 totalData += dp.data.take(dp.length)
                 sendAck(socketAddress)
-                logger.info("Sent ACK for chunk #$chunkNumber")
             }
+            logger.info("Send ACK for chunk #$chunkNumber")
         }
         return Pair(totalData, socketAddress!!)
     }

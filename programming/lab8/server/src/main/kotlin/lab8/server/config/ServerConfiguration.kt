@@ -12,5 +12,4 @@ interface ServerConfiguration {
     val workersNumber: Int
     val producersNumber: Int
     val consumersNumber: Int
-    val syncPort: Int
 }

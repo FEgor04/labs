@@ -6,7 +6,6 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.SendChannel
 import lab8.entities.dtos.requests.AuthRequestDTO
 import lab8.entities.dtos.requests.RequestDTO
-import lab8.entities.dtos.requests.SignUpRequest
 import lab8.entities.dtos.responses.*
 import lab8.logger.KCoolLogger
 import lab8.server.data.handlers.commands.*
@@ -22,18 +21,8 @@ fun CoroutineScope.handleRequest(
     requests: ReceiveChannel<Pair<RequestDTO, SocketAddress>>,
     outputChannel: SendChannel<Pair<ResponseDTO, SocketAddress>>
 ) = launch(handlerCoroutinesPool) {
-    val logger by KCoolLogger()
-
     for (req in requests) {
-        val response: ResponseDTO = try {
-            executor.handle(req.first)
-        } catch (e: Exception) {
-            logger.error("Could not handle ${req.first.name} command from ${req.second}. Error: $e")
-            ErrorResponseDTO(
-                name = req.first.name,
-                error = e.toString()
-            )
-        }
+        val response = executor.handle(req.first)
         outputChannel.send(Pair(response, req.second))
     }
 }
@@ -63,11 +52,6 @@ class Executor(private val useCase: CommandsHandlerUseCase) : RequestsHandler<Re
     @Suppress("ReturnCount", "TooGenericExceptionCaught")
     suspend fun handle(request: RequestDTO): ResponseDTO {
         val requestTimer = requestLatency.labels(request.name).startTimer()
-        if(request is SignUpRequest) {
-            val response = handleSignUp(request)
-            requestTimer.observeDuration()
-            return response
-        }
         if (request is AuthRequestDTO) {
             val response = handleAuth(request)
             requestTimer.observeDuration()
@@ -84,18 +68,19 @@ class Executor(private val useCase: CommandsHandlerUseCase) : RequestsHandler<Re
             }
         }
         logger.info("Needed command found. Executing!")
-        val response = command.execute(request)
+        val response = try {
+            command.execute(request)
+        } catch (e: Exception) {
+            logger.error("Could not execute ${request.name} command. Error: ${e.message}")
+            requestTimer.observeDuration()
+            return ErrorResponseDTO(request.name, e.message)
+        }
         logger.info("Command handled. Returning response")
         requestTimer.observeDuration()
         return response
     }
 
-    private suspend fun handleSignUp(request: SignUpRequest): SignUpResponse {
-        val newId = useCase.createUser(request.user.name, request.user.password)
-        return SignUpResponse(request.user.copy(id = newId), error = null)
-    }
-
-    private suspend fun handleAuth(request: AuthRequestDTO): AuthResponseDTO {
+    suspend fun handleAuth(request: AuthRequestDTO): AuthResponseDTO {
         return AuthCommand(useCase).execute(request)
     }
 

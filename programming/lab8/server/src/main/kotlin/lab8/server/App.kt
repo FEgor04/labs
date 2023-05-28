@@ -6,7 +6,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import lab8.server.config.PropertiesFileConfiguration
 import lab8.server.data.auth.PostgresAuthManager
-import lab8.server.data.notifier.UDPNotifier
 import lab8.server.data.persistence.PostgresPersistenceManager
 import lab8.server.data.repositories.VehiclePostgresRepository
 import lab8.server.data.udp.UDPServer
@@ -33,7 +32,7 @@ fun main(args: Array<String>): Unit = runBlocking {
     val repository: VehicleRepository = VehiclePostgresRepository(persistenceManager)
     val manager: AuthManager = PostgresAuthManager(dataSource)
     repository.load()
-    val useCase = CommandsHandlerUseCase(repository, manager, UDPNotifier(config.syncPort, config.udpConfiguration))
+    val useCase = CommandsHandlerUseCase(repository, manager)
 
     val nodeNumber = args.getOrNull(0)?.toIntOrNull() ?: 1
     println("Node number: $nodeNumber")

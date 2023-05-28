@@ -15,7 +15,6 @@ import lab8.logger.KCoolLogger
 import lab8.server.domain.persistence.PersistenceManager
 import lab8.server.utilities.postgres.prepareStatementSuspend
 import lab8.server.utilities.postgres.setArgs
-import java.rmi.ServerException
 import java.sql.Connection
 import java.sql.SQLException
 import kotlin.time.*
@@ -166,38 +165,9 @@ class PostgresPersistenceManager(private val connectionPool: HikariDataSource) :
             stm.setArgs(author.id, id)
             val cntDeleted = withContext(databaseDispatcher) { stm.executeUpdate() }
             logger.info("Deleted $cntDeleted vehicles")
-        }
-    }
-
-    private suspend fun getVehicleById(id: Int): Vehicle? {
-        logger.info("Getting vehicle #${id} from database")
-        val connection = getConnection()
-        connection.use {
-            val stm = connection.prepareStatementSuspend(
-                "SELECT * FROM VEHICLES WHERE id = ?",
-                databaseDispatcher
-            )
-            stm.setArgs(id)
-            val res = withContext(databaseDispatcher) {
-                stm.executeQuery()
+            if (cntDeleted == 0) {
+                throw lab8.exceptions.ServerException.BadOwnerException()
             }
-            if(!res.next()) {
-                return null
-            }
-            val veh = Vehicle(
-                id = res.getInt("id"),
-                name = res.getString("name"),
-                coordinates = Coordinates(
-                    res.getInt("x"),
-                    res.getLong("y")
-                ),
-                creationDate = res.getDate("creation_date").toLocalDate(),
-                enginePower = res.getDouble("engine_power"),
-                fuelType = FuelType.valueOf(res.getString("fuel")),
-                type = enumValueOfOrNull<VehicleType>(res.getString("type")),
-                authorID = res.getInt("creator_id")
-            )
-            return veh
         }
     }
 
@@ -251,13 +221,7 @@ class PostgresPersistenceManager(private val connectionPool: HikariDataSource) :
         logger.info("Getting connection")
         val connection = getConnection()
         connection.use {
-            val actualVeh = this.getVehicleById(newVehicle.id)
-            if(actualVeh == null) {
-                return 0
-            }
-            if(actualVeh.authorID != user.id) {
-                throw lab8.exceptions.ServerException.BadOwnerException()
-            }
+            logger.info("Got connection!")
             val stm1 = connection.prepareStatementSuspend(
                 """UPDATE vehicles SET name = ?,
                     |x = ?, y = ?, engine_power = ?, type = ?::vehicle_type,
@@ -276,7 +240,7 @@ class PostgresPersistenceManager(private val connectionPool: HikariDataSource) :
                 user.id
             )
             logger.info("Executing!")
-            val cntUpdated = stm1.executeUpdate()
+            val cntUpdated = withContext(databaseDispatcher) { stm1.executeUpdate() }
             logger.info("Executed!")
             return cntUpdated
         }

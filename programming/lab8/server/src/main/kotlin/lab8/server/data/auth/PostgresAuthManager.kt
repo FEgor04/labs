@@ -6,7 +6,6 @@ import lab8.logger.KCoolLogger
 import lab8.server.domain.auth.AuthManager
 import lab8.server.utilities.postgres.prepareStatementSuspend
 import lab8.server.utilities.postgres.setArgs
-import java.rmi.ServerException
 import java.security.MessageDigest
 import java.sql.Connection
 import java.sql.SQLException
@@ -53,17 +52,10 @@ class PostgresAuthManager(private val pool: HikariDataSource) : AuthManager {
 
             val passwordHash = generatePasswordHash(password, salt)
             createUserStatement.setArgs(login, passwordHash, salt)
-            try {
-                val res = withContext(authManagerDispatcher) { createUserStatement.executeQuery() }
-                res.next()
-                logger.info("Success!!")
-                return res.getInt(1)
-            } catch (
-                e: SQLException
-            ) {
-                logger.error("Could not insert new user ${login}. Exception: ${e}")
-                throw lab8.exceptions.ServerException.UserAlreadyExistsException(login)
-            }
+            val res = withContext(authManagerDispatcher) { createUserStatement.executeQuery() }
+            res.next()
+            logger.info("Success!!")
+            return res.getInt(1)
         }
     }
 

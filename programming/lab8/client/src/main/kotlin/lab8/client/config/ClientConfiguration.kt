@@ -6,5 +6,4 @@ import java.net.SocketAddress
 interface ClientConfiguration {
     val udpConfig: UDPConfiguration
     val loadBalancerAddr: SocketAddress
-    val synchronizerPort: Int
 }

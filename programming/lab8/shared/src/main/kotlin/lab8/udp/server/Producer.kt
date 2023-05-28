@@ -12,16 +12,10 @@ import java.nio.charset.Charset
 
 fun <T> CoroutineScope.produceDatagram(producer: Producer<T>, channel: SendChannel<Pair<T, SocketAddress>>) =
     launch {
-        val logger by KCoolLogger()
         while (true) {
             try {
-                val request = producer.take()
-                logger.info("Request from ${request.second}: ${request.first}")
-                channel.send(request)
-                logger.info("Sent request to channel")
+                channel.send(producer.take())
             } catch (_: ServerException.AcknowledgePseudoException) {
-            } catch(e: Exception) {
-                logger.error(e.toString())
             }
         }
     }
@@ -34,7 +28,7 @@ class Producer<T>(
 ) {
 
     companion object {
-        private val logger by KCoolLogger()
+        val logger by KCoolLogger()
     }
 
     private suspend fun receiveData(): Pair<String, SocketAddress> {

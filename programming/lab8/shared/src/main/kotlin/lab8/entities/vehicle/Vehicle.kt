@@ -1,12 +1,7 @@
 package lab8.entities.vehicle
 
 import kotlinx.serialization.Serializable
-import java.text.DateFormat
-import java.text.NumberFormat
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.util.*
 
 /**
  * Дата-класс транспорта
@@ -59,41 +54,25 @@ data class Vehicle(
         /**
          * Создает рандомный транспорт
          */
-        fun generateRandomVehicle(random: kotlin.random.Random = kotlin.random.Random(System.nanoTime())): Vehicle {
+        fun generateRandomVehicle(): Vehicle {
+            val random = kotlin.random.Random(System.currentTimeMillis())
             return Vehicle(
                 id = random.nextInt(idLowerBound + 1, Int.MAX_VALUE),
-                name = "Test ${random.nextInt(0, 100)}",
+                name = "Test ${random.nextInt()}",
                 coordinates = Coordinates(
-                    random.nextInt(Coordinates.xLowerBound + 1, 100),
-                    random.nextLong(-100, 100)
+                    random.nextInt(Coordinates.xLowerBound + 1, Int.MAX_VALUE),
+                    random.nextLong()
                 ),
                 creationDate = LocalDate.now(),
-                enginePower = random.nextDouble(enginePowerLowerBound + 1.0, 100.0),
+                enginePower = random.nextDouble(enginePowerLowerBound + 1.0, Double.MAX_VALUE),
                 fuelType = FuelType.values()[random.nextInt(0, FuelType.values().size)],
                 type = VehicleType.values()[random.nextInt(0, VehicleType.values().size)],
-                authorID = random.nextInt(0, 200)
+                authorID = random.nextInt()
             )
         }
 
         const val idLowerBound = 0
         const val enginePowerLowerBound = 0
-    }
-
-    fun getAllFields(locale: Locale = Locale.getDefault()): List<String> {
-        val dateFormat = DateTimeFormatter.ofPattern("d MMM uuuu", locale)
-        val numberFormat = NumberFormat.getInstance(locale)
-        return listOf(
-            this.id,
-            this.name,
-            this.coordinates,
-            dateFormat.format(this.creationDate),
-            numberFormat.format(this.enginePower),
-            this.type,
-            this.fuelType,
-            this.authorID
-        ).map {
-            it.toString()
-        }
     }
 
     override fun compareTo(other: Vehicle): Int {

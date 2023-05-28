@@ -4,11 +4,9 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import lab8.entities.events.CollectionEvent
 import lab8.entities.user.User
 import lab8.entities.vehicle.Vehicle
 import lab8.server.domain.auth.AuthManager
-import lab8.server.domain.notifier.Notifier
 import lab8.server.domain.persistence.PersistenceManager
 import java.sql.SQLException
 import kotlin.random.Random
