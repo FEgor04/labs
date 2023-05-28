@@ -1,0 +1,162 @@
+{
+  "header": {
+    "vehicles": "Тачки",
+    "users": "Пользователи",
+    "logIn": "Войти",
+    "logOut": "Выйти",
+    "setLanguage": "Язык",
+    "title": "LAB 9"
+  },
+  "signIn": {
+    "header": "Войти",
+    "signUp": "Зарегистрироваться!",
+    "dontHaveAnAccount": "Еще нет аккаунта?",
+    "submit": "Войти",
+    "usernameMessage": "Имя пользователя не может быть пустым",
+    "passwordMessage": "Пароль не может быть пустым"
+  },
+  "createVehicle": {
+    "title": "Создать тачку",
+    "submit": "Отправить"
+  },
+  "editVehicle": {
+    "title": "Отредактировать тачку",
+    "submit": "Отправить"
+  },
+  "vehiclesTable": {
+    "createNew": "Создать новую тачку",
+    "visualizer": "Визуализатор",
+    "numberFilter": {
+      "greaterThan": "Значение должно быть больше или равно:",
+      "lessThan": "Значение должно быть меньше или равно:"
+    },
+    "dateFilter": {
+      "greaterThan": "Дата создания должна быть после:",
+      "lessThan": "Дата создания должна быть до:"
+    },
+    "patternFilter": {
+      "shouldMatch": "Значение должно содержать подстроку:"
+    },
+    "filter": {
+      "submit": "ОК",
+      "reset": "Сбросить"
+    }
+  },
+  "usersTable": {
+    "permissions": {
+      "title": "Права доступа",
+      "canEdit": "Может редачить?",
+      "canDelete": "Может удалять?",
+      "save": "Сохранить"
+    }
+  },
+  "signUp": {
+    "header": "Зарегистрироваться",
+    "signIn": "Войти",
+    "alreadyHaveAnAccount": "Уже есть аккаунт?",
+    "submit": "Зарегистрироваться"
+  },
+  "table": {
+    "actionColumn": "Действие",
+    "actions": {
+      "delete": "Удалить",
+      "update": "Изменить"
+    },
+    "needToSignIn": "Сначала вы должны войти!",
+    "triggerAsc": "Нажмите, чтобы отсортировать по возрастанию",
+    "triggerDesc": "Нажмите, чтобы отсортировать по убыванию",
+    "cancelSort": "Нажмите, чтобы отменить сортировку"
+  },
+  "update": "Изменить",
+  "delete": "Удалить",
+  "notification": {
+    "accessChanged": {
+      "message": "Изменены права доступа!",
+      "description": "Пользователь #{{fromUser}} изменил права доступа пользователя#{{toUser}}. Может редактировать: {{canEdit}}, может удалять: {{canDelete}}"
+    },
+    "newVehicle": {
+      "message": "Создана новая тачка",
+      "description": "Пользователь #{{authorId}} создал новую тачку #{{vehicleId}}"
+    },
+    "vehicleUpdated": {
+      "message": "Тачка изменена!",
+      "description": "Пользователь #{{updatedBy}} изменил тачку #{{vehicleId}}"
+    },
+    "vehicleDeleted": {
+      "message": "Тачка удалена",
+      "description": "Пользователь #{{deletedBy}} удалил тачку #{{vehicleId}}"
+    }
+  },
+  "vehicle": {
+    "id": "ID",
+    "name": "Название",
+    "enginePower": "МОЩЩЬ",
+    "y": "Y",
+    "x": "X",
+    "creationDate": "Дата создания",
+    "creator": "Создатель",
+    "fuelType": {
+      "title": "Тип топлива",
+      "GASOLINE": "Бензин",
+      "null": "Не указано",
+      "MANPOWER": "Человеческая сила",
+      "ELECTRICITY": "Электричество",
+      "PLASMA": "Плазма",
+      "ANTIMATTER": "Антиматерия"
+    },
+    "vehicleType": {
+      "title": "Тип транспорта",
+      "PLANE": "Самолет",
+      "BOAT": "Лодка",
+      "SUBMARINE": "Субмарина",
+      "BICYCLE": "Велосипед"
+    }
+  },
+  "user": {
+    "id": "ID",
+    "username": "Имя пользователя",
+    "password": "Пароль"
+  },
+  "languages": {
+    "ru-RU": {
+      "localizedName": "Русский",
+      "globalName": "Russian"
+    },
+    "en-CA": {
+      "localizedName": "English (Canada)",
+      "globalName": "English (Canada)"
+    },
+    "tr-TR": {
+      "localizedName": "Türk Dili",
+      "globalName": "Turkish"
+    },
+    "lv-LV": {
+      "localizedName": "Latviski",
+      "globalName": "Latvian"
+    }
+  },
+  "errors": {
+    "signIn": {
+      "401": "Неправильное имя пользователя или пароль",
+      "400": "Неправильные данные запроса.",
+      "5xx": "Внутрення ошибка сервера. Попробуйте позже."
+    },
+    "signUp": {
+      "409": "Пользователь с таким именем уже существует.",
+      "400": "Неправильные данные запроса.",
+      "5xx": "Внутрення ошибка сервера. Попробуйте позже."
+    },
+    "updateVehicle": {
+      "unknown": "Случилась непредвиденная ошибка: {{error}}",
+      "403": "Вы не можете редактировать тачки пользователя #{{id}}",
+      "404": "Тачка #{{id}} не существует!"
+    },
+    "5xx": "Внутрення ошибка сервера. Попробуйте позже."
+  },
+  "visualizer": {
+    "canNotEdit": {
+      "message": "Вы не можете редактировать эту тачку",
+      "description": "Вы не можете редактировать тачки пользователя #{{creatorId}}"
+    }
+  }
+}
