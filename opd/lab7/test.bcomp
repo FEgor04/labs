@@ -1,0 +1,42 @@
+ORG 0x0
+V0: WORD $default, 0x180
+V1: WORD $default, 0x180
+V2: WORD $default, 0x180
+V3: WORD $default, 0x180
+V4: WORD $default, 0x180
+V5: WORD $default, 0x180
+V6: WORD $default, 0x180
+V7: WORD $default, 0x180
+V8: WORD $default, 0x180
+
+default: IRET
+
+
+ORG 0x02FB
+FTS: WORD 0
+STS: WORD 0
+START:
+    EI
+    WORD 0xFF01 ; BINT WRITE_FTF, should not branch
+    JUMP WRITE_FTS
+WRITE_FTF:
+	CLA
+    HLT
+	ST FTS
+	JUMP SECOND_TEST
+WRITE_FTS:
+	LD #1
+	ST FTS
+	JUMP SECOND_TEST
+SECOND_TEST:
+    DI 
+    ;BINT WRITE_STS
+    WORD 0xFF03
+WRITE_STF:
+	CLA
+	ST STS
+    HLT
+WRITE_STS:
+	LD #1
+	ST STS
+STOP: HLT
