@@ -1,0 +1,155 @@
+:root {
+    --primary: #f1f5f9;
+    --text-primary: #0f172a;
+    --primary-border: #e2e8f0;
+    --icon-size: 32px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: var(--primary);
+    color: var(--text-primary);
+}
+
+header {
+    padding: 1rem 0;
+    background-color: white;
+    border-bottom: 1px var(--primary-border) solid;
+}
+
+header > div {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+table {
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+button {
+    background-color: var(--text-primary);
+    color: var(--primary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+form > div > label {
+    font-weight: bold;
+}
+
+input,
+select,
+option {
+    border: var(--primary-border) 1px solid;
+    padding: 0.25rem 0.5rem;
+}
+
+.buttons-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.25rem;
+    width: 100%;
+}
+
+.buttons-div > button {
+    width: var(--icon-size);
+    height: var(--icon-size);
+}
+
+.submit-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#submit-btn {
+    width: auto;
+    background-color: green;
+}
+
+button.selected {
+    background-color: #dc2626;
+}
+
+main {
+    margin-top: 4rem;
+}
+
+form {
+    background-color: #f8fafc;
+    border: var(--primary-border) 1px solid;
+    padding: 1rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+canvas {
+    background-color: #f8fafc;
+    border: var(--primary-border) 1px solid;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    padding: 5%;
+    width: 300px;
+    height: 300px;
+    fill: #2563eb;
+}
+
+.canvas-wrapper {
+    width: 300px;
+    height: 300px;
+}
+
+#form-feedback {
+    size: 24px;
+    font-weight: bolder;
+}
+
+.success {
+    color: #16a34a;
+}
+
+.miss {
+    color: #ea580c;
+}
+
+.error {
+    color: #e11d48;
+}
+
+.history {
+    text-align: center;
+    background-color: #f8fafc;
+    border: var(--primary-border) 1px solid;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    padding: 1%;
+}
+
+.history-wrapper {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 5%;
+}

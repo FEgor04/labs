@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Лабораторная работа #1</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Лабораторная работа #1, Федоров Е.В., P3215</h1>
+      </div>
+    </header>
+    <main>
+      <table>
+        <tr>
+          <td>
+            <div class="canvas-wrapper">
+              <canvas id="diagram"> Canvas</canvas>
+            </div>
+          </td>
+          <td>
+            <form id="form" action="">
+              <div>
+                <label>X</label>
+                <div class="buttons-div">
+                  <button type="button" id="x-input--3"> -3 </button>
+                  <button type="button" id="x-input--2">-2</button>
+                  <button type="button" id="x-input--1">-1</button>
+                  <button type="button" id="x-input-0">0</button>
+                  <button type="button" id="x-input-1">1</button>
+                  <button type="button" id="x-input-2">2</button>
+                  <button type="button" id="x-input-3">3</button>
+                  <button type="button" id="x-input-4">4</button>
+                  <button type="button" id="x-input-5">5</button>
+                </div>
+              </div>
+              <div>
+                <label for="y-input">Y</label>
+                <input required type="text" name="y-input" id="y-input" />
+              </div>
+              <div>
+                <label for="r-input">R</label>
+                <select id="r-input" name="r-input">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+              <div class="submit-wrapper">
+                <button id="submit-btn" type="submit">Стрельнуть</button>
+              </div>
+              <div id="form-feedback">
+              </div>
+            </form>
+          </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="history-wrapper">
+                <table class="history" id="history">
+
+                </table>
+                </div>
+            </td>
+        </tr>
+      </table>
+    </main>
+    <script src="./script.js"></script>
+  </body>
+</html>
+
+
