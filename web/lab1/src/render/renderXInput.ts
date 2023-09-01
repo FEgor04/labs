@@ -19,9 +19,9 @@ export function renderXInput() {
      * добавления кнопки не работает.
      * Из-за этого приходится добавлять eventListener для всех кнопок после обновления.
     */
-    let addedButton = document.querySelectorAll<HTMLButtonElement>(".x-btn")
+    const addedButton = document.querySelectorAll<HTMLButtonElement>(".x-btn")
     addedButton.forEach((btn) => {
-        let x = parseInt(btn.innerText)
+        const x = parseInt(btn.innerText)
         btn.addEventListener("click", () => {
             selectX(x)
         }, false)

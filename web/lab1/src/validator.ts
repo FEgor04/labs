@@ -7,7 +7,7 @@ import {Ok, Err, parseIntResult} from "./lib/result.ts";
  * @throws InvalidDataError если одно из полей было введено некорректно
  **/
 export function validateFormInput(input: RawFormInput): Result<FormInput, ValidationErrors> {
-    let parsedX = parseIntResult(input.x);
+    const parsedX = parseIntResult(input.x);
     if (!parsedX.ok) {
         return Err(ValidationErrors.XIsNotANumber)
     }
@@ -15,7 +15,7 @@ export function validateFormInput(input: RawFormInput): Result<FormInput, Valida
         return Err(ValidationErrors.InvalidXValue)
     }
 
-    let parsedY = parseIntResult(input.y);
+    const parsedY = parseIntResult(input.y);
     if (!parsedY.ok) {
         return Err(ValidationErrors.YIsNotANumber)
     }
@@ -23,7 +23,7 @@ export function validateFormInput(input: RawFormInput): Result<FormInput, Valida
         return Err(ValidationErrors.InvalidYValue)
     }
 
-    let parsedR = parseIntResult(input.r);
+    const parsedR = parseIntResult(input.r);
     if (!parsedR.ok) {
         return Err(ValidationErrors.RIsNotANumber)
     }

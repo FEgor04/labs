@@ -1,8 +1,8 @@
 import {HistoryEntry} from "../history/model.ts";
 
 export function renderHistory(history: HistoryEntry[]) {
-    let historyTable = document.querySelector<HTMLTableElement>("table#history")!
-    historyTable.innerHTML = ``
+    const historyTable = document.querySelector<HTMLTableElement>("table#history")!
+    historyTable.innerHTML = ''
     historyTable.innerHTML += `
         <tr>
             <th>

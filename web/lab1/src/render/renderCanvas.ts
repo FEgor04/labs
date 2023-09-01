@@ -36,6 +36,7 @@ function drawPolygon(ctx: CanvasRenderingContext2D, size: number, r: number) {
     let totalPoints = 12;
     let pointInPixels = size / totalPoints
     ctx.fillStyle = "lightblue"
+    ctx.strokeStyle = "blue";
     ctx.beginPath()
     ctx.moveTo(size / 2, size / 2)
     ctx.lineTo(size / 2, size / 2 - r * pointInPixels)

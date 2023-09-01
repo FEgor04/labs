@@ -32,14 +32,26 @@ body {
     background-color: var(--slate-100);
 }
 
-header {
-    font-family: cursive;
-    font-size: 2rem;
+main {
+    min-height: 100vh;
+}
+
+header, footer {
     border: var(--slate-200) solid 2px;
+    background-color: rgba(248, 250, 252, 70%);
+    font-size: 1.5rem;
+}
+
+footer {
+    margin-top: auto;
+}
+
+header {
+    font-size: 2rem;
     position: sticky;
+    font-family: cursive;
     inset: 0;
     backdrop-filter: blur(4px);
-    background-color: rgba(248, 250, 252, 70%);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -224,4 +236,9 @@ table#history {
 th {
     font-weight: bold;
     margin: 0 auto;
+
+}
+
+.disabled {
+    opacity: 0.6 !important;
 }

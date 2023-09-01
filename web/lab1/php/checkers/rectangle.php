@@ -13,7 +13,7 @@ class RectangleHitChecker implements HitChecker {
     public function checkHit($x, $y)
     {
         if ($x <= 0 && $y <= 0) {
-            return ($this->r / 2 <= $x && $x <= 0) && ($this->r <= $y && $y <= 0);
+            return (-$this->r / 2 <= $x && $x <= 0) && (-$this->r <= $y && $y <= 0);
         }
     }
 }

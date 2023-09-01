@@ -1,55 +1,61 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>WEB #1</title>
-    <script type="module" crossorigin src="/src/main.ts"></script>
-    <link rel="stylesheet" href="zero.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header>
-    <nav class="container mx-auto py-2 flex flex-row items-center">
-        <h1>Федоров Е.В, P3215, вариант 367588</h1>
-    </nav>
-</header>
-<main>
-    <div class="wrapper container">
-        <div class="canvas-form-wrapper">
-            <div>
-                <canvas width="300" height="300" id="canvas"></canvas>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>WEB #1</title>
+        <script type="module" crossorigin src="/src/main.ts"></script>
+        <link rel="stylesheet" href="zero.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <nav class="container mx-auto py-2 flex flex-row items-center">
+                <h1>Федоров Е.В, P3215, вариант 367588</h1>
+            </nav>
+        </header>
+        <main>
+            <div class="wrapper container">
+                <div class="canvas-form-wrapper">
+                    <div>
+                        <canvas width="300" height="300" id="canvas"></canvas>
+                    </div>
+                    <div id="form-wrapper">
+                        <form id="form">
+                            <div>
+                                <label>X</label>
+                                <div id="buttons-wrapper">
+                                </div>
+                            </div>
+                            <div>
+                                <label>Y</label>
+                                <input name="y" required type="text" id="y-input">
+                            </div>
+                            <div>
+                                <label>R</label>
+                                <select required name="r" id="r-input">
+                                </select>
+                            </div>
+                            <div id="error"></div>
+                            <div id="submit-wrapper">
+                                <button type="submit" class="btn" id="submit">
+                                    Отправить
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="history-wrapper">
+                    <table id="history"></table>
+                </div>
             </div>
-            <div id="form-wrapper">
-                <form id="form">
-                    <div>
-                        <label>X</label>
-                        <div id="buttons-wrapper">
-                        </div>
-                    </div>
-                    <div>
-                        <label>Y</label>
-                        <input name="y" required type="text" id="y-input">
-                    </div>
-                    <div>
-                        <label>R</label>
-                        <select required name="r" id="r-input">
-                        </select>
-                    </div>
-                    <div id="error"></div>
-                    <div id="submit-wrapper">
-                        <button type="submit" class="btn" id="submit">
-                            Отправить
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="history-wrapper">
-            <table id="history"></table>
-        </div>
-    </div>
-</main>
-
-</body>
+        </main>
+        <footer>
+            <nav class="container mx-auto py-2 flex flex-row items-center">
+                <h1>
+                    &copy; Федоров Егор, 2023
+                </h1>
+            </nav>
+        </footer>
+    </body>
 </html>
