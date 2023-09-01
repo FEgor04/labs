@@ -1,75 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Лабораторная работа #1</title>
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <header>
-      <div>
-        <h1>Лабораторная работа #1, Федоров Е.В., P3215</h1>
-      </div>
-    </header>
-    <main>
-      <table>
-        <tr>
-          <td>
-            <div class="canvas-wrapper">
-              <canvas id="diagram"> Canvas</canvas>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>WEB #1</title>
+    <script type="module" crossorigin src="/src/main.ts"></script>
+    <link rel="stylesheet" href="zero.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <nav class="container mx-auto py-2 flex flex-row items-center">
+        <h1>Федоров Е.В, P3215, вариант 367588</h1>
+    </nav>
+</header>
+<main>
+    <div class="wrapper container">
+        <div class="canvas-form-wrapper">
+            <div>
+                <canvas width="300" height="300" id="canvas"></canvas>
             </div>
-          </td>
-          <td>
-            <form id="form" action="">
-              <div>
-                <label>X</label>
-                <div class="buttons-div">
-                  <button type="button" id="x-input--3"> -3 </button>
-                  <button type="button" id="x-input--2">-2</button>
-                  <button type="button" id="x-input--1">-1</button>
-                  <button type="button" id="x-input-0">0</button>
-                  <button type="button" id="x-input-1">1</button>
-                  <button type="button" id="x-input-2">2</button>
-                  <button type="button" id="x-input-3">3</button>
-                  <button type="button" id="x-input-4">4</button>
-                  <button type="button" id="x-input-5">5</button>
-                </div>
-              </div>
-              <div>
-                <label for="y-input">Y</label>
-                <input required type="text" name="y-input" id="y-input" />
-              </div>
-              <div>
-                <label for="r-input">R</label>
-                <select id="r-input" name="r-input">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
-              </div>
-              <div class="submit-wrapper">
-                <button id="submit-btn" type="submit">Стрельнуть</button>
-              </div>
-              <div id="form-feedback">
-              </div>
-            </form>
-          </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div class="history-wrapper">
-                <table class="history" id="history">
+            <div id="form-wrapper">
+                <form id="form">
+                    <div>
+                        <label>X</label>
+                        <div id="buttons-wrapper">
+                        </div>
+                    </div>
+                    <div>
+                        <label>Y</label>
+                        <input name="y" required type="text" id="y-input">
+                    </div>
+                    <div>
+                        <label>R</label>
+                        <select required name="r" id="r-input">
+                        </select>
+                    </div>
+                    <div id="error"></div>
+                    <div id="submit-wrapper">
+                        <button type="submit" class="btn" id="submit">
+                            Отправить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="history-wrapper">
+            <table id="history"></table>
+        </div>
+    </div>
+</main>
 
-                </table>
-                </div>
-            </td>
-        </tr>
-      </table>
-    </main>
-    <script src="./script.js"></script>
-  </body>
+</body>
 </html>
-
-

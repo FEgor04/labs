@@ -13,7 +13,7 @@ class CircleHitChecker implements HitChecker
     public function checkHit($x, $y)
     {
         if ($x <= 0 && $y >= 0) { // Point is in II quarter
-            return $x * $x + $y * $y <= $this->r * $this->r;
+            return $x * $x + $y * $y <= $this->r / 2 * $this->r / 2;
         }
         return false;
     }

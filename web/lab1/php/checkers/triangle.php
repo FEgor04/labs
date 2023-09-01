@@ -12,7 +12,7 @@ class TrinangleHitChecker implements HitChecker {
     {
         $p1 = new Vector2D($this->r / 2, 0); // A
         $p2 = new Vector2D(0, 0); // B
-        $p3 = new Vector2D(0, -$this->r); // C
+        $p3 = new Vector2D(0, $this->r); // C
 
         $p = new Vector2D($x, $y); // P
 
