@@ -22,24 +22,29 @@
                     </div>
                     <div id="form-wrapper">
                         <form id="form">
-                            <div>
-                                <label>X</label>
-                                <div id="buttons-wrapper">
+                            <div id="input-wrapper">
+                                <div>
+                                    <label>X</label>
+                                    <div id="buttons-wrapper">
+                                    </div>
                                 </div>
+                                <div>
+                                    <label>Y</label>
+                                    <input name="y" required type="text" id="y-input">
+                                </div>
+                                <div>
+                                    <label>R</label>
+                                    <select required name="r" id="r-input">
+                                    </select>
+                                </div>
+                                <div id="error"></div>
                             </div>
-                            <div>
-                                <label>Y</label>
-                                <input name="y" required type="text" id="y-input">
-                            </div>
-                            <div>
-                                <label>R</label>
-                                <select required name="r" id="r-input">
-                                </select>
-                            </div>
-                            <div id="error"></div>
                             <div id="submit-wrapper">
                                 <button type="submit" class="btn" id="submit">
                                     Отправить
+                                </button>
+                                <button type="reset" class="btn outlined" id="reset">
+                                    Сбросить
                                 </button>
                             </div>
                         </form>

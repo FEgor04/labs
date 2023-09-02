@@ -32,3 +32,8 @@ document.querySelector<HTMLFormElement>("form#form")?.addEventListener("submit",
     e.preventDefault()
     handleFormSubmit(hitApi, historyManager)
 })
+
+document.querySelector<HTMLFormElement>("form#form")?.addEventListener("reset", (_) => {
+    console.log("reset form")
+    selectX(0)
+})
