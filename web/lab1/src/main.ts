@@ -34,6 +34,10 @@ document.querySelector<HTMLFormElement>("form#form")?.addEventListener("submit",
 })
 
 document.querySelector<HTMLFormElement>("form#form")?.addEventListener("reset", (_) => {
-    console.log("reset form")
     selectX(0)
+})
+
+document.querySelector<HTMLButtonElement>("button#clean-button")?.addEventListener("click", (_) => {
+    historyManager.cleanHistory()
+    renderHistory(historyManager.get())
 })

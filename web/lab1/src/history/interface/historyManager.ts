@@ -15,4 +15,10 @@ export interface HistoryManager {
      * Возвращает последнее вхождение в историю
      */
     getLastEntry(): HistoryEntry | undefined
+
+    
+    /**
+     * Очищает историю
+     */
+    cleanHistory(): void
 }

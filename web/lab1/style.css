@@ -230,6 +230,9 @@ form {
 }
 
 .history-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: 64px;
 }
 
@@ -272,4 +275,8 @@ label {
 
 .mono {
     font-family: monospace;
+}
+
+#clean-button {
+    margin-top: 64px;
 }

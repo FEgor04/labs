@@ -19,7 +19,6 @@ export class PhpAPI implements HitAPI {
             }
 
             const json: HitAPIResponse = await response.json()
-            console.log(json)
             // @ts-ignore
             json.currentTime *= 1000;
             return Ok(json)

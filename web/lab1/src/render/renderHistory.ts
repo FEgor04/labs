@@ -26,7 +26,6 @@ export function renderHistory(history: HistoryEntry[]) {
         </tr>    
     `
     history.forEach((entry) => {
-        console.log(entry)
         historyTable.innerHTML += renderHistoryRow(entry)
     })
 

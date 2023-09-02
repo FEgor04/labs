@@ -27,4 +27,8 @@ export class StorageHistoryManager implements HistoryManager {
         return undefined
 
     }
+
+    cleanHistory(): void {
+        this.storage.setItem("history", "[]")
+    }
 }
