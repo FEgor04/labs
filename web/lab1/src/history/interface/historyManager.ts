@@ -1,24 +1,23 @@
-import {HistoryEntry} from "../model.ts";
+import { HistoryEntry } from "../model.ts";
 
 export interface HistoryManager {
-    /**
-     * Добавляет новую запись в историю
-     */
-    push(entry: HistoryEntry): void
+  /**
+   * Добавляет новую запись в историю
+   */
+  push(entry: HistoryEntry): void;
 
-    /**
-     * Возвращает все записи в истории
-     */
-    get(): HistoryEntry[]
+  /**
+   * Возвращает все записи в истории
+   */
+  get(): HistoryEntry[];
 
-    /**
-     * Возвращает последнее вхождение в историю
-     */
-    getLastEntry(): HistoryEntry | undefined
+  /**
+   * Возвращает последнее вхождение в историю
+   */
+  getLastEntry(): HistoryEntry | undefined;
 
-    
-    /**
-     * Очищает историю
-     */
-    cleanHistory(): void
+  /**
+   * Очищает историю
+   */
+  cleanHistory(): void;
 }

@@ -1,38 +1,38 @@
-import {HistoryEntry} from "../history/model.ts";
+import { HistoryEntry } from "../history/model.ts";
 
 export function renderHistory(history: HistoryEntry[]) {
-    const historyTable = document.querySelector<HTMLTableElement>("table#history")!
-    historyTable.innerHTML = ''
-    historyTable.innerHTML += `
+  const historyTable =
+    document.querySelector<HTMLTableElement>("table#history")!;
+  historyTable.innerHTML = "";
+  historyTable.innerHTML += `
         <tr>
             <th>
-            X
+                X
             </th>
             <th>
-            Y
+                Y
             </th>
             <th>
-            R
+                R
             </th>
             <th>
-            Попал?
+                Попал?
             </th>
             <th>
-            Время на сервере
+                Время на сервере
             </th>
             <th>
-            Время выполнения
+                Время выполнения
             </th>
         </tr>    
-    `
-    history.forEach((entry) => {
-        historyTable.innerHTML += renderHistoryRow(entry)
-    })
-
+    `;
+  history.forEach((entry) => {
+    historyTable.innerHTML += renderHistoryRow(entry);
+  });
 }
 
 function renderHistoryRow(entry: HistoryEntry): string {
-    return `
+  return `
         <tr class="${entry.hit ? "success" : "fail"}">
             <td>
                 ${entry.point.x}
@@ -53,5 +53,5 @@ function renderHistoryRow(entry: HistoryEntry): string {
                 ${entry.executionTime} ns
             </td>
         </tr>
-    `
+    `;
 }
