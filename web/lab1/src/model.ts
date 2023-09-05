@@ -11,4 +11,5 @@ export type { FormInput, RawFormInput };
 export type Point = {
   x: number;
   y: number;
+  hit: boolean | undefined
 };

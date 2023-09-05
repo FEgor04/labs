@@ -21,19 +21,26 @@ export function handleFormSubmit(api: HitAPI, historyManager: HistoryManager) {
   }
   showError(undefined);
   const r = values.value.r;
-  const point: Point = { x: values.value.x, y: values.value.y };
+  const point: Point = { x: values.value.x, y: values.value.y, hit: undefined };
 
   setLoading(true);
   minDelay(api.hit(point, values.value.r), 200)
     .then((res) => {
       if (res.ok) {
         const response = res.value;
+        point.hit = res.value.hit
         historyManager.push({
           r,
           point,
           ...response,
         });
-        renderCanvas(r, point);
+
+        const points = historyManager.get().filter(entry => {
+            return entry.r == r
+        }).map(entry => {
+            return entry.point
+        })
+        renderCanvas(r, points);
       } else {
         showError(res.error.toString());
       }

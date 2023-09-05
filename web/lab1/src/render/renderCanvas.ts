@@ -1,15 +1,18 @@
 import { Point } from "../model.ts";
 
-export function renderCanvas(r: number, point?: Point | undefined) {
-  const canvasElement = document.querySelector<HTMLCanvasElement>("#canvas")!;
-  const size = 500;
-  canvasElement.setAttribute("width", size.toString());
-  canvasElement.setAttribute("height", size.toString());
-  const ctx = canvasElement.getContext("2d")!;
-  drawPolygon(ctx, size, r);
-  drawText(ctx, size, r);
-  drawAxes(ctx, size);
-  point && drawPoint(ctx, size, point);
+export function renderCanvas(r: number, points: Point[]) {
+    const canvasElement = document.querySelector<HTMLCanvasElement>("#canvas")!;
+    const size = 500;
+    canvasElement.setAttribute("width", size.toString());
+    canvasElement.setAttribute("height", size.toString());
+    const ctx = canvasElement.getContext("2d")!;
+    drawPolygon(ctx, size, r);
+    drawText(ctx, size, r);
+    drawAxes(ctx, size);
+    points.forEach(point => {
+        drawPoint(ctx, size, point);
+    })
+
 }
 
 /**
@@ -89,7 +92,9 @@ function drawText(ctx: CanvasRenderingContext2D, size: number, r: number) {
  * @param point координаты точки
  */
 function drawPoint(ctx: CanvasRenderingContext2D, size: number, point: Point) {
-  ctx.fillStyle = "#00386e";
+  const colorGreen600 = "#16a34a";
+  const colorRed600 = "#dc2626";
+  ctx.fillStyle = point.hit ? colorGreen600 : colorRed600;
   const totalPoints = 12;
   const pointInPixels = size / totalPoints;
   ctx.beginPath();

@@ -25,8 +25,19 @@ const historyManager: HistoryManager = new StorageHistoryManager(
 );
 renderHistory(historyManager.get());
 
-const lastEntry = historyManager.getLastEntry();
-renderCanvas(lastEntry ? lastEntry.r : 5, lastEntry?.point);
+function getEntriesAndRender() {
+    const lastEntry = historyManager.getLastEntry()
+    const rToRender = lastEntry?.r ?? 5;
+    const points = historyManager.get().filter(entry => {
+        return entry.r == rToRender
+    }).map(entry => {
+        return entry.point
+    })
+    console.log(points)
+    console.log(rToRender)
+    renderCanvas(rToRender, points);
+}
+getEntriesAndRender()
 
 const hitApi: HitAPI = new PhpAPI();
 
@@ -48,4 +59,5 @@ document
   ?.addEventListener("click", (_) => {
     historyManager.cleanHistory();
     renderHistory(historyManager.get());
+    getEntriesAndRender()
   });
