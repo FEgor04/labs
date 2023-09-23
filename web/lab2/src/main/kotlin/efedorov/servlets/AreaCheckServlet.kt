@@ -65,7 +65,6 @@ class AreaCheckServlet : HttpServlet() {
         }
 
         val checkStartTime = Instant.now()
-        // TODO: нормальная логика проверки
         val point = Point(x, y, r)
         val success = this.hitCheckers.any { it.test(point) }
         val checkEndTime = Instant.now()

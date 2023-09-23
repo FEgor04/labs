@@ -11,7 +11,7 @@
 <script>
 
     const CANVAS_SIZE = 500;
-    const MAX_RADIUS = 3
+    const MAX_RADIUS = 5
     const TOTAL_CANVAS_POINTS = (MAX_RADIUS + 1) * 2;
     const POINT_IN_PIXELS = CANVAS_SIZE / TOTAL_CANVAS_POINTS;
 
@@ -20,47 +20,49 @@
         canvasElement.setAttribute("width", CANVAS_SIZE.toString());
         canvasElement.setAttribute("height", CANVAS_SIZE.toString());
         const ctx = canvasElement.getContext("2d")
-        drawPolygon(ctx, CANVAS_SIZE, r);
-        drawGrid(ctx, CANVAS_SIZE)
-        drawText(ctx, CANVAS_SIZE, r);
-        drawAxes(ctx, CANVAS_SIZE);
+
+        ctx.fillStyle = "#f8fafc"
+        ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+        drawPolygon(ctx, r);
+        drawGrid(ctx)
+        drawText(ctx, r);
+        drawAxes(ctx);
         points
             .filter(point => {
                 return point.r === r
             })
             .forEach(point => {
-                drawPoint(ctx, CANVAS_SIZE, point);
+                drawPoint(ctx, point);
             })
     }
 
     /**
      * Рисует оси координат
      * @param ctx контекст рисования
-     * @param size размер канваса
      */
-    function drawAxes(ctx, size) {
+    function drawAxes(ctx) {
         ctx.fillStyle = "black";
-        ctx.fillRect(0, size / 2, size, 1);
-        ctx.fillRect(size / 2, 0, 1, size);
+        ctx.fillRect(0, CANVAS_SIZE / 2, CANVAS_SIZE, 1);
+        ctx.fillRect(CANVAS_SIZE / 2, 0, 1, CANVAS_SIZE);
         ctx.beginPath();
-        ctx.arc(size / 2, size / 2, 3, 0, 2 * Math.PI, false);
+        ctx.arc(CANVAS_SIZE / 2, CANVAS_SIZE / 2, 3, 0, 2 * Math.PI, false);
         ctx.fill();
     }
 
-    function drawGrid(ctx, size) {
+    function drawGrid(ctx) {
         ctx.strokeStyle = "grey";
-        let minRadius = -3;
-        let maxRadius = 3;
+        let minRadius = -5;
+        let maxRadius = 5;
         let step = 1
-        for(let i = minRadius; i <= maxRadius; i += step) {
+        for (let i = minRadius; i <= maxRadius; i += step) {
             ctx.beginPath();
-            ctx.moveTo(0, size / 2 + i * POINT_IN_PIXELS)
-            ctx.lineTo(size, size / 2 + i * POINT_IN_PIXELS)
+            ctx.moveTo(0, CANVAS_SIZE / 2 + i * POINT_IN_PIXELS)
+            ctx.lineTo(CANVAS_SIZE, CANVAS_SIZE / 2 + i * POINT_IN_PIXELS)
             ctx.stroke();
 
             ctx.beginPath();
-            ctx.moveTo(size / 2 + i * POINT_IN_PIXELS, 0)
-            ctx.lineTo(size / 2 + i * POINT_IN_PIXELS, size)
+            ctx.moveTo(CANVAS_SIZE / 2 + i * POINT_IN_PIXELS, 0)
+            ctx.lineTo(CANVAS_SIZE / 2 + i * POINT_IN_PIXELS, CANVAS_SIZE)
             ctx.stroke();
         }
     }
@@ -68,58 +70,60 @@
     /**
      * Рисует область из задания
      * @param {CanvasRenderingContext2D} ctx контекст рисования
-     * @param {number} size размер канваса
      * @param {number} r радиус
      */
-    function drawPolygon(ctx, size, r) {
+    function drawPolygon(ctx, r) {
+        if (!r) {
+            return;
+        }
         ctx.fillStyle = "lightblue";
         ctx.beginPath()
-        ctx.moveTo(size / 2 + POINT_IN_PIXELS * r, size / 2)
-        ctx.lineTo(size / 2, size / 2 - POINT_IN_PIXELS * r)
-        ctx.lineTo(size / 2, size / 2 - POINT_IN_PIXELS * r / 2)
-        ctx.lineTo(size / 2 - POINT_IN_PIXELS * r, size / 2 - POINT_IN_PIXELS * r / 2)
-        ctx.lineTo(size / 2 - POINT_IN_PIXELS * r, size / 2)
-        ctx.lineTo(size / 2, size / 2)
-        ctx.arc(size / 2, size / 2, POINT_IN_PIXELS * r / 2, 0, Math.PI / 2)
-        ctx.lineTo(size / 2, size / 2)
+        ctx.moveTo(CANVAS_SIZE / 2 + POINT_IN_PIXELS * r, CANVAS_SIZE / 2)
+        ctx.lineTo(CANVAS_SIZE / 2, CANVAS_SIZE / 2 - POINT_IN_PIXELS * r)
+        ctx.lineTo(CANVAS_SIZE / 2, CANVAS_SIZE / 2 - POINT_IN_PIXELS * r / 2)
+        ctx.lineTo(CANVAS_SIZE / 2 - POINT_IN_PIXELS * r, CANVAS_SIZE / 2 - POINT_IN_PIXELS * r / 2)
+        ctx.lineTo(CANVAS_SIZE / 2 - POINT_IN_PIXELS * r, CANVAS_SIZE / 2)
+        ctx.lineTo(CANVAS_SIZE / 2, CANVAS_SIZE / 2)
+        ctx.arc(CANVAS_SIZE / 2, CANVAS_SIZE / 2, POINT_IN_PIXELS * r / 2, 0, Math.PI / 2)
+        ctx.lineTo(CANVAS_SIZE / 2, CANVAS_SIZE / 2)
         ctx.fill()
     }
 
     /**
      * Рисует подписи к осям
-     * @param ctx контекст рисования
-     * @param size размер канваса
+     * @param {CanvasRenderingContext2D} ctx контекст рисования
      * @param r радиус
      */
-    function drawText(ctx, size, r) {
+    function drawText(ctx, r) {
+        if (!r) {
+            return;
+        }
         ctx.fillStyle = "black";
-
         for (let sign = -1; sign <= 1; sign += 2) {
-            ctx.fillText("R/2", size / 2 + (sign * POINT_IN_PIXELS * r) / 2, size / 2);
-            ctx.fillText("R/2", size / 2, size / 2 + (sign * POINT_IN_PIXELS * r) / 2);
-            ctx.fillText("R", size / 2 + sign * POINT_IN_PIXELS * r, size / 2);
-            ctx.fillText("R", size / 2, size / 2 + sign * POINT_IN_PIXELS * r);
+            ctx.fillText("R/2", CANVAS_SIZE / 2 + (sign * POINT_IN_PIXELS * r) / 2, CANVAS_SIZE / 2);
+            ctx.fillText("R/2", CANVAS_SIZE / 2, CANVAS_SIZE / 2 + (sign * POINT_IN_PIXELS * r) / 2);
+            ctx.fillText("R", CANVAS_SIZE / 2 + sign * POINT_IN_PIXELS * r, CANVAS_SIZE / 2);
+            ctx.fillText("R", CANVAS_SIZE / 2, CANVAS_SIZE / 2 + sign * POINT_IN_PIXELS * r);
         }
     }
 
     /**
      * Рисует точку на канвасе
      * @param ctx контекст
-     * @param size размер канваса
      * @param point координаты точки
      */
-    function drawPoint(ctx, size, point) {
+    function drawPoint(ctx, point) {
         const colorGreen600 = "#16a34a";
         const colorRed600 = "#dc2626";
         const colorBlue600 = "#2563eb";
         ctx.fillStyle = point.success ? colorGreen600 : colorRed600;
-        if(point.success == undefined || point.success == null) {
+        if (point.success == undefined || point.success == null) {
             ctx.fillStyle = colorBlue600
         }
         ctx.beginPath();
         ctx.arc(
-            size / 2 + POINT_IN_PIXELS * point.x,
-            size / 2 - point.y * POINT_IN_PIXELS,
+            CANVAS_SIZE / 2 + POINT_IN_PIXELS * point.x,
+            CANVAS_SIZE / 2 - point.y * POINT_IN_PIXELS,
             5,
             0,
             Math.PI * 2,

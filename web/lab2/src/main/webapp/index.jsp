@@ -8,33 +8,38 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    String yInputButtonClasses = "w-8 h-8 rounded-full bg-white text-slate-950 border border-slate-200 text-center transition-all duration-150 data-[active=false]:hover:text-lime-600 data-[active=false]:hover:border-lime-600 data-[active=true]:bg-lime-600 data-[active=true]:text-slate-50 data-[active=true]:border-lime-700";
+    String focusLimeClasses = "focus:ring-4 focus:outline-none focus:ring-lime-400 focus:border-lime-400";
+    String outlineButtonClasses = "bg-white text-slate-950 border border-slate-200 transition-all duration-150 hover:text-lime-600 hover:border-lime-600";
+    String yInputButtonClasses = outlineButtonClasses + " w-10 h-10 rounded-full text-center data-[active=false]:hover:text-lime-600 data-[active=false]:hover:border-lime-600 data-[active=true]:bg-lime-600 data-[active=true]:text-slate-50 data-[active=true]:border-lime-700" + focusLimeClasses;
+    String inputClasses = "block bg-white rounded-md border border-slate-200 p-2 transition-all duration-150 " + focusLimeClasses;
 %>
 
 <html>
 <head>
     <title>ЛР #2</title>
     <meta charset="UTF-8">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com/3.3.3"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" rel="stylesheet"/>
 </head>
 <body class="bg-slate-100 text-slate-950">
 <jsp:include page="components/header.jsp"/>
 <main class="max-w-screen-xl mx-auto mt-16">
     <div class="flex flex-col space-y-8 md:flex-row md:justify-between md:space-y-0">
-        <div id="canvasWrapper" class="data-[active=false]:cursor-not-allowed data-[active=true]:cursor-pointer" data-active="false">
+        <div id="canvasWrapper" class="data-[active=false]:cursor-not-allowed data-[active=true]:cursor-pointer"
+             data-active="false">
             <jsp:include page="components/canvas.jsp"/>
         </div>
         <div id="formWrapper" class="p-4 bg-slate-50 rounded-md shadow-md border border-slate-200 w-[500px]">
             <form class="flex flex-col justify-between h-full" action="" method="POST">
                 <div class="flex flex-col space-y-6">
-                    <div class="flex flex-col space-y-4">
+                    <div class="flex flex-col space-y-2">
                         <label class="font-medium text-slate-900" for="xInput">Введите X</label>
-                        <input class="bg-white rounded-md border border-slate-200 p-2 transition-all duration-150 focus:ring-0 focus:ring-offset-0 focus:border-lime-600"
+                        <input class="<%= inputClasses %>"
                                type="text"
                                name="x"
                                id="xInput" required>
                     </div>
-                    <div class="flex flex-col space-y-4">
+                    <div class="flex flex-col space-y-2">
                         <label class="font-medium text-slate-900" for="yInput">Введите Y</label>
                         <input type="hidden" name="y" id="yInputHidden" value="0"/>
                         <div class="flex flex-row justify-between" id="yInput">
@@ -67,9 +72,9 @@
                             </button>
                         </div>
                     </div>
-                    <div class="flex flex-col space-y-4">
+                    <div class="flex flex-col space-y-2">
                         <label class="font-medium text-slate-900" for="rInput">Введите R</label>
-                        <select class="bg-white rounded-md border border-slate-200 p-2 focus:ring-0 focus:ring-offset-0 focus:border-lime-600"
+                        <select class="<%= inputClasses %>"
                                 id="rInput"
                                 required
                                 name="r"
@@ -98,11 +103,11 @@
                 </div>
                 <div class="flex flex-row space-x-6">
                     <button type="submit"
-                            class="px-2 py-1.5 bg-lime-600 text-slate-50 font-bold hover:bg-lime-600/80 transition-all duration-150 border border-lime-700 rounded-md">
+                            class="px-2 py-1.5 bg-lime-600 text-slate-50 font-bold hover:bg-lime-600/80 transition-all duration-150 border border-lime-700 rounded-md <%= focusLimeClasses %>">
                         Отправить
                     </button>
                     <button type="reset"
-                            class="px-2 py-1.5 text-slate-950 bg-white border border-slate-200 hover:text-lime-600 hover:border-lime-600 rounded-md transition-all duration-150 ">
+                            class="px-2 py-1.5 text-slate-950 bg-white border border-slate-200 hover:text-lime-600 hover:border-lime-600 rounded-md transition-all duration-150 <%= focusLimeClasses %>">
                         Сбросить
                     </button>
                 </div>
@@ -110,103 +115,49 @@
         </div>
     </div>
 </main>
-<script>
-    let selectedY = 0
-    let yButtons = document.querySelectorAll("#yInput > button")
-    let hiddenYInput = document.querySelector("input#yInputHidden")
+<script type="module" src="/lab2/scripts/lib/shrinkToRange.js"></script>
+<script type="module" src="/lab2/scripts/input/selectR.js"></script>
+<script type="module" src="/lab2/scripts/input/selectY.js"></script>
+<script type="module" src="/lab2/scripts/validation/errors.js"></script>
+<script type="module" src="/lab2/scripts/validation/validateX.js"></script>
+<script type="module" src="/lab2/scripts/validation/validateR.js"></script>
+<script type="module" src="/lab2/scripts/validation/validateForm.js"></script>
+<script type="module">
+    import {selectedR, setX, setY} from "./scripts/state.js";
+    import {cleanError, showError} from "./scripts/validation/errors.js";
+    import shrinkToRange from "./scripts/lib/shrinkToRange.js";
+    import {setR} from "./scripts/state.js";
+
     let canvasWrapper = document.querySelector("div#canvasWrapper")
     let canvasElement = document.querySelector("canvas")
 
-    let xInput = document.getElementById("xInput")
-    let rInput = document.getElementById("rInput")
-
-    let errorsDescription = document.getElementById("errors")
-
-    function selectY(value) {
-        selectedY = value
-        hiddenYInput.value = selectedY
-        updateSelectedYAttributes()
-    }
-
-    function updateSelectedYAttributes() {
-        yButtons.forEach(btn => {
-            const value = parseInt(btn.innerHTML)
-            if (value == selectedY) {
-                btn.setAttribute("data-active", "true")
-            } else {
-                btn.setAttribute("data-active", "false")
-            }
-        })
-    }
-
-    rInput.addEventListener("change", (e) => {
-        if (!isNaN(e.target.value)) {
-            renderCanvas(e.target.value, [])
-            canvasWrapper.setAttribute("data-active", "true")
-        } else {
-            canvasWrapper.setAttribute("data-active", "false")
-        }
-    })
-
     canvasElement.addEventListener("click", (e) => {
-        let selectedR = rInput.value
-        if(isNaN(selectedR)) {
-            alert("Вы не выбрали R!")
+        if (isNaN(selectedR)) {
+            showError("Сначала нужно выбрать R!")
             return
         }
-        const xValue = Math.round((e.offsetX - CANVAS_SIZE / 2) / POINT_IN_PIXELS)
-        const yValue = Math.round((CANVAS_SIZE / 2 - e.offsetY) / POINT_IN_PIXELS)
-        xInput.value = xValue.toString()
-        selectY(yValue)
+        cleanError()
+        const xValue = shrinkToRange(((e.offsetX - CANVAS_SIZE / 2) / POINT_IN_PIXELS).toFixed(2), -3, 5)
+        const yValue = shrinkToRange(((CANVAS_SIZE / 2 - e.offsetY) / POINT_IN_PIXELS).toFixed(2), -3, 5)
+        setX(xValue)
+        setY(yValue)
         renderCanvas(selectedR, [{
             x: xValue,
             y: yValue,
             r: selectedR,
         }])
+        document.querySelector("form").submit()
     })
 
-    yButtons.forEach(btn => {
-        btn.addEventListener("click", event => {
-            selectY(parseInt(event.target.innerHTML))
-        })
+    document.querySelector("form").addEventListener("reset", () => {
+        setX(undefined);
+        setY(0);
+        setR(undefined);
+        cleanError()
     })
 
-    document.querySelector("form").addEventListener("submit", (e) => {
-        errorsDescription.innerHTML = ''
-        if (!validateX()) {
-            e.preventDefault()
-            return false;
-        }
-        if (!validateR()) {
-            e.preventDefault()
-            return false;
-        }
-        return true;
-    })
-
-    function validateX() {
-        const value = parseFloat(xInput.value)
-        if (isNaN(value)) {
-            errorsDescription.innerHTML = "X не является числом!"
-            console.log("X is not a number")
-            return false
-        }
-        if (-3 <= value && value <= 5) {
-            return true
-        }
-        errorsDescription.innerHTML = "X должен быть в промежутке [-3.. 5]"
-        console.log("X is in bad range")
-        return false
-    }
-
-    function validateR() {
-        const value = parseFloat(rInput.value)
-        if (isNaN(value)) {
-            errorsDescription.innerHTML = "Выберите R!"
-            return false
-        }
-        return true
-    }
+    renderCanvas(undefined, [])
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
 </body>
 </html>

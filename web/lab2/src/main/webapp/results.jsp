@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String tdClasses = "border border-slate-200 border-collapse p-1";
+    String focusLimeClasses = "focus:ring-4 focus:outline-none focus:ring-lime-400 focus:border-lime-400";
     String headTdClasses = tdClasses + "font-bold";
     HistoryManager historyManager = HistoryManagerProvider.INSTANCE.getInstance();
     List<HistoryEntry> entries = historyManager.getEntries(session);
@@ -65,7 +66,7 @@
         <div class="flex flex-row justify-center mx-auto space-x-8">
             <a href="/lab2">
                 <button type="button"
-                        class="px-2 py-1.5 bg-lime-600 text-slate-50 font-bold hover:bg-lime-600/80 transition-all duration-150 border border-lime-700 rounded-md"
+                        class="px-2 py-1.5 bg-lime-600 text-slate-50 font-bold hover:bg-lime-600/80 transition-all duration-150 border border-lime-700 rounded-md <%= focusLimeClasses %>"
                         id="backButton"
                 >
                     Обратно
@@ -100,9 +101,6 @@
             success: entry.success,
         }
     })
-
-    console.log(pointsToRender)
-    console.log("Last R is ", lastR)
 
     renderCanvas(lastR, pointsToRender)
 </script>
