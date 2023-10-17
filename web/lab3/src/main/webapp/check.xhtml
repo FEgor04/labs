@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Федоров Е.В., ЛР #3</title>
+    <script src="https://cdn.tailwindcss.com"/>
+</h:head>
+<h:body class="bg-slate-50 text-slate-950">
+    <f:view>
+        <header class="bg-amber-600">
+            <nav class="max-w-screen-xl mx-auto px-4 py-2 text-white flex flex-row justify-between">
+                <h1 class="text-2xl font-bold">Федоров Е.В., P3215</h1>
+
+                <h:form>
+                    <h:commandButton
+                            styleClass="bg-amber-500 border border-amber-700 px-2 py-1 rounded-md hover:bg-amber-500/80 transition-all"
+                            action="index" id="toIndex" value="На стартовую страницу"/>
+                </h:form>
+            </nav>
+        </header>
+        <main class="max-w-screen-xl mx-auto mt-8">
+            <div class="flex flex-col space-y-16">
+                <div class="grid grid-cols-1 md:grid-cols-3">
+                    <div class="p-4 bg-white border-amber-600 border-2 rounded-md shadow-md">
+                        <h:form styleClass="flex flex-col space-y-8" id="form" data-main="true">
+                            <div class="flex flex-col space-y-2">
+                                <h:outputLabel value="X" for="xInput"/>
+                                <h:inputText id="xInput" value="#{hitCheckerForm.x}"
+                                             required="true" requiredMessage="Введите X от -5 до 5"
+                                             data-field="y"
+                                             validatorMessage="Введите X от -5 до 5"
+                                             styleClass="bg-white px-1.5 py-1 border border-slate-200 focus:ring-amber-600">
+                                    <f:validateDoubleRange minimum="-5" maximum="5"/>
+                                </h:inputText>
+                                <p:slider styleClass="bg-amber-600" minValue="-5" maxValue="5" for="xInput" step="0.1"/>
+                                <h:message id="xErrorsMessage" styleClass="text-rose-600" for="xInput"/>
+                            </div>
+                            <div class="flex flex-col space-y-2">
+                                <h:outputLabel value="Y" for="yInput"/>
+                                <h:inputText id="yInput" value="#{hitCheckerForm.y}"
+                                             data-field="y"
+                                             required="true"
+                                             requiredMessage="Введите Y от -3 до 5"
+                                             validatorMessage="Введите Y от -3 до 5"
+                                             styleClass="bg-white px-1.5 py-1 border border-slate-200 focus:ring-amber-600">
+                                    <f:validateDoubleRange minimum="-3.0" maximum="5.0"/>
+                                </h:inputText>
+                                <h:message id="yErrorsMessage" styleClass="text-rose-600" for="yInput"/>
+                            </div>
+                            <div class="flex flex-col space-y-2">
+                                <h:outputLabel value="R" for="rInput"/>
+                                <h:selectOneRadio required="true" requiredMessage="Выберите R!" id="rInput"
+                                                  onchange="onRChange"
+                                                  onclick="onRChange"
+                                                  value="#{hitCheckerForm.r}">
+                                    <f:selectItem itemValue="1" itemLabel="1"/>
+                                    <f:selectItem itemValue="1.5" itemLabel="1.5"/>
+                                    <f:selectItem itemValue="2" itemLabel="2"/>
+                                    <f:selectItem itemValue="2.5" itemLabel="2.5"/>
+                                    <f:selectItem itemValue="3" itemLabel="3"/>
+                                </h:selectOneRadio>
+                                <h:message id="rErrorsMessage" styleClass="text-rose-600" for="rInput"/>
+                            </div>
+                            <p:commandButton value="Отправить" action="#{hitCheckerForm.submit}"
+                                             update="table yErrorsMessage xErrorsMessage rErrorsMessage canvasPanel"
+                                             styleClass="px-4 py-2 rounded-md text-slate-50 bg-amber-600 border border-amber-600 mt-auto hover:bg-amber-600/80 transition-all">
+                                <f:ajax execute="@form" render=":table"/>
+                            </p:commandButton>
+                        </h:form>
+                    </div>
+                    <div class="col-start-3">
+                        <p:outputPanel id="canvasPanel">
+                            <canvas class="bg-white border-amber-600 border-2 rounded-md shadow-md w-full"
+                                    id="canvas"></canvas>
+                            <h:outputScript type="text/javascript">
+                                pointsJson = `#{hitCheckerForm.entriesJson}`
+                                points = JSON.parse(pointsJson)
+
+                                function shrinkToRange(number, low, high) {
+                                    return Math.min(high, Math.max(number, low))
+                                }
+
+                                document.querySelector("canvas").addEventListener("click", (e) => {
+                                    const xValue = shrinkToRange(((e.offsetX - CANVAS_SIZE / 2) / POINT_IN_PIXELS).toFixed(2), -5, 5)
+                                    const yValue = shrinkToRange(((CANVAS_SIZE / 2 - e.offsetY) / POINT_IN_PIXELS).toFixed(2), -3, 5)
+                                    console.log(xValue, yValue)
+                                    renderCanvas(selectedR, [...points, {x: xValue, y: yValue, r: selectedR}])
+                                    xInput.value = xValue
+                                    yInput.value = yValue
+                                })
+
+                                renderPoints(points)
+                            </h:outputScript>
+                        </p:outputPanel>
+
+                    </div>
+                </div>
+
+                <div>
+                    <h:dataTable id="table" value="#{hitCheckerForm.entries}" var="entry"
+                                 styleClass="w-full bg-white border-amber-600 border-2"
+                                 headerClass="border border-amber-600 p-1"
+                                 rowClasses="border border-amber-200"
+                    >
+                        <h:column>
+                            <f:facet name="header">X</f:facet>
+                            <h:outputText styleClass="font-bold " value="#{entry.x}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Y</f:facet>
+                            <h:outputText styleClass="font-bold " value="#{entry.y}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">R</f:facet>
+                            <h:outputText styleClass="font-bold " value="#{entry.r}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Попал?</f:facet>
+                            <h:outputText styleClass="font-bold "
+                                          value='#{entry.hit ? "Да!" : "Нет"}'/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Время на сервере</f:facet>
+                            <h:outputText styleClass="font-bold "
+                                          value='#{entry.time.atZone(hitCheckerForm.zoneId)}'>
+                                <f:convertDateTime pattern="dd-MM-yyyy HH:mm" timeZone="#{hitCheckerForm.timeZone}"
+                                                   type="zonedDateTime"/>
+                            </h:outputText>
+                        </h:column>
+                    </h:dataTable>
+                </div>
+            </div>
+        </main>
+        <script src="/lab3/resources/scripts/canvas.js"/>
+        <h:outputScript>
+            const form = document.querySelector("form[data-main=true]")
+            const xInput = document.getElementById("form:xInput")
+            const yInput = document.getElementById("form:yInput")
+            const canvas = document.querySelector("canvas");
+            const heightRatio = 1;
+            let selectedR = 1.5
+            canvas.height = canvas.width * heightRatio
+            let pointsJson = `#{hitCheckerForm.entriesJson}`
+            /** @type {Object[]} */
+            let points = JSON.parse(pointsJson)
+            renderCanvas(selectedR, points)
+            function renderPoints() {
+                const lastR = points.at(-1)?.r
+                renderCanvas(lastR, points)
+            }
+
+            function onRChange(e) {
+                selectedR = parseFloat(e.target.value)
+                console.log("R has changed. Updating canvas")
+                console.log("Points are", points)
+                console.log("Radius is", selectedR)
+                renderCanvas(selectedR, points)
+            }
+
+            document.querySelectorAll("input[type=radio]").forEach((input) => {
+                input.addEventListener("change", onRChange)
+            })
+
+
+
+        </h:outputScript>
+    </f:view>
+</h:body>
+</html>
