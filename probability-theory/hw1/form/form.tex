@@ -1,0 +1,156 @@
+\documentclass{article}
+\usepackage[T2A]{fontenc}
+\usepackage{amsmath,amsthm} 
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage[english,russian]{babel}
+\everymath{\displaystyle}
+\usepackage[usenames]{color}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{epigraph}
+\usepackage{xcolor}
+
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    top=15mm, 
+    right=5mm,
+    bottom=25mm, 
+    left=5mm
+}
+
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{amsfonts}
+\renewcommand{\headrulewidth}{0pt}
+\usepackage{tikz}
+\usepackage{tikzsymbols}
+\usepackage{textcomp,latexsym,pb-diagram,amsopn}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\fancyhead[L]{Формулы к КР по Теории Вероятностей}
+\fancyhead[C]{02.11.2023}
+\fancyhead[R]{Федоров Е.В., P3215}
+
+% \usepackage[printwatermark]{xwatermark}
+% \newwatermark[allpages,color=red!50,angle=45,scale=3,xpos=0,ypos=0]{ХУЙ ХУЙ ХУЙ ХУЙ}
+
+\begin{document}
+\begin{multicols}{2}
+    \begin{enumerate}
+        \item Формула Бернулли. $n$ независимых испытаний, $m$ из них успешны.
+        $
+            P_n^m = C_n^m p^m (1-p)^{n-m}
+        $
+
+    \item Асимптотическая формула Пуассона. $n \geq 50, np \leq 10$.
+        $ \lim_{n \to \infty} P_n(m) \approx \frac{a^m e^{-a}}{m!} $
+
+    \item Локальная теорема Муавра-Лапласа. $p = const$.
+        $ P_n(m) \approx \frac{1}{\sqrt{npq}} \frac{1}{\sqrt{2 \pi}} e^{-\frac{x^2}{2}}, x = \frac{m-np}{\sqrt{npq}} $
+
+    \item Функция Гаусса.
+        $
+            \Phi(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}
+        $
+
+    \item Формула Байеса.
+        $
+            P(H|A) = \frac{P(H) P(A | H)}{P(A)}
+        $
+
+    \item Интегральная теорема Муавра-Лапласа
+        \[
+            P(k_1 \leq m \leq k_2) \approx \frac{1}{\sqrt{2\pi}} \int\limits_{x_1}^{x_2} e^{-\frac{x^2}{2}} \, dx
+            \quad
+            x_i = \frac{k_i - np}{\sqrt{npq}}
+        \]
+    \item Нормированная функция Лапласа.
+        $
+            \Phi_0(x) = \frac{1}{\sqrt{2 \pi}} \int_0^x e^{-\frac{t^2}{2}} \, dt
+        $
+
+    \item Функция Лапласа
+        \[
+            \Phi(x) = \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^x e^{-\frac{t^2}{2}} \, dt
+        \]
+        Для нее справедливо равенство: $\Phi(-x) + \Phi(x) = 1$, $\Phi(x) = 0.5 + \Phi_0(x)$.
+        \[
+            P_n(k_1 \leq m \leq k_2) \approx \Phi(x_2) - \Phi(x_1) = \Phi_0(x_2) - \Phi_0(x_1)
+        \]
+
+    \item Функция распределения $F(x)$.
+        \begin{itemize}
+            \item $0 \leq F(x) \leq 1$, $F(-\infty) = 0$, $F(\infty) = 1$
+            \item $P(a \leq X < b) = F(b) - F(a)$
+            \item $\lim_{x \to x_0 - 0} F(x) = F(x_0)$
+        \end{itemize}
+
+    \item Плотность распределения $f(x)$.
+        \begin{itemize}
+            \item $f(x) = F'(x)$, $f(x) \geq 0 $
+            \item $P(a \leq x < b) = \int_a^b f(x) \, dx$
+            \item $\int_{-\infty}^\infty f(x) \, dx = 1$
+        \end{itemize}
+
+    \item Математическое ожидание $MX$ случайной величины $X$
+        \begin{itemize}
+            \item $MX = \int_{-\infty}^{+\infty} x  f(x) \, dx$
+            \item $c = const, Mc = c$; $M(cX) = c M(x)$
+            \item $M(X+Y) = MX + MY$
+            \item $M(X - MX) = MX - M(MX) = 0$
+            \item $X$ и $Y$ независимы, тогда $M(X \cdot Y) = MX \cdot MY$
+        \end{itemize}
+    \item Дисперсия $DX$ с.~в. $X$
+        \begin{itemize}
+            \item $DX \stackrel{def}{=} M(X - MX)^2  = M(X^2) - (MX)^2$
+            \item $DX = \int_{-\infty}^{+\infty} (x - MX)^2 \cdot f(x) \, dx$
+            \item $Dc = 0 \qquad D(cX) = c^2 D(X)$
+            \item $D(X + Y) = DX + DY$
+            \item $D(X + c) = DX$
+            \item $D(XY) = MX^2 MY^2 - (MX)^2 \cdot (MY)^2$
+            \item $\sigma_X = \sqrt{DX}$
+        \end{itemize}
+    \item Стандартная случайная величина
+        \[ Z = \frac{X - MX}{\sigma_X} \qquad MZ = 0 \quad DZ = 1 \]
+    \item Биномиальный закон распределения. С.в. принимает значения $0, 1, \ldots n$
+        с вероятностями $P(X = M) = C_n^m p^m q^{n-m}$, где $0 < p < 1, q = 1 - p, m = 0, 1, \ldots, n$.
+        $MX = np$, $DX = npq$.
+    \item Распределение Пуассона.
+        $p_m = \frac{a^m e^{-a}}{m!}$. $MX = DX = a$.
+    \item Геометрическое распределение.
+        $p_m = q^{m-1} p$. $MX = \frac{1}{p}$, $DX = \frac{q}{p^2}$.
+        
+    \item Равномерное распределение.
+        $f(x) = \frac{1}{b-a}$ на $[a, b]$ и $0$ -- иначе.
+        $MX = \frac{a+b}{2}$. $DX = \frac{(b-a)^2}{12}$
+    \item Нормальный закон распределения.
+        \[
+        f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{- \frac{(x-a)^2}{2\sigma^2}}
+        \quad
+        F(x) = \Phi(x)
+        \]
+        $MX = a$, $DX = \sigma^2$
+    \item Ковариация $cov(X, Y) = M[(X-m_x)(Y-m_y)] = M(XY) - MX MY$ 
+        \[
+            cov(X,Y) = \int\limits_{-\infty}^{+\infty}\int\limits_{-\infty}^{+\infty}(x-m_x)(y-m_y) f(x, y) \, dx dy =
+        \]
+        \begin{itemize}
+            \item $ cov(X, Y) = cov(Y, X) $
+            \item $ cov(X, X) = DX$
+            \item $X, Y $ незав. $\Rightarrow cov(X, Y) = 0$
+            \item $D(X \pm Y) = DX + DY \pm 2 cov(X, Y) $
+            \item $cov(cX, Y) = c \cdot cov(X, Y)$
+            \item $cov(X + c, Y) = cov(X, Y) = cov(X, Y + c)$
+        \end{itemize}
+    \item Коэффициент корреляции $r_{XY} = \frac{K_{XY}}{\sigma_X \sigma_Y}$.
+        $|r_{XY}| \leq 1$
+    \item Неравенство Чебышева. $P(|X - MX| \geq \varepsilon) \leq \frac{DX}{\varepsilon^2}$
+    \item Неравенство Маркова. $P(X \geq \varepsilon) \leq \frac{MX}{\varepsilon}$
+    \item Теорема Чебышева. $\lim_{n \to \infty} P\left\{ \Big|\frac{1}{n} \left(\sum_{i=1}^n X_i - MX_i \right)\Big| < \varepsilon \right\} = 1$
+    \item Теореме Бернулли. $\lim_{n \to \infty} P \left\{ \Big| \frac{n_A}{n} - p \Big| < \varepsilon \right\} = 1$
+    \end{enumerate}
+\end{multicols}
+\end{document}
