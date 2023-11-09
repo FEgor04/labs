@@ -1,0 +1,39 @@
+\newpage
+\section{Расчет погрешности измерений}
+\begin{itemize}
+    \item Погрешность измерения времени $\Delta t$ для 1-й риски и массы груза 267 г.:
+    \[ \Delta t = \frac{\alpha_{0.95, n} \cdot \sigma_t}{\sqrt{n}} \approx \frac{4.30 \cdot 0.49}{\sqrt{3}} \approx 0.122 \, \text{с} \]
+    \item Погрешность измерения ускорения $a$ для 1-й риски и массы 267 г.:
+    \[
+        \Delta a =
+        \sqrt{\left(-\frac{4h}{t^3} \Delta t \right)^2 + \left(\frac{2}{t^2} \Delta h\right)^2}
+        \approx 0.00179 \, \frac{\text{м}}{\text{с}^2}
+    \]
+    \item Погрешность измерения углового ускроения $\varepsilon$ для 1-й риски и массы $267$ г.:
+    \[
+        \Delta \varepsilon = 
+        \sqrt{\left(\frac{2}{d} \Delta a \right)^2 + \left( \frac{2a}{d^2} \Delta d \right)^2}
+        \approx 0.1391 \, \frac{\text{рад}}{\text{с}^2}
+    \]
+    \item Погрешность измерения момента силы $M$ для 1-й риски массы 267 г.:
+    \[
+        \Delta M =
+        \sqrt{\left(\frac{1}{2}d(g-a) \Delta m\right)^2 + \left(\frac{1}{2}m(g-a) \Delta d \right)^2 + \left(- \frac{dm}{2} \Delta a\right)^2}
+        \approx 0.00065 \, \text{Н} \cdot \text{м}
+    \]
+
+
+    \item Погрешность измерения $m_\text{ут}$:
+        \[
+            \Delta m_\text{ут} = 
+            \frac{1}{4} \sqrt{\frac{1}{n-2} \left(\frac{D_x}{D_y} - k^2\right) }
+            \approx 0.021 \, \text{кг}
+        \]
+
+    \item Погрешность измерения $I_0$:
+        \[
+            \Delta I_0 =
+            \Delta m_\text{ут} \cdot \sqrt{\langle x^2 \rangle} =
+            5.17 \cdot 10^{-5} \, \text{кг} \cdot \text{м}^2
+        \]
+\end{itemize}
