@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+  frontend:
+    network_mode: "host"
+    image: fegor04/web-lab4
+    build:
+      context: ./frontend
+      dockerfile: ../Dockerfile
