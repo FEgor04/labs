@@ -1,0 +1,228 @@
+\documentclass{article}
+\usepackage[T2A]{fontenc}
+\usepackage{amsmath} 
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage[english,russian]{babel}
+\everymath{\displaystyle}
+\usepackage[usenames]{color}
+\usepackage{graphicx}
+\usepackage{minted}
+
+\usepackage{epigraph}
+
+\usepackage{geometry}
+\geometry{
+  a4paper,
+    top=25mm, 
+    right=2cm,
+    bottom=25mm, 
+    left=2cm
+}
+
+\newcommand{\lin}{Lin}
+
+\usepackage{fancyhdr}
+\usepackage{amsfonts}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot[C]{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+\usepackage{tikzsymbols}
+
+\newcommand\lword[1]{\leavevmode\nobreak\hskip0pt plus\linewidth\penalty50\hskip0pt plus-\linewidth\nobreak\textbf{#1}}
+\title{Отчет о выполнении практической работы \textnumero 5}
+\author{Федоров Егор, P3215, вариант 19}
+\date{}
+
+\begin{document}
+  \maketitle
+
+  Необходимо определить следующие статистические
+  характеристики:
+  \begin{itemize}
+    \item вариационный ряд
+    \item экстремальные значения и размах
+    \item оценки математического ожидания и среднеквадратического отклонения
+    \item эмпирическую функцию распределения и её график
+    \item гистограмму и полигон приведенных частот группированной выборки.
+  \end{itemize}
+
+  Для расчета
+  характеристик и построения графиков нужно написать программу на одном из языков
+  программирования. Листинг программы и результаты работы должны быть представлены в отчете
+  по практической работе.
+
+  При выполнении практической работы были получены следующие результаты:
+  \begin{itemize}
+    \item Вариационный ряд:
+    \[
+      -1.55 \leq -1.45 \leq -1.45 \leq -1.38 \leq -1.31 \leq -1.14 \leq -1.0
+      \leq -0.9 \leq 0.17 \leq 0.24   \leq
+    \]
+    \[
+      \leq 0.34 \leq 0.38 \leq 0.52 \leq 0.52 \leq 0.55 \leq 0.62 \leq 0.73
+      \leq 0.8 \leq 0.9 \leq 1.31
+    \]
+    \item Экстремальные значения:
+    \[
+      x_{(20)} = 1.31 \qquad x_{(1)} = -1.55 \qquad R = x_{(n)} - x_{(1)} = 2.86
+    \]
+    \item Оценки математического ожидания и среднеквадратичного отклонения:
+    \[ MX \approx \bar x = \frac{1}{n} \sum_{i=1}^n x_i = -0.1550 \]
+    \[ DX \approx \frac{1}{n} \sum_{i=1}^n \left(x_i - \bar x \right)^2 = 0.9065 \]
+    \[ \sigma = \sqrt{DX} \approx 0.9521  \]
+    \[ S^2 \approx 0.9542 \]
+    \[ S \approx 0.9768 \]
+    \item Эмпирическая функция распределния описана в таблице \ref{table:emp}.
+    График эмпирической функции распределния представлен на рисунке \ref{fig:emp}.
+    Эмпирическая функция в аналитическом виде:
+      \[
+        F^*(x) = \begin{cases}
+          0,      & x \leq -1.55 \\
+          0.05, & -1.55 < x \leq -1.45 \\
+          0.15, & -1.45 < x \leq -1.38 \\
+          0.2, & -1.38 < x \leq -1.31 \\
+          0.25, & -1.31 < x \leq -1.14 \\
+          0.3, & -1.14 < x \leq -1.0 \\
+          0.35, & -1.0 < x \leq -0.9 \\
+          0.4, & -0.9 < x \leq 0.17 \\
+          0.45, & 0.17 < x \leq 0.24 \\
+          0.5, & 0.24 < x \leq 0.34 \\
+          0.55, & 0.34 < x \leq 0.38 \\
+          0.6, & 0.38 < x \leq 0.52 \\
+          0.7, & 0.52 < x \leq 0.55 \\
+          0.75, & 0.55 < x \leq 0.62 \\
+          0.8, & 0.62 < x \leq 0.73 \\
+          0.85, & 0.73 < x \leq 0.8 \\
+          0.9, & 0.8 < x \leq 0.9 \\
+          0.95, & 0.9 < x \leq 1.31 \\
+          1 & 1.31 < x
+        \end{cases}
+      \]
+    
+    \item Гистрограмма и полигон приведенных частот группированной выборки приведены на
+    рисунках \ref{fig:polygon} и \ref{fig:hist} соответственно.
+  \end{itemize}
+  Листинг программы представлен в конце отчета.
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.95\textwidth]{emp_func.pdf}
+    \caption{График эмпирической функции распределения}\label{fig:emp}
+  \end{figure}
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.95\textwidth]{polygon.pdf}
+    \caption{Полигон приведенных частот группированной выборки}\label{fig:polygon}
+  \end{figure}
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.95\textwidth]{hist.pdf}
+    \caption{Гистограмма приведенных частот группированной выборки}\label{fig:hist}
+  \end{figure}
+  
+  % \begin{table}
+  %   \centering
+  %   \begin{tabular}{| c | c |}
+  %       \hline
+  %       $x$ & $F_{20}^*(x)$ \\
+  %       \hline
+  %       -1.55 & 0.0 \\
+  %       \hline
+  %       -1.45 & 0.05 \\
+  %       \hline
+  %       -1.38 & 0.15 \\
+  %       \hline
+  %       -1.31 & 0.2 \\
+  %       \hline
+  %       -1.14 & 0.25 \\
+  %       \hline
+  %       -1.0 & 0.3 \\
+  %       \hline
+  %       -0.9 & 0.35 \\
+  %       \hline
+  %       0.17 & 0.4 \\
+  %       \hline
+  %       0.24 & 0.45 \\
+  %       \hline
+  %       0.34 & 0.5 \\
+  %       \hline
+  %       0.38 & 0.55 \\
+  %       \hline
+  %       0.52 & 0.6 \\
+  %       \hline
+  %       0.55 & 0.7 \\
+  %       \hline
+  %       0.62 & 0.75 \\
+  %       \hline
+  %       0.73 & 0.8 \\
+  %       \hline
+  %       0.8 & 0.85 \\
+  %       \hline
+  %       0.9 & 0.9 \\
+  %       \hline
+  %       1.31 & 0.95 \\
+  %       \hline
+  %       1.32 & 1.0 \\
+  %       \hline
+  %   \end{tabular}
+  %   \caption{Эмпирическая функция распределения}\label{table:emp}
+  % \end{table}
+  %
+
+  \begin{table}
+    \centering
+    \begin{tabular}{| c | c | c |}
+        \hline
+        $x$ & $n_i$ & $\frac{n_i}{n}$ \\
+        \hline
+        -1.55 & 1 & 0.05 \\
+        \hline
+        -1.45 & 2 & 0.1 \\
+        \hline
+        -1.38 & 1 & 0.05 \\
+        \hline
+        -1.31 & 1 & 0.05 \\
+        \hline
+        -1.14 & 1 & 0.05 \\
+        \hline
+        -1.0 & 1 & 0.05 \\
+        \hline
+        -0.9 & 1 & 0.05 \\
+        \hline
+        0.17 & 1 & 0.05 \\
+        \hline
+        0.24 & 1 & 0.05 \\
+        \hline
+        0.34 & 1 & 0.05 \\
+        \hline
+        0.38 & 1 & 0.05 \\
+        \hline
+        0.52 & 2 & 0.1 \\
+        \hline
+        0.55 & 1 & 0.05 \\
+        \hline
+        0.62 & 1 & 0.05 \\
+        \hline
+        0.73 & 1 & 0.05 \\
+        \hline
+        0.8 & 1 & 0.05 \\
+        \hline
+        0.9 & 1 & 0.05 \\
+        \hline
+        1.31 & 1 & 0.05 \\
+        \hline
+    \end{tabular}
+    \caption{Статистический ряд распределения}\label{table:var}
+  \end{table}
+  
+  
+
+  \clearpage
+  \inputminted{python}{prog.py}
+
+\end{document}
