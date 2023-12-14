@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[T2A]{fontenc}
+\usepackage{amsmath,amsthm} 
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage[english,russian]{babel}
+\everymath{\displaystyle}
+\usepackage[usenames]{color}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{epigraph}
+\usepackage{xcolor}
+
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    top=20mm, 
+    right=1cm,
+    bottom=20mm, 
+    left=1cm
+}
+
+\usepackage{fancyhdr}
+\usepackage{amsfonts}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot[C]{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+\usepackage{tikz}
+\usepackage{tikzsymbols}
+\usepackage{textcomp,latexsym,pb-diagram,amsopn}
+\usepackage{gnuplottex}
+
+\newtheoremstyle{problemstyle}  % <name>
+{3pt}                                               % <space above>
+{3pt}                                               % <space below>
+{\normalfont}                               % <body font>
+{}                                                  % <indent amount}
+{\bfseries\itshape}                 % <theorem head font>
+{\normalfont\bfseries:}         % <punctuation after theorem head>
+{.5em}                                          % <space after theorem head>
+{}                                                  % <theorem head spec (can be left empty, meaning `normal')>
+\theoremstyle{problemstyle}
+\newtheorem{problem}{Задача}[section]
+
+\newcommand\lword[1]{\leavevmode\nobreak\hskip0pt plus\linewidth\penalty50\hskip0pt plus-\linewidth\nobreak\textbf{#1}}
+\title{\textbf{Теория вероятностей} \\ Домашнее задание \textnumero 2}
+\author{Федоров Егор, P3215, вариант 19}
+\date{}
+
+\begin{document}
+\maketitle
+\section{ИДЗ-19.1}
+В результате эксперимента получены данные, записанные в виде статистического ряда.
+Требуется:
+\begin{enumerate}
+  \item Записать значения результатов эксперимента в виде вариационного ряда;
+  \item Найти размах варьирования и разбить его на 9 интервалов;
+  \item Построить полигон частот, гистограмму относительных частот и график 
+    эмпиричесокй функции распределения;
+  \item Найти числовые характеристики выборки \(\bar x\) и \(D_\text{в}\);
+  \item Приняв в качестве нулевой гипотезу \(H_0\): генеральная совокупность,
+    из которой извлечена выборка, имеет нормальное распределение, проверить ее,
+    пользуясь критерием Пирсона при уровне значимости \(\alpha = 0.25\);
+  \item Найти доверительные интервалы для математического ожидания и среднего
+    квадратичного отклонения при надежности \(\gamma = 0.9\);
+
+\end{enumerate}
+\end{document}
