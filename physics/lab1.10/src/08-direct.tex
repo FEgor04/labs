@@ -1,6 +1,7 @@
+\newpage
 \section{Результаты прямых измерений и их обработки}
 
-\begin{table}
+\begin{table}[H]
 % \usepackage{tabularray}
 \begin{longtblr}[
   label = none,
@@ -12,16 +13,22 @@
   hline{1-2,5} = {-}{},
   hline{3-4} = {1-2}{},
 }
-\# & $t$ & $t_\text{cр}$ & $T$ \\
-1  & 17.55    &               &     \\
+\# & $t$, с & $t_\text{cр}$, с & $T$, с \\
+1  & 17.55    & 17.6567       & 1.7657    \\
 2  & 17.65    &               &     \\
 3  & 17.77    &               &     
 \end{longtblr}
-  \caption{}\label{tab:period_10}
+  \caption{Измерение периода $T$ свободных колебаний маятника, $t$ -- время $N=10$ полных колебаний}
+  \label{tab:period_10}
 \end{table}
 
+\begin{itemize}
+  \item $t_\text{ср} = \frac{1}{3} \sum_{i=1}^3 t_i \approx 17.6567$ c;
+  \item $T = t_\text{ср}/N \approx 17.6567 / 10 \approx 1.7657$ с;
+  \item $\omega_0 = 2 \pi / T \approx \frac{2 \pi}{1.7657} \approx 3.5585$ $\text{с}^{-1}$;
+\end{itemize}
 
-\begin{table}
+\begin{table}[H]
 % \usepackage{tabularray}
 \begin{longtblr}[
   label = none,
@@ -40,10 +47,12 @@ $I_T$  &    & t &   &   &   &   &   &   &   &   &   &    & $\lambda$ & $\beta$ &
 400 & $A_k$ &   &   &   &   &   &   &   &   &   &   &    &        &      &   \\
     & $\ln(A/A_k)$ &   &   &   &   &   &   &   &   &   &   &    &        &      &   
 \end{longtblr}
-\caption{tabl 2}
+\caption{Зависимость амплитуды $A$ колебаний маятника от номера колебания $k$ при свободных колебаниях с разным затуханием}
 \end{table}
 
-\begin{table}
+\newpage
+
+\begin{table}[H]
 % \usepackage{tabularray}
 \begin{longtblr}[
   label = none,
@@ -58,8 +67,10 @@ $N$     & 5   & 5   & 5    & 5    \\
 $T$     &     &     &     &     \\
 $\omega$ &     &     &     &     
 \end{longtblr}
-\caption{tabl 3}
+\caption{Зависимость частоты возбуждения вынужденных колебаний от напряжения на моторе}
 \end{table}
+
+\newpage
 
 \begin{longtable}{|l|l|l|l|l|l|l|l|} 
 \hline
@@ -115,5 +126,5 @@ $Q'$     &          &                   &   &      &     &     &       \\
 \hline
 $Q''$    &          &                   &   &      &     &     &       \\
 \hline
+\caption{Зависимость амплитуды вынужденных колебаний от частоты возбуждения}
 \end{longtable}
-
