@@ -1,2 +1,10 @@
 \section{Расчет погрешности измерений}
+\begin{itemize}
+\item Случайная погрешность $\Delta_{\bar t} = t_{\alpha, N} \sqrt{\frac{1}{N(N-1)} \sum_{i=1}^N (t_i - \bar t)^2} = 0.1857$ с
+\item Абсолютная погрешность $\Delta_t = \sqrt{\Delta_{\bar t}^2 + \left(2/3 \Delta_\text{их}\right)^2} = 0.1973$ с
+\item Абсолютная погрешность периода колебаний $\Delta_T = \sqrt{\left(\frac{\partial T}{\partial t} \Delta_t\right)^2} = \Delta_t / 10 = 0.01973$ с,
+относительная погрешность периода колебаний $\varepsilon_T = \Delta_T / T \cdot 100 \% = 0.0398 \% $
+\item Абсолютная погрешность циклической частоты: $\Delta_\omega = \sqrt{\left( \frac{\partial \omega}{\partial T} \Delta_T \right)^2} = \frac{2 \pi}{T^2} \Delta_T = 0.0397 \, \text{рад}/\text{с}$,
+относительная погрешность циклической частоты $\varepsilon_\omega = \Delta_\omega / \omega \cdot 100 \% = 1.1174 \%$
+\end{itemize}
 
