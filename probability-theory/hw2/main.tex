@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage[T2A]{fontenc}
 \usepackage{amsmath,amsthm} 
+\usepackage{float} 
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
 \usepackage[english,russian]{babel}
@@ -94,11 +95,14 @@
     причем $z_1$ положим стремящимся к $-\infty$, а $z_{m+1} \to +\infty$.
     Вычисления теоретических вероятностей представлены на таблице~\ref{table:theoretical} и \ref{table:theoretical_2}.
     Наблюдаемое значение критерия Пирсона:
-    \[
-      \chi_\text{набл}^2 = 
+    \begin{align*}
+      \chi_\text{набл}^2 &= 
       \sum_{i=1}^9 \frac{(n_i - n^\prime_i)^2}{ n_i^{\prime2}} \approx
-      0.9617
-    \]
+      \frac{(6 - 6.81)^2}{46.38} + \frac{(13 - 8.1)^2}{65.61} + \frac{(11 - 11.5)^2}{132.2} + \frac{(11 - 14.87)^2}{221.1} + \frac{(15 - 15.83)^2}{250.6} + \\ &+ \frac{(14 - 14.76)^2}{217.9} + \frac{(8 - 11.98)^2}{143.5} + \frac{(13 - 8.03)^2}{64.48} + \frac{(9 - 8.076)^2}{65.22} = \\
+      &= \frac{0.6561}{46.38} + \frac{24.01}{65.61} + \frac{0.25}{132.2} + \frac{14.98}{221.1} + \frac{0.6889}{250.6} + \frac{0.5776}{217.9} + \frac{15.84}{143.5} + \frac{24.7}{64.48} + \frac{0.8538}{65.22} = \\
+      &= 0.01415 + 0.366 + 0.00189 + 0.06773 + 0.002749 + 0.002651 + 0.1104 + 0.3831 + 0.01309 \\
+      &= 0.9617
+    \end{align*}
     Уровню значимости \(\alpha = 0.025\) и числу степеней свободы \(k = l - 3 = 6\) 
     соответствует $\chi^2_\text{крит} = 14.4 $.
     
@@ -116,6 +120,13 @@
       \right)
     \]
     \[
+      t_\gamma = 1.65
+      \qquad
+      \tilde\sigma_\text{в} = \sqrt{S^2} = \sqrt{368.4257}
+      \qquad
+      n = 10
+    \]
+    \[
       \frac{\tilde\sigma_\text{в}}{\sqrt{n}} t_\gamma = \frac{\sqrt{368.4257}}{10} 1.65 \approx 3.167
       \qquad
       \bar x = 46.243
@@ -131,7 +142,7 @@
     \[ (16.4496; 21.9392) \]
 \end{enumerate}
 
-\begin{table}[ht!]
+\begin{table}[H]
   \centering
   \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
     \hline
@@ -159,7 +170,7 @@
   \caption{Данные, полученные в результате эксперимента}\label{table:data}
 \end{table}
 
-\begin{table}[ht!]
+\begin{table}[H]
   \centering
   \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
     \hline
@@ -187,7 +198,7 @@
   \caption{Вариационный ряд}\label{table:var_series}
 \end{table}
 
-\begin{table}[ht!]
+\begin{table}[H]
   \centering
   \begin{tabular}{|l|l|l|l|l|l|l|}
     \hline
@@ -215,7 +226,7 @@
   \caption{Распределение данных по интервалам}\label{table:intervals}
 \end{table}
 
-\begin{table}[ht!]
+\begin{table}[H]
   \centering
   \begin{tabular}{|l|l|l|l|l|l|l|}
     \hline
@@ -244,7 +255,7 @@
   \caption{Вычисление теоретических частот}\label{table:theoretical}
 \end{table}
 
-\begin{table}[ht!]
+\begin{table}[H]
   \centering
   \begin{tabular}{|l||l|l||l|l||l|l|}
     \hline
@@ -280,21 +291,21 @@
 
 
 
-\begin{figure}[ht!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.6\textwidth]{polygon.pdf}
+  \includegraphics[width=0.9\textwidth]{polygon.pdf}
   \caption{Полигон частот}\label{fig:polygon}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.6\textwidth]{hist.pdf}
+  \includegraphics[width=0.9\textwidth]{hist.pdf}
   \caption{Гистограмма относительных частот}\label{fig:hist}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.6\textwidth]{emp_func.pdf}
+  \includegraphics[width=0.9\textwidth]{emp_func.pdf}
   \caption{График эмпирической функции распределения}\label{fig:emp_func}
 \end{figure}
 
@@ -313,33 +324,53 @@ $X$ (тыс. ден. ед.) и по суточной выработке $Y$ (т.
 
 \subsection{Решение}
 Найдем выборочные средние $\bar x$ и $\bar y$.
-\[
-  \bar x =
+\begin{align*}
+  \bar x &=
   \frac{1}{n} \sum_{i=1}^6 {m_x}_i x_i =
+  \frac{1}{100} \left( 11 \cdot 120 + 13 \cdot 130 + 15 \cdot 140 + 26 \cdot 150 + 160 \cdot 20 + 15 \cdot 170 \right) =
   \frac{14760}{100} =
   147.6
-\]
+\end{align*}
 \[
   \bar y = 
   \frac{1}{n} \sum_{j=1}^8 {m_y}_j y_j =
+  \frac{1}{100} \left( 5 \cdot 8.0 + 9 \cdot 8.8 + 9.6 \cdot 8 + 17 \cdot 10.4 + 19 \cdot 11.2 + 13 \cdot 12.0 + 16 \cdot 12.8 + 13 \cdot 13.6 \right) =
   \frac{1123.2}{100} = 11.232
 \]
-Выборочная дисперсии $s_x^2, s_y^2$:
-\[
-  s_x^2 = 
+Выборочная дисперсия $s_x^2$:
+\begin{align*}
+  s_x^2 &= 
   \frac{1}{n-1} \left(\sum {m_x}_i x_i^2 - \frac{1}{100} \left(\sum {m_x}_i{x_i}\right)^2\right) =
-  \frac{24024}{99} =
-  242.66
-\]
-\[
-  s_y^2 \approx \frac{11751}{99} \approx 118.7
-\]
-\[
-  s_{xy} =
-  \frac{1}{n-1} \left( \sum \sum m_{ij} x_i y_j - \frac{1}{n} \left(\sum {m_x}_i x_i \right)\left(\sum {m_y}_j y_j \right) \right) =
-  \frac{1}{99} ( 168096 - \frac{1}{100} 14760 1123.2) =
-  23.3503
-\]
+  \frac{1}{n-1} \left(\sum {m_x}_i x_i^2 - \frac{1}{100} \left(100 \bar x\right)^2\right) = \\
+  &= \frac{1}{99} \left[ \left( 11 \cdot 120^2 + 13 \cdot 130^2 + 15 \cdot 140^2 + 26 \cdot 150^2 + 20 \cdot 160^2 + 15 \cdot 170^2 \right) - \frac{1}{100} \left( 100 \bar x \right)^2 \right] = \\
+  &= \frac{1}{99} \left[ 2202600 - \frac{1}{100} 14760^2 \right] = \\
+  &= \frac{728}{3} = 242.66
+\end{align*}
+% \[
+%   s_y^2 \approx \frac{11751}{99} \approx 118.7
+% \]
+
+Для вычисления корреляционного момента сначала вычислим сумму $ \sum \sum m_{ij} x_i y_j $:
+\begin{align*}
+  \sum \sum m_{ij} x_i y_j &= 5 \cdot 120 \cdot 8.0 + 6 \cdot 120 \cdot 8.8 +
+  3 \cdot 130 \cdot 8.8 + 4 \cdot 130 \cdot 9.6 + 6 \cdot 130 \cdot 10.4    + \\
+  &+ 4 \cdot 140 \cdot 9.6 + 5 \cdot 140 \cdot 10.4 + 6 \cdot 140 \cdot 11.2 +
+   6 \cdot 150 \cdot 10.4 + 13 \cdot 150 \cdot 11.2 + 7 \cdot 150 \cdot 12.0 + \\
+  &+ 6 \cdot 160 \cdot 12.0 + 9 \cdot 160 \cdot 12.8 + 5 \cdot 160 \cdot 13.6  +
+  7 \cdot 170 \cdot 12.8 + 8 \cdot 170 \cdot 13.6 = \\
+  &= 168096
+\end{align*}
+
+Корреляционный момент $s_{xy}$:
+
+
+\begin{align*}
+  s_{xy} &=
+  \frac{1}{n-1} \left( \sum \sum m_{ij} x_i y_j - \frac{1}{n} \left(\sum {m_x}_i x_i \right)\left(\sum {m_y}_j y_j \right) \right) = \\
+  &= \frac{1}{n-1} \left( \sum \sum m_{ij} x_i y_j - \frac{1}{n} (100 \bar x) (100 \bar y) \right) = \\
+  &= \frac{1}{99} \left( 168096 - \frac{1}{100} (14760) (1123.2) \right) = \\
+  &= 23.3503
+\end{align*}
 
 Тогда зависимость $y$ от $x$ выражается формулой:
 \[
@@ -356,7 +387,7 @@ $X$ (тыс. ден. ед.) и по суточной выработке $Y$ (т.
 \]
 График линии регрессии представлен на рисунке~\ref{fig:regression}
 
-\begin{table}[ht!]
+\begin{table}[H]
   \centering
   \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
     \hline
@@ -376,7 +407,8 @@ $X$ (тыс. ден. ед.) и по суточной выработке $Y$ (т.
   \caption{Таблица распределения}\label{tab:2_data}
 \end{table}
 
-\begin{figure}
+\begin{figure}[H]
+  \centering
   \includegraphics[width=0.9\textwidth]{regression.pdf}
   \caption{Линия регрессии и случайные точки}\label{fig:regression}
 \end{figure}
