@@ -152,4 +152,11 @@ mod tests {
         assert_eq!(c_actual, c_expected);
     }
 
+    #[test]
+    fn transpose_matrix() {
+        let m = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+        let transposed = Matrix::new([[1, 4, 7], [2, 5, 8], [3, 6, 9]]);
+        let actual = m.transpose();
+        assert_eq!(transposed, actual);
+    }
 }
