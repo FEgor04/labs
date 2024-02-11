@@ -1,4 +1,4 @@
-mod matrix;
+pub mod matrix;
 mod ring;
 mod sle;
 mod solver;

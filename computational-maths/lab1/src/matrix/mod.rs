@@ -1,8 +1,12 @@
+mod matrix_iterator;
+
 use std::ops::{Add, AddAssign, Mul, SubAssign};
 
 use crate::ring::RingElement;
 
-trait MatrixCell: RingElement + Copy {}
+use self::matrix_iterator::MatrixRowIterator;
+
+pub trait MatrixCell: RingElement + Copy {}
 
 impl<U: RingElement + std::marker::Copy> MatrixCell for U {}
 
@@ -85,6 +89,10 @@ impl<T: MatrixCell, const M: usize, const N: usize> Matrix<T, M, N> {
         assert!(j < M);
         self.data.swap(i, j)
     }
+
+    pub fn iter_rows(&self) -> MatrixRowIterator<'_, T, M, N> {
+        MatrixRowIterator::new(self)
+    }
 }
 
 impl<T: MatrixCell, const R: usize, const C: usize> Add<Matrix<T, R, C>> for Matrix<T, R, C> {
@@ -101,7 +109,7 @@ impl<T: MatrixCell, const R: usize, const C: usize> Add<Matrix<T, R, C>> for Mat
 }
 
 impl<T: MatrixCell, const M: usize, const N: usize, const R: usize> Mul<Matrix<T, N, R>>
-    for Matrix<T, M, N>
+for Matrix<T, M, N>
 {
     type Output = Matrix<T, M, R>;
     fn mul(self, rhs: Matrix<T, N, R>) -> Matrix<T, M, R> {
@@ -177,5 +185,15 @@ mod tests {
         assert_eq!(swapped, m);
         m.swap_rows(1, 2);
         assert_eq!(m, m_start);
+    }
+
+    #[test]
+    fn row_iterator() {
+        let m = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+        let mut iter = m.iter_rows();
+        assert_eq!(Some([1,2,3]), iter.next());
+        assert_eq!(Some([4,5,6]), iter.next());
+        assert_eq!(Some([7,8,9]), iter.next());
+        assert_eq!(None, iter.next())
     }
 }
