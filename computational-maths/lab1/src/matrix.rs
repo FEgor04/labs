@@ -78,6 +78,13 @@ impl<T: MatrixCell, const M: usize, const N: usize> Matrix<T, M, N> {
         assert!(j < N);
         self.data.iter_mut().for_each(|row| row.swap(i, j));
     }
+
+    /// Swaps i-th row with j-th row inplace.
+    pub fn swap_rows(&mut self, i: usize, j: usize) {
+        assert!(i < M);
+        assert!(j < M);
+        self.data.swap(i, j)
+    }
 }
 
 impl<T: MatrixCell, const R: usize, const C: usize> Add<Matrix<T, R, C>> for Matrix<T, R, C> {
@@ -102,7 +109,7 @@ impl<T: MatrixCell, const M: usize, const N: usize, const R: usize> Mul<Matrix<T
         for i in 0..data.len() {
             for j in 0..data[i].len() {
                 for k in 0..N {
-                    data[i][j] = self.data[i][k] * rhs.data[k][j]
+                    data[i][j] = data[i][j] + self.data[i][k] * rhs.data[k][j]
                 }
             }
         }
@@ -159,5 +166,16 @@ mod tests {
         let swapped = Matrix::new([[3, 2, 1], [6, 5, 4], [9, 8, 7]]);
         m.swap_columns(0, 2);
         assert_eq!(swapped, m);
+    }
+
+    #[test]
+    fn swap_rows() {
+        let mut m_start = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+        let mut m = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+        let swapped = Matrix::new([[1, 2, 3], [7, 8, 9], [4, 5, 6]]);
+        m.swap_rows(1, 2);
+        assert_eq!(swapped, m);
+        m.swap_rows(1, 2);
+        assert_eq!(m, m_start);
     }
 }
