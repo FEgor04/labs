@@ -4,7 +4,7 @@ use crate::ring::RingElement;
 
 trait MatrixCell: RingElement + Copy {}
 
-impl<U: RingElement + std::marker::Copy> MatrixCell for U{}
+impl<U: RingElement + std::marker::Copy> MatrixCell for U {}
 
 /// T - type of data
 /// M - number of rows

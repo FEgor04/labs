@@ -1,5 +1,6 @@
 mod matrix;
 mod ring;
+mod sle;
 mod solver;
 
 fn main() {
