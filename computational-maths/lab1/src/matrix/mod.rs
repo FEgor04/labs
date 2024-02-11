@@ -6,9 +6,9 @@ use crate::ring::RingElement;
 
 use self::matrix_iterator::{MatrixColumnIterator, MatrixRowIterator};
 
-pub trait MatrixCell: RingElement + Copy {}
+pub trait MatrixCell: RingElement + PartialOrd + Copy {}
 
-impl<U: RingElement + std::marker::Copy> MatrixCell for U {}
+impl<U: RingElement + PartialOrd + std::marker::Copy> MatrixCell for U {}
 
 /// T - type of data
 /// M - number of rows
@@ -97,7 +97,36 @@ impl<T: MatrixCell, const M: usize, const N: usize> Matrix<T, M, N> {
     pub fn iter_columns(&self) -> MatrixColumnIterator<'_, T, M, N> {
         MatrixColumnIterator::new(self)
     }
+}
 
+impl<T: MatrixCell + PartialOrd + std::ops::Neg<Output = T> + std::iter::Sum, const N: usize>
+    SquareMatrix<T, N>
+{
+    pub fn is_diagonally_dominant(&self) -> bool {
+        let abs = |x: T| -> T {
+            if x > T::zero() {
+                x
+            } else {
+                -x
+            }
+        };
+        let mut strict_number = 0;
+        let is_weak = self.iter_rows().enumerate().all(|(number, row)| {
+            let on_diagonal = abs(row[number]);
+            let others: T = row
+                .iter()
+                .enumerate()
+                .filter(|(i, _)| *i != number)
+                .map(|(_, x)| abs(*x))
+                .sum();
+            if on_diagonal > others {
+                strict_number += 1
+            }
+            on_diagonal >= others
+        });
+        print!("{}", strict_number);
+        is_weak && strict_number > 0
+    }
 }
 
 impl<T: MatrixCell, const R: usize, const C: usize> Add<Matrix<T, R, C>> for Matrix<T, R, C> {
@@ -114,7 +143,7 @@ impl<T: MatrixCell, const R: usize, const C: usize> Add<Matrix<T, R, C>> for Mat
 }
 
 impl<T: MatrixCell, const M: usize, const N: usize, const R: usize> Mul<Matrix<T, N, R>>
-for Matrix<T, M, N>
+    for Matrix<T, M, N>
 {
     type Output = Matrix<T, M, R>;
     fn mul(self, rhs: Matrix<T, N, R>) -> Matrix<T, M, R> {
@@ -196,9 +225,9 @@ mod tests {
     fn row_iterator() {
         let m = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
         let mut iter = m.iter_rows();
-        assert_eq!(Some([1,2,3]), iter.next());
-        assert_eq!(Some([4,5,6]), iter.next());
-        assert_eq!(Some([7,8,9]), iter.next());
+        assert_eq!(Some([1, 2, 3]), iter.next());
+        assert_eq!(Some([4, 5, 6]), iter.next());
+        assert_eq!(Some([7, 8, 9]), iter.next());
         assert_eq!(None, iter.next())
     }
 
@@ -206,9 +235,18 @@ mod tests {
     fn column_iterator() {
         let m = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
         let mut iter = m.iter_columns();
-        assert_eq!(Some([1,4,7]), iter.next());
-        assert_eq!(Some([2,5,8]), iter.next());
-        assert_eq!(Some([3,6,9]), iter.next());
+        assert_eq!(Some([1, 4, 7]), iter.next());
+        assert_eq!(Some([2, 5, 8]), iter.next());
+        assert_eq!(Some([3, 6, 9]), iter.next());
         assert_eq!(None, iter.next())
+    }
+
+    #[test]
+    fn diagonally_dominant() {
+        let m = Matrix::new([[3, -2, 1], [1, 3, 2], [-1, 2, 4]]);
+        assert_eq!(true, m.is_diagonally_dominant());
+
+        let not_dominant = Matrix::new([[0, 0, 0], [0, 0, 0], [0, 0, 0]]);
+        assert_eq!(false, not_dominant.is_diagonally_dominant());
     }
 }

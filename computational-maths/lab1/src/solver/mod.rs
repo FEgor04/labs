@@ -10,6 +10,6 @@ use crate::{
 /// equations.
 /// Returns a solution vector `x` so that
 /// `a * x = b`
-trait SLESovler<T: RingElement + std::marker::Copy, const N: usize> {
+trait SLESovler<T: RingElement + std::cmp::PartialOrd + std::marker::Copy, const N: usize> {
     fn solve(sle: SLE<T, N>) -> Vector<T, N>;
 }
