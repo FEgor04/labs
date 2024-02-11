@@ -1,6 +1,7 @@
 use crate::{
     matrix::{SquareMatrix, Vector},
-    ring, sle::SLE,
+    ring,
+    sle::SLE,
 };
 
 use super::SLESovler;

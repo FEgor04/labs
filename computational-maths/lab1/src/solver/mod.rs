@@ -2,7 +2,8 @@ mod gauss_seidel;
 
 use crate::{
     matrix::{SquareMatrix, Vector},
-    ring::RingElement, sle::SLE,
+    ring::RingElement,
+    sle::SLE,
 };
 
 /// Solver of system of linear equations with `N` unknown variables and `N`
