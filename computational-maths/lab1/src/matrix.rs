@@ -2,26 +2,25 @@ use std::ops::{Add, AddAssign, Mul, SubAssign};
 
 use crate::ring::RingElement;
 
-trait MatrixCell: RingElement + Copy + AddAssign + SubAssign {}
+trait MatrixCell: RingElement + Copy {}
 
-impl MatrixCell for i32 {}
-impl MatrixCell for f64 {}
+impl<U: RingElement + std::marker::Copy> MatrixCell for U{}
 
 /// T - type of data
 /// M - number of rows
 /// N - number of columns
 #[derive(Debug, PartialEq, Eq)]
-struct Matrix<T, const M: usize, const N: usize>
+pub struct Matrix<T, const M: usize, const N: usize>
 where
     T: MatrixCell,
 {
     data: [[T; N]; M],
 }
 
-type SquareMatrix<T, const D: usize> = Matrix<T, D, D>;
+pub type SquareMatrix<T, const D: usize> = Matrix<T, D, D>;
 
 /// Vector is just a matrix with only 1 column
-type Vector<T, const N: usize> = Matrix<T, N, 1>;
+pub type Vector<T, const N: usize> = Matrix<T, N, 1>;
 
 impl<T: MatrixCell, const N: usize> Vector<T, N> {
     /// Creates vector from array
@@ -96,7 +95,7 @@ impl<T: MatrixCell, const M: usize, const N: usize, const R: usize> Mul<Matrix<T
         for i in 0..data.len() {
             for j in 0..data[i].len() {
                 for k in 0..N {
-                    data[i][j] += self.data[i][k] * rhs.data[k][j]
+                    data[i][j] = self.data[i][k] * rhs.data[k][j]
                 }
             }
         }
