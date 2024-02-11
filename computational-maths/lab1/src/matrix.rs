@@ -20,9 +20,11 @@ where
 
 type SquareMatrix<T, const D: usize> = Matrix<T, D, D>;
 
+/// Vector is just a matrix with only 1 column
 type Vector<T, const N: usize> = Matrix<T, N, 1>;
 
 impl<T: MatrixCell, const N: usize> Vector<T, N> {
+    /// Creates vector from array
     pub fn new_from_arr(arr: [T; N]) -> Self {
         Vector {
             data: arr.map(|it| [it])
@@ -32,12 +34,38 @@ impl<T: MatrixCell, const N: usize> Vector<T, N> {
 
 /// Матрица R строк на C столбцов
 impl<T: MatrixCell, const R: usize, const C: usize> Matrix<T,R,C> {
+    /// Creates new matrix from array of arrays
+    ///
+    ///
+    /// Example: 
+    /// ```rust
+    /// Matrix::new([[1,2,3], [4,5,6], [7, 8, 9]])
+    /// ```
+    /// creates new 3x3 matrix:
+    /// ```
+    /// | 1 2 3 |
+    /// | 4 5 6 |
+    /// | 7 8 9 |
+    /// `
     pub fn new(data: [[T; C]; R]) -> Self {
         Self {
             data
         }
     }
 
+    /// Transposes a matrix.
+    ///
+    /// Example:
+    ///
+    /// ```rust
+    /// Matrix::new([1,2,3],[4,5,6],[7,8,9]).trasponse()
+    /// ```
+    /// returns 3x3 matrix of form:
+    /// ```
+    /// | 1 4 7 |
+    /// | 2 5 8 |
+    /// | 3 6 9 |
+    /// ````
     pub fn transpose(&self) -> Matrix<T,C,R> {
         let mut new_data = [[T::zero(); R]; C];
         for i in 0..C {
@@ -68,7 +96,6 @@ impl<T: MatrixCell, const R: usize, const C: usize> Add<Matrix<T,R,C>> for Matri
 
 
 
-/// Умножение матрицы M x N на матрицу N x R. Возвращает матрицу M x R
 impl<T: MatrixCell + Default, const M: usize, const N: usize, const R: usize> Mul<Matrix<T, N, R>> for Matrix<T,M,N> {
     type Output = Matrix<T,M,R>;
     fn mul(self, rhs: Matrix<T, N, R>) -> Matrix<T, M, R> {
@@ -124,4 +151,5 @@ mod tests {
         let c_actual = a * b;
         assert_eq!(c_actual, c_expected);
     }
+
 }
