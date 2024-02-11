@@ -1,4 +1,4 @@
-use std::ops::{Add,Mul};
+use std::ops::{Add, Mul};
 
 pub trait Zero: Add<Self, Output = Self> + Sized {
     fn zero() -> Self;
@@ -6,13 +6,13 @@ pub trait Zero: Add<Self, Output = Self> + Sized {
     fn set_zero(&mut self);
 }
 
-pub trait One: Mul<Self, Output = Self> +Sized {
+pub trait One: Mul<Self, Output = Self> + Sized {
     fn one() -> Self;
     fn set_one(&mut self);
     fn is_one(&self) -> bool;
 }
 
-pub trait RingElement: Zero + One { }
+pub trait RingElement: Zero + One {}
 
 macro_rules! impl_one_trait {
     ($t:ty, $v:expr) => {
@@ -28,7 +28,7 @@ macro_rules! impl_one_trait {
                 *self = $v
             }
         }
-    }
+    };
 }
 
 macro_rules! impl_zero_trait {
@@ -45,7 +45,7 @@ macro_rules! impl_zero_trait {
                 *self = $v
             }
         }
-    }
+    };
 }
 
 impl_one_trait!(f64, 1.0);
@@ -54,5 +54,5 @@ impl_one_trait!(i32, 1);
 impl_zero_trait!(f64, 0.0);
 impl_zero_trait!(i32, 0);
 
-impl RingElement for f64 { }
-impl RingElement for i32 { }
+impl RingElement for f64 {}
+impl RingElement for i32 {}
