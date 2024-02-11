@@ -31,7 +31,7 @@ impl<T: MatrixCell, const N: usize> Vector<T, N> {
     }
 }
 
-impl<T: MatrixCell, const R: usize, const C: usize> Matrix<T, R, C> {
+impl<T: MatrixCell, const M: usize, const N: usize> Matrix<T, M, N> {
     /// Creates new matrix from array of arrays
     ///
     ///
@@ -45,7 +45,7 @@ impl<T: MatrixCell, const R: usize, const C: usize> Matrix<T, R, C> {
     /// | 4 5 6 |
     /// | 7 8 9 |
     /// `
-    pub fn new(data: [[T; C]; R]) -> Self {
+    pub fn new(data: [[T; N]; M]) -> Self {
         Self { data }
     }
 
@@ -62,14 +62,21 @@ impl<T: MatrixCell, const R: usize, const C: usize> Matrix<T, R, C> {
     /// | 2 5 8 |
     /// | 3 6 9 |
     /// ````
-    pub fn transpose(&self) -> Matrix<T, C, R> {
-        let mut new_data = [[T::zero(); R]; C];
-        for i in 0..C {
-            for j in 0..R {
+    pub fn transpose(&self) -> Matrix<T, N, M> {
+        let mut new_data = [[T::zero(); M]; N];
+        for i in 0..N {
+            for j in 0..M {
                 new_data[i][j] = self.data[j][i];
             }
         }
         Matrix { data: new_data }
+    }
+
+    /// Swaps i-th column with j-th column inplace.
+    pub fn swap_columns(&mut self, i: usize, j: usize) {
+        assert!(i < N);
+        assert!(j < N);
+        self.data.iter_mut().for_each(|row| row.swap(i, j));
     }
 }
 
@@ -144,5 +151,13 @@ mod tests {
         let transposed = Matrix::new([[1, 4, 7], [2, 5, 8], [3, 6, 9]]);
         let actual = m.transpose();
         assert_eq!(transposed, actual);
+    }
+
+    #[test]
+    fn swap_columns() {
+        let mut m = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+        let swapped = Matrix::new([[3, 2, 1], [6, 5, 4], [9, 8, 7]]);
+        m.swap_columns(0, 2);
+        assert_eq!(swapped, m);
     }
 }
