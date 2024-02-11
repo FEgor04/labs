@@ -1,4 +1,4 @@
-use std::ops::{Add, Mul};
+use std::ops::{Add, Mul, Neg};
 
 pub trait Zero: Add<Self, Output = Self> + Sized {
     fn zero() -> Self;
@@ -12,7 +12,7 @@ pub trait One: Mul<Self, Output = Self> + Sized {
     fn is_one(&self) -> bool;
 }
 
-pub trait RingElement: Zero + One {}
+pub trait RingElement: Zero + One + Neg<Output = Self> {}
 
 macro_rules! impl_one_trait {
     ($t:ty, $v:expr) => {
