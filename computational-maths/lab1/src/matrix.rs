@@ -32,7 +32,6 @@ impl<T: MatrixCell, const N: usize> Vector<T, N> {
     }
 }
 
-/// Матрица R строк на C столбцов
 impl<T: MatrixCell, const R: usize, const C: usize> Matrix<T, R, C> {
     /// Creates new matrix from array of arrays
     ///
@@ -88,7 +87,7 @@ impl<T: MatrixCell, const R: usize, const C: usize> Add<Matrix<T, R, C>> for Mat
     }
 }
 
-impl<T: MatrixCell + Default, const M: usize, const N: usize, const R: usize> Mul<Matrix<T, N, R>>
+impl<T: MatrixCell, const M: usize, const N: usize, const R: usize> Mul<Matrix<T, N, R>>
     for Matrix<T, M, N>
 {
     type Output = Matrix<T, M, R>;
