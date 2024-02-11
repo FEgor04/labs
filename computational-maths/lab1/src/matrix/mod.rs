@@ -4,7 +4,7 @@ use std::ops::{Add, AddAssign, Mul, SubAssign};
 
 use crate::ring::RingElement;
 
-use self::matrix_iterator::MatrixRowIterator;
+use self::matrix_iterator::{MatrixColumnIterator, MatrixRowIterator};
 
 pub trait MatrixCell: RingElement + Copy {}
 
@@ -93,6 +93,11 @@ impl<T: MatrixCell, const M: usize, const N: usize> Matrix<T, M, N> {
     pub fn iter_rows(&self) -> MatrixRowIterator<'_, T, M, N> {
         MatrixRowIterator::new(self)
     }
+
+    pub fn iter_columns(&self) -> MatrixColumnIterator<'_, T, M, N> {
+        MatrixColumnIterator::new(self)
+    }
+
 }
 
 impl<T: MatrixCell, const R: usize, const C: usize> Add<Matrix<T, R, C>> for Matrix<T, R, C> {
@@ -178,7 +183,7 @@ mod tests {
 
     #[test]
     fn swap_rows() {
-        let mut m_start = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+        let m_start = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
         let mut m = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
         let swapped = Matrix::new([[1, 2, 3], [7, 8, 9], [4, 5, 6]]);
         m.swap_rows(1, 2);
@@ -194,6 +199,16 @@ mod tests {
         assert_eq!(Some([1,2,3]), iter.next());
         assert_eq!(Some([4,5,6]), iter.next());
         assert_eq!(Some([7,8,9]), iter.next());
+        assert_eq!(None, iter.next())
+    }
+
+    #[test]
+    fn column_iterator() {
+        let m = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+        let mut iter = m.iter_columns();
+        assert_eq!(Some([1,4,7]), iter.next());
+        assert_eq!(Some([2,5,8]), iter.next());
+        assert_eq!(Some([3,6,9]), iter.next());
         assert_eq!(None, iter.next())
     }
 }
