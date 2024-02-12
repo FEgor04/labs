@@ -1,6 +1,8 @@
+pub mod gauss_seidel;
+
 use crate::{matrix::DMatrix, ring::RingElement, sle::SLE};
 
-trait  SLESolver <T: RingElement + std::cmp::Ord + std::cmp::PartialOrd + Copy + std::iter::Sum>{
+trait  SLESolver <T: RingElement>{
     /// Tries to solve given SLE.
     /// It can mutate `sle` if needed.
     ///

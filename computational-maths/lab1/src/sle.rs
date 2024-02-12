@@ -1,7 +1,7 @@
 use crate::matrix::DMatrix;
 use crate::ring::RingElement;
 
-pub struct SLE<T: RingElement + PartialOrd> {
+pub struct SLE<T: RingElement> {
     n: usize,
     /// N x N matrix
     a: DMatrix<T>,
