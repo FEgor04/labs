@@ -9,7 +9,7 @@ pub struct DMatrix<T> {
     data: Vec<Vec<T>>,
 }
 
-impl <T> DMatrix<T> {
+impl<T> DMatrix<T> {
     pub fn swap_rows(&mut self, i: usize, j: usize) {
         assert!(i < self.nrows);
         assert!(j < self.nrows);
@@ -18,7 +18,7 @@ impl <T> DMatrix<T> {
 }
 
 impl<T: Default> DMatrix<T> {
-    fn new(data: Vec<Vec<T>>) -> Self {
+    pub fn new(data: Vec<Vec<T>>) -> Self {
         let ncols = data[0].len();
         let nrows = data.len();
         Self { data, ncols, nrows }
@@ -26,7 +26,7 @@ impl<T: Default> DMatrix<T> {
 }
 
 impl<T: Default + Copy> DMatrix<T> {
-    fn new_from_array<const Ncols: usize, const Nrows: usize>(
+    pub fn new_from_array<const Ncols: usize, const Nrows: usize>(
         data: [[T; Ncols]; Nrows],
     ) -> DMatrix<T> {
         let mut new_data = Vec::<Vec<T>>::new();
@@ -44,6 +44,12 @@ impl<T: Default + Copy> DMatrix<T> {
             nrows: Nrows,
             data: new_data,
         }
+    }
+}
+
+impl<T: Copy> DMatrix<T> {
+    pub fn get_column(&self, column: usize) -> Vec<T> {
+        return self.data.iter().map(|row| row[column]).collect();
     }
 }
 
@@ -67,7 +73,7 @@ impl<T: RingElement + Copy> Add<DMatrix<T>> for DMatrix<T> {
 }
 
 impl<T: RingElement + PartialOrd + Copy + std::iter::Sum> DMatrix<T> {
-    fn is_diagonally_dominant(&self) -> bool {
+    pub fn is_diagonally_dominant(&self) -> bool {
         let abs = |x: T| -> T {
             if x > T::zero() {
                 x
@@ -91,7 +97,6 @@ impl<T: RingElement + PartialOrd + Copy + std::iter::Sum> DMatrix<T> {
         });
         return weak_dominant && strict_number > 0;
     }
-
 }
 
 #[cfg(test)]
