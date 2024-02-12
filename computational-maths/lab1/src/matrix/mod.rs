@@ -9,6 +9,14 @@ pub struct DMatrix<T> {
     data: Vec<Vec<T>>,
 }
 
+impl <T> DMatrix<T> {
+    pub fn swap_rows(&mut self, i: usize, j: usize) {
+        assert!(i < self.nrows);
+        assert!(j < self.nrows);
+        self.data.swap(i, j)
+    }
+}
+
 impl<T: Default> DMatrix<T> {
     fn new(data: Vec<Vec<T>>) -> Self {
         let ncols = data[0].len();
@@ -83,6 +91,7 @@ impl<T: RingElement + PartialOrd + Copy + std::iter::Sum> DMatrix<T> {
         });
         return weak_dominant && strict_number > 0;
     }
+
 }
 
 #[cfg(test)]
