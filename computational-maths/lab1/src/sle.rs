@@ -1,7 +1,7 @@
 use crate::matrix::DMatrix;
 use crate::ring::RingElement;
 
-struct SLE<T: RingElement + PartialOrd> {
+pub struct SLE<T: RingElement + PartialOrd> {
     n: usize,
     /// N x N matrix
     a: DMatrix<T>,
@@ -10,19 +10,19 @@ struct SLE<T: RingElement + PartialOrd> {
 }
 
 impl<T: RingElement + PartialOrd> SLE<T> {
-    fn swap_rows(&mut self, i: usize, j: usize) {
+    pub fn swap_rows(&mut self, i: usize, j: usize) {
         self.a.swap_rows(i, j);
         self.b.swap_rows(i, j);
     }
 }
 
 impl<T: RingElement + std::cmp::Ord + std::cmp::PartialOrd + Copy + std::iter::Sum> SLE<T> {
-    fn is_diagonally_dominant(&self) -> bool {
+    pub fn is_diagonally_dominant(&self) -> bool {
         self.a.is_diagonally_dominant()
     }
 
     /// Tries to transform this system to diagonally dominant format
-    fn transform_to_diagonally_dominant(&mut self) {
+    pub fn transform_to_diagonally_dominant(&mut self) {
         if self.is_diagonally_dominant() {
             return;
         }
