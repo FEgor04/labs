@@ -3,7 +3,7 @@ use std::ops::{Add, Neg};
 use crate::ring::RingElement;
 
 #[derive(Debug, PartialEq, Eq)]
-struct DMatrix<T> {
+pub struct DMatrix<T> {
     nrows: usize,
     ncols: usize,
     data: Vec<Vec<T>>,
@@ -109,7 +109,7 @@ mod tests {
         let dominant = DMatrix::new_from_array([[3, -2, 1], [1, 3, 2], [-1, 2, 4]]);
         assert!(dominant.is_diagonally_dominant());
 
-        let not_dominant = DMatrix::new_from_array([[0,0,0], [0,0,0], [0,0,0]]);
+        let not_dominant = DMatrix::new_from_array([[0, 0, 0], [0, 0, 0], [0, 0, 0]]);
         assert!(!not_dominant.is_diagonally_dominant());
     }
 }
