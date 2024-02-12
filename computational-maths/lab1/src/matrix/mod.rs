@@ -1,4 +1,4 @@
-use std::ops::{Add, Neg};
+use std::ops::{Add};
 
 use crate::ring::RingElement;
 
@@ -45,22 +45,22 @@ impl<T: Default> DMatrix<T> {
 }
 
 impl<T: Default + Copy> DMatrix<T> {
-    pub fn new_from_array<const Ncols: usize, const Nrows: usize>(
-        data: [[T; Ncols]; Nrows],
+    pub fn new_from_array<const NCOLS: usize, const NROWS: usize>(
+        data: [[T; NCOLS]; NROWS],
     ) -> DMatrix<T> {
         let mut new_data = Vec::<Vec<T>>::new();
-        new_data.resize_with(Nrows, || Vec::new());
+        new_data.resize_with(NROWS, || Vec::new());
         new_data
             .iter_mut()
-            .for_each(|row| row.resize_with(Ncols, || T::default()));
-        for i in 0..Nrows {
-            for j in 0..Ncols {
+            .for_each(|row| row.resize_with(NCOLS, || T::default()));
+        for i in 0..NROWS {
+            for j in 0..NCOLS {
                 new_data[i][j] = data[i][j]
             }
         }
         DMatrix {
-            ncols: Ncols,
-            nrows: Nrows,
+            ncols: NCOLS,
+            nrows: NROWS,
             data: new_data,
         }
     }

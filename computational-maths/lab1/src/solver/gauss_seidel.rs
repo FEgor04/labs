@@ -1,4 +1,4 @@
-use crate::{field::FieldElement, matrix::DMatrix, ring::RingElement, sle::SLE};
+use crate::{field::FieldElement, matrix::DMatrix, sle::SLE};
 
 use super::SLESolver;
 

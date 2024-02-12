@@ -36,7 +36,7 @@ impl<T: RingElement + std::cmp::Ord + std::cmp::PartialOrd + Copy + std::iter::S
                 .get_column(col)
                 .iter()
                 .enumerate()
-                .max_by_key(|(i, x)| Some(*x))
+                .max_by_key(|(_i, x)| Some(*x))
                 .unwrap()
                 .0;
             if max_for_col != col {
