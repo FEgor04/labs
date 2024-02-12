@@ -2,7 +2,7 @@ use std::ops::{Add};
 
 use crate::ring::RingElement;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct DMatrix<T> {
     nrows: usize,
     ncols: usize,
@@ -18,6 +18,14 @@ impl<T> DMatrix<T> {
 
     pub fn set(&mut self, i: usize, j: usize, value: T) {
         self.data[i][j] = value;
+    }
+
+    pub fn get_ncols(&self) -> usize {
+        return self.ncols;
+    }
+
+    pub fn get_nrows(&self) -> usize {
+        return self.nrows;
     }
 }
 
@@ -119,6 +127,16 @@ impl<T: RingElement + PartialOrd + Copy + std::iter::Sum> DMatrix<T> {
             diagonal_value >= others_sum
         });
         return weak_dominant && strict_number > 0;
+    }
+
+    pub fn max_for_col(&self, col: usize) -> usize {
+        let mut max_id = 0;
+        for i in 0..self.nrows {
+            if self.get(i, col) > self.get(max_id, col) {
+                max_id = i
+            }
+        }
+        max_id
     }
 }
 

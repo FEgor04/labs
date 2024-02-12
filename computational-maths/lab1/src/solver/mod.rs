@@ -7,5 +7,5 @@ trait SLESolver<T: RingElement> {
     /// It can mutate `sle` if needed.
     ///
     /// Returns column-vector of `x`
-    fn solve_sle(sle: &mut SLE<T>) -> DMatrix<T>;
+    fn solve_sle(&self, sle: &mut SLE<T>) -> DMatrix<T>;
 }

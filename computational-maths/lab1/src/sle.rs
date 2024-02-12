@@ -20,7 +20,7 @@ impl<T: RingElement> SLE<T> {
     }
 }
 
-impl<T: RingElement + std::cmp::Ord + std::cmp::PartialOrd + Copy + std::iter::Sum> SLE<T> {
+impl<T: RingElement + std::cmp::PartialOrd + Copy + std::iter::Sum> SLE<T> {
     pub fn is_diagonally_dominant(&self) -> bool {
         self.a.is_diagonally_dominant()
     }
@@ -31,14 +31,7 @@ impl<T: RingElement + std::cmp::Ord + std::cmp::PartialOrd + Copy + std::iter::S
             return;
         }
         for col in 0..self.n {
-            let max_for_col = self
-                .a
-                .get_column(col)
-                .iter()
-                .enumerate()
-                .max_by_key(|(_i, x)| Some(*x))
-                .unwrap()
-                .0;
+            let max_for_col = self.a.max_for_col(col);
             if max_for_col != col {
                 self.swap_rows(col, max_for_col);
             }
