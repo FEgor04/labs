@@ -2,17 +2,21 @@ use crate::matrix::DMatrix;
 use crate::ring::RingElement;
 
 pub struct SLE<T: RingElement> {
-    n: usize,
+    pub n: usize,
     /// N x N matrix
-    a: DMatrix<T>,
+    pub a: DMatrix<T>,
     /// Column-vector of size N
-    b: DMatrix<T>,
+    pub b: DMatrix<T>,
 }
 
-impl<T: RingElement + PartialOrd> SLE<T> {
+impl<T: RingElement> SLE<T> {
     pub fn swap_rows(&mut self, i: usize, j: usize) {
         self.a.swap_rows(i, j);
         self.b.swap_rows(i, j);
+    }
+
+    pub fn get_n(&self) -> usize {
+        self.n
     }
 }
 
@@ -48,7 +52,7 @@ mod tests {
 
     #[test]
     fn transform_to_diagonally_dominant() {
-        let a = DMatrix::new_from_array([[2,2,10], [10,1,1], [2,10,1]]);
+        let a = DMatrix::new_from_array([[2, 2, 10], [10, 1, 1], [2, 10, 1]]);
         assert!(!a.is_diagonally_dominant());
         let b = DMatrix::new_from_array([[14], [12], [13]]);
         let mut sle = SLE { a, b, n: 3 };

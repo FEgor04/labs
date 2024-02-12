@@ -1,3 +1,4 @@
+mod field;
 pub mod matrix;
 mod ring;
 mod sle;

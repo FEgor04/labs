@@ -15,6 +15,25 @@ impl<T> DMatrix<T> {
         assert!(j < self.nrows);
         self.data.swap(i, j)
     }
+
+    pub fn set(&mut self, i: usize, j: usize, value: T) {
+        self.data[i][j] = value;
+    }
+}
+
+impl<T: RingElement> DMatrix<T> {
+    pub fn new_zeroed(ncols: usize, nrows: usize) -> Self {
+        let mut new_data = Vec::<Vec<T>>::new();
+        new_data.resize_with(nrows, || Vec::new());
+        new_data
+            .iter_mut()
+            .for_each(|row| row.resize_with(ncols, || T::zero()));
+        Self {
+            data: new_data,
+            ncols,
+            nrows,
+        }
+    }
 }
 
 impl<T: Default> DMatrix<T> {
@@ -50,6 +69,10 @@ impl<T: Default + Copy> DMatrix<T> {
 impl<T: Copy> DMatrix<T> {
     pub fn get_column(&self, column: usize) -> Vec<T> {
         return self.data.iter().map(|row| row[column]).collect();
+    }
+
+    pub fn get(&self, i: usize, j: usize) -> T {
+        self.data[i][j]
     }
 }
 
