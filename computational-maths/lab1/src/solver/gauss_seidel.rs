@@ -10,15 +10,14 @@ impl<T: FieldElement + std::cmp::PartialOrd + Copy + std::iter::Sum> SLESolver<T
     for GaussSeidelSolver<T>
 {
     fn solve_sle(&self, sle: &mut SLE<T>) -> DMatrix<T> {
-        sle.transform_to_diagonally_dominant();
-        let mut previous_approximation = GaussSeidelSolver::compute_d_vector(sle);
-        let mut current_approximation: DMatrix<T> = DMatrix::new_zeroed(1, sle.n);
+        let mut current_approximation = GaussSeidelSolver::compute_d_vector(sle);
+        let mut previous_approximation: DMatrix<T> = DMatrix::new_zeroed(1, sle.n);
         while self.should_iterate_next(&previous_approximation, &current_approximation) {
             previous_approximation = current_approximation.clone();
             for i in 0..sle.n {
                 let mut value = sle.b.get(0, i) / sle.a.get(i, i);
                 let mut current_step_sum = T::zero();
-                for j in 0..i {
+                for j in 0..i-1 {
                     current_step_sum = current_step_sum + sle.a.get(i, j) / sle.a.get(i, i) * current_approximation.get(0, j);
                 }
                 let mut previous_step_sum = T::zero();
@@ -113,12 +112,20 @@ mod tests {
 
     #[test]
     fn test_gauss_seidel() {
-        let precision = 0.0001;
+        let precision = 0.000001;
         let a = DMatrix::new_from_array([[10.0, 1.0, 1.0], [2.0, 10.0, 1.0], [2.0, 2.0, 10.0]]);
         let b = DMatrix::new_from_array([[12.0], [13.0], [14.0]]);
-        let mut sle = SLE { a, b, n: 3 };
+        let mut sle = SLE { a: a.clone(), b: b.clone(), n: 3 };
         let solver = GaussSeidelSolver { precision };
         let x = solver.solve_sle(&mut sle);
+        let b_actual = a * x.clone();
+        for i in 0..3 {
+            let expected = b.get(0, i);
+            let actual = b_actual.get(0,i);
+            println!("{} {}", expected, actual);
+            // assert!( (expected - actual).abs() <= precision );
+            println!("x{} = {}", i, x.get(0, i));
+        }
     }
 }
 

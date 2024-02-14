@@ -1,4 +1,4 @@
-use std::ops::{Add};
+use std::{fmt::Display, ops::Add};
 
 use crate::ring::RingElement;
 
@@ -100,6 +100,28 @@ impl<T: RingElement + Copy> Add<DMatrix<T>> for DMatrix<T> {
             nrows: self.nrows,
             data: new_data,
         }
+    }
+}
+
+
+impl<T: RingElement + Copy> std::ops::Mul<DMatrix<T>> for DMatrix<T> {
+    type Output = DMatrix<T>;
+    fn mul(self, rhs: DMatrix<T>) -> Self::Output {
+        let m = self.nrows;
+        let n = self.ncols;
+        let l = rhs.ncols;
+        assert_eq!(m, rhs.nrows);
+        let mut result: DMatrix<T> = DMatrix::new_zeroed(l, m);
+        for i in 0..m {
+            for j in 0..l {
+                let mut value = T::zero();
+                for s in 0..n {
+                    value = value + self.get(i, s) * rhs.get(s,j);
+                }
+                result.set(i, j, value);
+            }
+        }
+        result
     }
 }
 
