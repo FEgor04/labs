@@ -1,19 +1,48 @@
 @startuml
+left to right direction
 actor Пользователь as User
+actor "Владелец сайта" as Owner
+actor Модератор as Moder
+actor "Техническая поддержка" as Support
 
-package "vk.com" {
+rectangle "vk.com" {
   usecase UC_create as "Создание беседы"
-  usecase UC_ban as "Блокировка нежелательных пользователей"
+  usecase UC_block as "Блокировка нежелательных пользователей"
   usecase UC_chat as "Отправка сообщенеий"
   usecase UC_page as "Оформление своей страницы"
   usecase UC_feed as "Просмотр ленты"
-  usecase UC_signup as "Регистрация в сети"
+  usecase UC_signin as "Вход в систему"
+  usecase UC_signup as "Регистрация в системе"
+  usecase UC_report as "Пожаловаться на контент"
+
+  usecase UC_dump as "Получение переписки пользователя"
+
+  usecase UC_support_help as "Обращение к тех. поддержке"
+
+  usecase UC_illegal as "Удаление незаконного контента"
+
+  (UC_create) .> (UC_signin) : include
+  (UC_block) .> (UC_signin) : include
+  (UC_chat) .> (UC_signin) : include
+  (UC_page) .> (UC_signin) : include
+  (UC_feed) .> (UC_signin) : include
+  (UC_signup) .> (UC_signin) : extend
 }
 
 User --> (UC_create)
-User --> (UC_ban)
+User --> (UC_block)
 User --> (UC_chat)
 User --> (UC_page)
 User --> (UC_feed)
 User --> (UC_signup)
+User --> (UC_signin)
+User --> (UC_support_help) : "обратиться за помощью"
+User --> (UC_report) : "отправить жалобу"
+
+Owner -up-> (UC_dump)
+
+Moder --> (UC_report) : "принять решение о блокировке"
+Moder --> (UC_illegal) 
+
+Support --> (UC_support_help) : "помочь пользователю"
 @enduml
