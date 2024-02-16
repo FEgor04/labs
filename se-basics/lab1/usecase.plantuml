@@ -1,0 +1,19 @@
+@startuml
+actor Пользователь as User
+
+package "vk.com" {
+  usecase UC_create as "Создание беседы"
+  usecase UC_ban as "Блокировка нежелательных пользователей"
+  usecase UC_chat as "Отправка сообщенеий"
+  usecase UC_page as "Оформление своей страницы"
+  usecase UC_feed as "Просмотр ленты"
+  usecase UC_signup as "Регистрация в сети"
+}
+
+User --> (UC_create)
+User --> (UC_ban)
+User --> (UC_chat)
+User --> (UC_page)
+User --> (UC_feed)
+User --> (UC_signup)
+@enduml
