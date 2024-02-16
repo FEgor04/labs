@@ -317,3 +317,7 @@ aux
 # Artifacts
 *.pdf
 *.svg
+
+# Built by PlantUML
+usecase.tex
+usecase.png
