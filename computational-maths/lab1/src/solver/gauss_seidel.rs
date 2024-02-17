@@ -10,23 +10,21 @@ impl<T: FieldElement + std::cmp::PartialOrd + Copy + std::iter::Sum> SLESolver<T
     for GaussSeidelSolver<T>
 {
     fn solve_sle(&self, sle: &mut SLE<T>) -> DMatrix<T> {
-        let mut current_approximation = GaussSeidelSolver::compute_d_vector(sle);
+        let c_matrix = GaussSeidelSolver::compute_c_matrix(sle);
+        let d_vector = GaussSeidelSolver::compute_d_vector(sle);
+        let mut current_approximation = d_vector.clone();
         let mut previous_approximation: DMatrix<T> = DMatrix::new_zeroed(1, sle.n);
         while self.should_iterate_next(&previous_approximation, &current_approximation) {
             previous_approximation = current_approximation.clone();
             for i in 0..sle.n {
-                let mut value = sle.b.get(0, i) / sle.a.get(i, i);
-                let mut current_step_sum = T::zero();
-                for j in 0..i-1 {
-                    current_step_sum = current_step_sum + sle.a.get(i, j) / sle.a.get(i, i) * current_approximation.get(0, j);
+                let mut value = d_vector.get(i, 0);
+                for j in 0..i {
+                    value = value + c_matrix.get(i, j) * current_approximation.get(j, 0);
                 }
-                let mut previous_step_sum = T::zero();
-                for j in i+1..sle.n {
-                    previous_step_sum = previous_step_sum + sle.a.get(i, j) / sle.a.get(i, i) * previous_approximation.get(0, j);
+                for j in i..sle.n {
+                    value = value + c_matrix.get(i, j) * previous_approximation.get(j, 0);
                 }
-
-                value = value + (-current_step_sum) + (-previous_step_sum);
-                current_approximation.set(0, i, value);
+                current_approximation.set(i, 0, value);
             }
         }
         current_approximation
@@ -81,11 +79,11 @@ impl<T: FieldElement + Copy + std::cmp::PartialOrd> GaussSeidelSolver<T> {
             }
         };
         for i in 0..previous_approximation.get_nrows() {
-            if abs(previous_approximation.get(0, i) + (-current_approximation.get(0, i))) > self.precision {
-                return false;
+            if abs(previous_approximation.get(i, 0) + (-current_approximation.get(i, 0))) > self.precision {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }
 
@@ -119,12 +117,15 @@ mod tests {
         let solver = GaussSeidelSolver { precision };
         let x = solver.solve_sle(&mut sle);
         let b_actual = a * x.clone();
+        println!("X: {} * {}", x.get_nrows(), x.get_ncols());
+        println!("B: {} * {}", b.get_nrows(), b.get_ncols());
+        println!("B_ACTUAL: {} * {}", b_actual.get_nrows(), b_actual.get_ncols());
         for i in 0..3 {
-            let expected = b.get(0, i);
-            let actual = b_actual.get(0,i);
+            let expected = b.get(i, 0);
+            let actual = b_actual.get(i, 0);
             println!("{} {}", expected, actual);
-            // assert!( (expected - actual).abs() <= precision );
-            println!("x{} = {}", i, x.get(0, i));
+            println!("x{} = {}", i, x.get(i, 0));
+            assert!((expected - actual) < precision);
         }
     }
 }
