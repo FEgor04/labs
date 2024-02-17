@@ -1,6 +1,6 @@
 use crate::{field::FieldElement, matrix::DMatrix, sle::SLE};
 
-use super::SLESolver;
+use super::{SLESolution, SLESolver};
 
 pub struct GaussSeidelSolver<T: FieldElement> {
     precision: T,
@@ -9,7 +9,8 @@ pub struct GaussSeidelSolver<T: FieldElement> {
 impl<T: FieldElement + std::cmp::PartialOrd + Copy + std::iter::Sum> SLESolver<T>
     for GaussSeidelSolver<T>
 {
-    fn solve_sle(&self, sle: &mut SLE<T>) -> DMatrix<T> {
+    fn solve_sle(&self, sle: &mut SLE<T>) -> SLESolution<T> {
+        let mut iterations_count: usize = 0;
         let c_matrix = GaussSeidelSolver::compute_c_matrix(sle);
         let d_vector = GaussSeidelSolver::compute_d_vector(sle);
         let mut current_approximation = d_vector.clone();
@@ -26,8 +27,12 @@ impl<T: FieldElement + std::cmp::PartialOrd + Copy + std::iter::Sum> SLESolver<T
                 }
                 current_approximation.set(i, 0, value);
             }
+            iterations_count += 1;
         }
-        current_approximation
+        SLESolution {
+            solution: current_approximation,
+            iterations_count,
+        }
     }
 }
 
@@ -115,7 +120,8 @@ mod tests {
         let b = DMatrix::new_from_array([[12.0], [13.0], [14.0]]);
         let mut sle = SLE { a: a.clone(), b: b.clone(), n: 3 };
         let solver = GaussSeidelSolver { precision };
-        let x = solver.solve_sle(&mut sle);
+        let solution = solver.solve_sle(&mut sle);
+        let x = solution.solution;
         let b_actual = a * x.clone();
         println!("X: {} * {}", x.get_nrows(), x.get_ncols());
         println!("B: {} * {}", b.get_nrows(), b.get_ncols());
