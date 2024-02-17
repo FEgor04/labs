@@ -1,0 +1,109 @@
+user: {
+  label: "Пользователь"
+  shape: person
+}
+
+owner: {
+  label: "Владелец"
+  shape: person
+  style.stroke: red
+}
+
+moder: {
+  label: "Модератор"
+  shape: person
+  style.stroke: orange
+}
+
+support: {
+  label: "Техническая поддержка"
+  shape: person
+  style.stroke: green
+}
+
+site: {
+  label: "vk.com"
+}
+
+site.UC_create: {
+  label: "Создание беседы"
+  shape: oval
+}
+
+site.UC_block: {
+  label: "Блокировка нежелательных пользователей"
+  shape: oval
+}
+
+site.UC_chat: {
+  label: "Блокировка нежелательных пользователей"
+  shape: oval
+}
+
+site.UC_page: {
+  label: "ОФормление своей страницы"
+  shape: oval
+}
+
+site.UC_feed: {
+  label: "Просмотр ленты"
+  shape: oval
+}
+
+site.UC_signin: {
+  label: "Вход в систему"
+  shape: oval
+}
+
+site.UC_signup: {
+  label: "Регистрация в системе"
+  shape: oval
+}
+
+site.UC_report: {
+  label: "Пожаловаться на контест"
+  shape: oval
+}
+
+site.UC_dump: {
+  label: "Получение переписки пользователя"
+  shape: oval
+  style.stroke: red
+}
+
+site.UC_illegal: {
+  label: "Удаление незаконого контента"
+  shape: oval
+  style.stroke: orange
+}
+
+site.UC_support_help: {
+  label: "Обращение к тех. поддержке"
+  shape: oval
+}
+
+site.UC_create --- user
+site.UC_block --- user
+site.UC_chat --- user
+site.UC_page --- user
+site.UC_feed --- user
+site.UC_signin --- user
+site.UC_signup --- user
+site.UC_report --- user
+site.UC_support_help --- user
+
+site.UC_create --> site.UC_signin: <<includes>>
+site.UC_block --> site.UC_signin: <<includes>>
+site.UC_chat --> site.UC_signin: <<includes>>
+site.UC_page --> site.UC_signin: <<includes>>
+site.UC_feed --> site.UC_signin: <<includes>>
+site.UC_report --> site.UC_signin: <<includes>>
+site.UC_support_help --> site.UC_signin: <<includes>>
+site.UC_signup --> site.UC_signin: <<extends>>
+
+owner --- site.UC_dump
+
+moder --- site.UC_report
+moder --- site.UC_illegal
+
+support --- site.UC_support_help
