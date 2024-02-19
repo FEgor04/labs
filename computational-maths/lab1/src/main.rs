@@ -1,8 +1,8 @@
-use std::io::BufRead;
+use std::{env, fs::File, io::BufRead};
 
 use matrix::DMatrix;
 
-use crate::{reader::{Reader, StdinReader}, sle::SLE, solver::{gauss_seidel::GaussSeidelSolver, SLESolver}};
+use crate::{reader::{FileReader, Reader, StdinReader}, sle::SLE, solver::{gauss_seidel::GaussSeidelSolver, SLESolver}};
 
 mod field;
 pub mod matrix;
@@ -21,7 +21,14 @@ fn print_matrix<T: Copy + std::fmt::Display>(matrix: &DMatrix<T>) {
 }
 
 fn main() {
-    let reader = StdinReader::<f64>::new();
+    let args: Vec<String> = env::args().collect();
+    let reader: Box<dyn Reader<f64>> = if args.len() < 2 {
+        Box::new(StdinReader::new())
+    } else {
+        let file = File::open(args[1].clone()).unwrap();
+        Box::new(FileReader::new(file))
+    };
+    
     let mut sle = SLE {
         n: reader.get_n(), a: reader.get_a(), b: reader.get_b()
     };

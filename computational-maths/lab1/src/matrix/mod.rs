@@ -1,4 +1,7 @@
-use std::{fmt::Display, ops::{Add, Neg}};
+use std::{
+    fmt::Display,
+    ops::{Add, Neg},
+};
 
 use crate::ring::RingElement;
 
@@ -44,7 +47,7 @@ impl<T: RingElement> DMatrix<T> {
     }
 }
 
-impl<T> DMatrix <T>{
+impl<T> DMatrix<T> {
     pub fn new(data: Vec<Vec<T>>) -> Self {
         let ncols = data[0].len();
         let nrows = data.len();
@@ -103,7 +106,7 @@ impl<T: RingElement + Copy> Add<DMatrix<T>> for DMatrix<T> {
     }
 }
 
-impl <T: RingElement + Copy> Neg for DMatrix<T> {
+impl<T: RingElement + Copy> Neg for DMatrix<T> {
     type Output = DMatrix<T>;
     fn neg(self) -> Self::Output {
         let mut copy = self.clone();
