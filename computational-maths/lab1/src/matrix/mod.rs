@@ -120,6 +120,24 @@ impl<T: RingElement + Copy> Neg for DMatrix<T> {
     }
 }
 
+impl<T: RingElement + Copy + std::cmp::PartialOrd> DMatrix<T> {
+    pub fn abs(&self) -> DMatrix<T> {
+        let abs = |x: T| -> T {
+            if x > T::zero() { 
+                x
+            } else {
+                - x
+            }
+        };
+        let new_data: Vec<Vec<_>> = self.data.iter().map(|row| row.iter().map(|x| abs(*x)).collect()).collect();
+        DMatrix {
+            nrows: self.nrows,
+            ncols: self.ncols,
+            data: new_data,
+        }
+    }
+}
+
 impl<T: RingElement + Copy> std::ops::Mul<DMatrix<T>> for DMatrix<T> {
     type Output = DMatrix<T>;
     fn mul(self, rhs: DMatrix<T>) -> Self::Output {
