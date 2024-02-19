@@ -44,7 +44,7 @@ impl<T: RingElement> DMatrix<T> {
     }
 }
 
-impl<T: Default> DMatrix<T> {
+impl<T> DMatrix <T>{
     pub fn new(data: Vec<Vec<T>>) -> Self {
         let ncols = data[0].len();
         let nrows = data.len();
