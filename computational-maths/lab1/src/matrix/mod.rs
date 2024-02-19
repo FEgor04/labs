@@ -123,13 +123,17 @@ impl<T: RingElement + Copy> Neg for DMatrix<T> {
 impl<T: RingElement + Copy + std::cmp::PartialOrd> DMatrix<T> {
     pub fn abs(&self) -> DMatrix<T> {
         let abs = |x: T| -> T {
-            if x > T::zero() { 
+            if x > T::zero() {
                 x
             } else {
-                - x
+                -x
             }
         };
-        let new_data: Vec<Vec<_>> = self.data.iter().map(|row| row.iter().map(|x| abs(*x)).collect()).collect();
+        let new_data: Vec<Vec<_>> = self
+            .data
+            .iter()
+            .map(|row| row.iter().map(|x| abs(*x)).collect())
+            .collect();
         DMatrix {
             nrows: self.nrows,
             ncols: self.ncols,

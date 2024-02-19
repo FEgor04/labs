@@ -16,8 +16,9 @@ impl<T: FieldElement + std::cmp::PartialOrd + Copy + std::iter::Sum> SLESolver<T
         let d_vector = GaussSeidelSolver::compute_d_vector(sle);
         let mut current_approximation = d_vector.clone();
         let mut previous_approximation: DMatrix<T> = DMatrix::new_zeroed(1, sle.n);
-        let mut error_vector = current_approximation.clone() + (-previous_approximation.clone());
-        while self.should_iterate_next(&previous_approximation, &current_approximation) {
+        let mut error_vector =
+            (current_approximation.clone() + (-previous_approximation.clone())).abs();
+        while self.should_iterate_next(&error_vector) {
             previous_approximation = current_approximation.clone();
             for i in 0..sle.n {
                 let mut value = d_vector.get(i, 0);
@@ -30,7 +31,8 @@ impl<T: FieldElement + std::cmp::PartialOrd + Copy + std::iter::Sum> SLESolver<T
                 current_approximation.set(i, 0, value);
             }
             iterations_count += 1;
-            error_vector = current_approximation.clone() + (-previous_approximation.clone());
+            error_vector =
+                (current_approximation.clone() + (-previous_approximation.clone())).abs();
         }
         SLESolution {
             solution: current_approximation,
@@ -77,22 +79,9 @@ impl<T: FieldElement + Copy> GaussSeidelSolver<T> {
 }
 
 impl<T: FieldElement + Copy + std::cmp::PartialOrd> GaussSeidelSolver<T> {
-    fn should_iterate_next(
-        &self,
-        previous_approximation: &DMatrix<T>,
-        current_approximation: &DMatrix<T>,
-    ) -> bool {
-        let abs = |x: T| -> T {
-            if x > T::zero() {
-                x
-            } else {
-                -x
-            }
-        };
-        for i in 0..previous_approximation.get_nrows() {
-            if abs(previous_approximation.get(i, 0) + (-current_approximation.get(i, 0)))
-                > self.precision
-            {
+    fn should_iterate_next(&self, error_vector: &DMatrix<T>) -> bool {
+        for i in 0..error_vector.get_nrows() {
+            if error_vector.get(i, 0) > self.precision {
                 return true;
             }
         }
