@@ -12,13 +12,11 @@ equations = [
 
 
 def method_chord(f, fp, a, b, eps):
-    x_cur = (a + b) / 2
     iter_number = 0
     while True:
         iter_number += 1
-        x_prev = x_cur
         x_cur = a - (b-a)/(f(b) - f(a)) * f(a)
-        if abs(x_cur - x_prev) < eps:
+        if abs(f(x_cur)) < eps:
             return x_cur, iter_number
         if f(a) * f(x_cur) < 0: # разные знаки
             b = x_cur
@@ -26,7 +24,21 @@ def method_chord(f, fp, a, b, eps):
             a = x_cur
 
 def newton_method(f, fp, a, b, eps):
-    x_cur = a
+    prev_second_der_sign = 0
+    for x in np.linspace(a, b, 1000):
+        if fp(x) == 0:
+            print("Производная принимает нулевое значение. Метод Ньютона нельзя применять.")
+            exit()
+        dx = 0.00001
+        second_der = (fp(x + dx) - fp(x)) / dx
+        second_der_sign = 1 if second_der> 0 else -1
+        if second_der_sign * prev_second_der_sign < 0:
+            print("Вторая производная меняет знак на отрезке. Метод Ньютона нельзя применять")
+            exit()
+        prev_second_der_sign = second_der_sign
+
+
+    x_cur = float(input("Введите начальное приближение: "))
     iter_number = 0
     while True:
         iter_number += 1
@@ -51,6 +63,7 @@ def iterations_method(f, fp, a, b, eps):
     lambda_value = - 1 / max_derivative_abs
     phi = lambda x : x + lambda_value * f(x)
     phi_der = lambda x : 1 + lambda_value * fp(x)
+    print(f"Значение phi' на концах отрезка: {phi_der(a)} {phi_der(b)}")
     max_phi_der = max([abs(phi_der(x)) for x in np.linspace(a, b)])
     print(f"Максимальное абсолютное значение phi': {max_phi_der}")
     if max_phi_der > 1:
@@ -61,7 +74,7 @@ def iterations_method(f, fp, a, b, eps):
         iter_number += 1
         x_prev = x_cur
         x_cur = phi(x_cur)
-        if abs(x_cur - x_prev) < eps:
+        if abs(f(x_cur)) < eps:
             return x_cur, iter_number
         if iter_number > 1000:
             return -1, iter_number
@@ -95,12 +108,13 @@ print(f"Выбран {methods[method_number][1]}")
 f = equations[equation_number][0]
 fp = equations[equation_number][2]
 
+x = np.linspace(-10, 10, 10000)
+plt.plot(x, f(x))
+plt.grid()
+# plt.show()
+
 a = float(input("Введите левую границу отрезка\n"))
 b = float(input("Введите правую границу отрезка\n"))
-
-x = np.linspace(a - 0.5, b + 0.5, 10000)
-plt.plot(x, f(x))
-plt.show()
 
 if f(a) * f(b) > 0:
     print("Корень не изолирован на данном отрезке")
