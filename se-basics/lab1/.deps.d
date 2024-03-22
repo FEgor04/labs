@@ -1,6 +1,5 @@
 #===Dependents, and related info, for main.tex:
 main.pdf :\
-    /dev/null\
     /home/fegor04/.texlive/texmf-var/fonts/tfm/lh/lh-t2a/labx1200.tfm\
     /home/fegor04/.texlive/texmf-var/fonts/tfm/lh/lh-t2a/labx1440.tfm\
     /home/fegor04/.texlive/texmf-var/fonts/tfm/lh/lh-t2a/labx1728.tfm\
@@ -21,6 +20,8 @@ main.pdf :\
     /usr/share/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm\
     /usr/share/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm\
     /usr/share/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm\
+    /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb\
+    /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb\
     /usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb\
     /usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb\
     /usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb\
@@ -156,7 +157,6 @@ main.pdf :\
     /usr/share/texmf-dist/tex/latex/l3kernel/expl3.sty\
     /usr/share/texmf-dist/tex/latex/l3packages/xparse/xparse.sty\
     /usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg\
-    /usr/share/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty\
     /usr/share/texmf-dist/tex/latex/lineno/lineno.sty\
     /usr/share/texmf-dist/tex/latex/minted/minted.sty\
     /usr/share/texmf-dist/tex/latex/ninecolors/ninecolors.sty\
@@ -193,6 +193,7 @@ main.pdf :\
     /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map\
     /var/lib/texmf/web2c/pdftex/pdflatex.fmt\
     img/itmo_logo.png\
+    img/prototype.jpg\
     main.tex\
     src/00-preamble.tex\
     src/01-title.tex\

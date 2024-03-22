@@ -1,11 +1,13 @@
 @startuml
-left to right direction
+'default
+top to bottom direction
 actor Пользователь as User
 actor "Владелец сайта" as Owner
 actor Модератор as Moder
 actor "Техническая поддержка" as Support
 
-rectangle "vk.com" {
+package "vk.com" {
+  left to right direction
   usecase UC_create as "Создание беседы"
   usecase UC_block as "Блокировка нежелательных пользователей"
   usecase UC_chat as "Отправка сообщенеий"
