@@ -31,7 +31,7 @@ clean:
 	latexmk -C main.tex 
 
 format:
-	latexindent src/**/*.tex -w
+	latexindent src/*.tex -w
 
 spell:
 	hunspell -d ru_RU,en_US -l -t src/**/*.tex src/*.tex main.tex
