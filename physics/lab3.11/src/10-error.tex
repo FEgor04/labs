@@ -1,0 +1,24 @@
+\section{Расчет погрешности измерений}
+Дисперсия коэффициентов зависимостей:
+\[
+  S_a = 13
+  \qquad
+  S_b = 5600000000
+\]
+Тогда погрешность коэффициентов при дов. вероятности \(0.95\):
+\[
+  \Delta a = S_a t = 35.91
+  \qquad
+  \Delta b = S_b t = 15530000000
+\]
+Погрешность нахождения индуктивности \(L\):
+\[
+  \Delta L = \frac{\Delta a}{a^2} = 0.000579 \, \text{Гн}
+\]
+
+Погрешность сопротивления \(R\):
+\[
+  \Delta R =
+  \sqrt{ \left( \frac{\partial R}{\partial L} \Delta L \right)^2 + \left( \frac{\partial R}{\partial b} \Delta b \right)^2 } =
+  \sqrt{ \left(- \frac{2 b L}{\sqrt{- b L^2}} \Delta L \right)^2 + \left( \frac{\sqrt{- b L^2}}{b} \Delta b \right)^2 } = 76.4 \, \text{Ом}
+\]
