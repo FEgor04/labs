@@ -2,19 +2,19 @@ import numpy as np
 
 # Name, f, g, Jacoby matrix
 systems = [
-        (
-            "x^2 + y^2 = 4, y = 3x^2", 
-            lambda x, y: x ** 2 + y**2 - 4,
-            lambda x, y: y - 3 * x ** 2,
-            lambda x, y: np.matrix([[2*x, 2*y], [-6*x, 1]]),
-            ),
-        (
-            "x^2 + cos y = 4, cos(y) + x = 2",
-            lambda x, y: x**2 + np.cos(y) - 4,
-            lambda x, y: np.cos(y) + x - 2,
-            lambda x, y: np.matrix([[2 * x, - np.sin(y)], [1, - np.sin(y)]])
-            )
-        ]
+    (
+        "x^2 + y^2 = 4, y = 3x^2",
+        lambda x, y: x**2 + y**2 - 4,
+        lambda x, y: y - 3 * x**2,
+        lambda x, y: np.matrix([[2 * x, 2 * y], [-6 * x, 1]]),
+    ),
+    (
+        "x^2 + cos y = 4, cos(y) + x = 2",
+        lambda x, y: x**2 + np.cos(y) - 4,
+        lambda x, y: np.cos(y) + x - 2,
+        lambda x, y: np.matrix([[2 * x, -np.sin(y)], [1, -np.sin(y)]]),
+    ),
+]
 
 print("Системы:")
 for i in range(len(systems)):
@@ -36,7 +36,7 @@ while True:
     x_prev = x
     y_prev = y
     A = system[3](x, y)
-    b = - np.array([system[1](x, y), system[2](x,y)])
+    b = -np.array([system[1](x, y), system[2](x, y)])
     solution = np.linalg.solve(A, b)
     x = x + solution[0]
     y = y + solution[1]
