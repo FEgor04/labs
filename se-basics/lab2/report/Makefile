@@ -1,3 +1,6 @@
+FIGURES_DIR := figures
+FIGURES_SRC_DIR := src/python
+
 AUX_DIR := aux
 
 DEP_FILE := .deps.d
@@ -10,7 +13,7 @@ LATEXMK_FLAGS := -pdf -pdflatex="pdflatex -interaction=nonstopmode" \
 
 all: main.pdf
 
-main.pdf: main.tex $(AUX_DIR)
+main.pdf: main.tex $(AUX_DIR) 
 	latexmk $(LATEXMK_FLAGS) $<
 
 pvc: main.tex
@@ -21,19 +24,12 @@ clean:
 	latexmk -C main.tex 
 
 format:
-	latexindent src/*.tex -w
+	latexindent src/**/*.tex -w
 
 spell:
-	hunspell -d ru_RU,en_US -l -t src/*.tex main.tex
+	hunspell -d ru_RU,en_US -l -t src/**/*.tex src/*.tex main.tex
 
-venv/bin/activate:
-	python3 -m venv $@
-
-venv/dependencies_touchfile: venv/bin/activate
-	source $<; pip install numpy matplotlib
-	touch $@
-
-$(FIGURES_DIR) $(AUX_DIR):
+$(AUX_DIR):
 	mkdir $@
 
 $(DEP_FILE):
