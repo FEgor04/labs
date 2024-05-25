@@ -34,12 +34,11 @@ def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
     x, y = method(f, x0, y0, h_initial, n)
     x2, y2 = method(f, x0, y0, h_initial / 2, n * 2)
     if np.abs(y[-1] - y2[-1]) / (2 ** p - 1) <= eps:
-        print("method is fine with h = ", h_initial)
         return x, y
     return compute_one_step_method(method, f, x0, y0, h_initial / 2, n * 2, eps, p)
 
 # Метод Милна (явный многошаговый метод)
-def milne_method(f, x0, y0, h, n):
+def milne_method(f, x0, y0, h, n, eps, y_precise):
     x = np.zeros(n+1)
     y = np.zeros(n+1)
     x[0], y[0] = x0, y0
@@ -58,6 +57,10 @@ def milne_method(f, x0, y0, h, n):
         y_corr = y[i-1] + h * (f(x[i-1], y[i-1]) + 4 * f(x[i], y[i]) + f(x[i+1], y_pred)) / 3
         y[i+1] = y_corr
         x[i+1] = x[i] + h
+
+    eps_actual = max(np.abs(y_precise - y))
+    if  eps_actual > eps:
+        return milne_method(f, x0, y0, h / 2, n * 2, eps, y_precise)
     return x, y
 
 # Функция для ввода начальных условий
@@ -81,7 +84,6 @@ def precise_solution(index, x0, y0, h, n):
     function = functions[index]
     constants = function[2]
     constants_values = [c(x0, y0) for c in constants]
-    print(constants_values)
     for i in range(1, len(x)):
         x[i] = x[i-1] + h
         y[i] = function[-1](x[i], constants_values)
@@ -93,10 +95,10 @@ def main():
     n = int((xn - x0) / h)
     f = functions[f_index-1][1]
 
+    x_precise, y_precise = precise_solution(f_index - 1, x0, y0, h, n)
     x_euler, y_euler = compute_one_step_method(euler_method, f, x0, y0, h, n, eps, 1)
     x_rk4, y_rk4 = compute_one_step_method(runge_kutta_4, f, x0, y0, h, n, eps, 4)
-    x_milne, y_milne = milne_method(f, x0, y0, h, n)
-    x_precise, y_precise = precise_solution(f_index - 1, x0, y0, h, n)
+    x_milne, y_milne = milne_method(f, x0, y0, h, n, eps, y_precise)
 
     plt.plot(x_euler, y_euler, label="Euler Method")
     plt.plot(x_rk4, y_rk4, label="Runge-Kutta 4 Method")
