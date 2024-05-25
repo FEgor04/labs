@@ -30,6 +30,14 @@ def runge_kutta_4(f, x0, y0, h, n):
         x[i] = x[i-1] + h
     return x, y
 
+def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
+    x, y = method(f, x0, y0, h_initial, n)
+    x2, y2 = method(f, x0, y0, h_initial / 2, n * 2)
+    if np.abs(y[-1] - y2[-1]) / (2 ** p - 1) <= eps:
+        print("method is fine with h = ", h_initial)
+        return x, y
+    return compute_one_step_method(method, f, x0, y0, h_initial / 2, n * 2, eps, p)
+
 # Метод Милна (явный многошаговый метод)
 def milne_method(f, x0, y0, h, n):
     x = np.zeros(n+1)
@@ -62,7 +70,8 @@ def get_initial_conditions():
     y0 = float(input("Введите начальное значение y0: "))
     xn = float(input("Введите конечное значение xn: "))
     h = float(input("Введите шаг h: "))
-    return f_index, x0, y0, xn, h
+    eps = float(input("Введите погрешность eps: "))
+    return f_index, x0, y0, xn, h, eps
 
 def precise_solution(index, x0, y0, h, n):
     x = np.zeros(n+1)
@@ -79,13 +88,13 @@ def precise_solution(index, x0, y0, h, n):
     return x, y
 
 def main():
-    f_index, x0, y0, xn, h = get_initial_conditions()
+    f_index, x0, y0, xn, h, eps = get_initial_conditions()
     print("\n");
     n = int((xn - x0) / h)
     f = functions[f_index-1][1]
 
-    x_euler, y_euler = euler_method(f, x0, y0, h, n)
-    x_rk4, y_rk4 = runge_kutta_4(f, x0, y0, h, n)
+    x_euler, y_euler = compute_one_step_method(euler_method, f, x0, y0, h, n, eps, 1)
+    x_rk4, y_rk4 = compute_one_step_method(runge_kutta_4, f, x0, y0, h, n, eps, 4)
     x_milne, y_milne = milne_method(f, x0, y0, h, n)
     x_precise, y_precise = precise_solution(f_index - 1, x0, y0, h, n)
 
