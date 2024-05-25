@@ -1,3 +1,4 @@
+from prettytable import PrettyTable
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -109,6 +110,14 @@ def main():
     plt.legend()
     plt.title("Численное решение ОДУ")
     plt.show()
+
+    table = PrettyTable()
+    table.field_names = ["X", "Euler", "RK4", "Milne", "Precise"]
+    for i in range(len(x_precise)):
+        table.add_row([ x_precise[i], y_euler[i], y_rk4[i], y_milne[i], y_precise[i] ])
+    table.align = "r"
+    table.float_format = ".4"
+    print(table)
 
 if __name__ == "__main__":
     main()
