@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 functions = [
     # Name            , y'(x, y) = f(x,y) , constants                                     , precise solution
     ("f(x, y) = y+(1+x)y^2", lambda x, y: y + (1+x)*y**2, [lambda x0, y0: - (np.exp(x0) * (x0 * y0 + 1)) / y0], lambda x, constants: - np.exp(x) / (constants[0] + np.exp(x) * x) ),
-    ("f(x, y) = x - y"     , lambda x, y: x - y         , [lambda x0, y0: np.exp(x0) * (- x0 + y0 + 1)       ], lambda x, c: c[0] * np.exp(-x) + x - 1)
+    ("f(x, y) = x - y"     , lambda x, y: x - y         , [lambda x0, y0: np.exp(x0) * (- x0 + y0 + 1)       ], lambda x, c: c[0] * np.exp(-x) + x - 1),
+    ("f(x, y) = sin(x) y"  , lambda x, y: np.sin(x) * y , [lambda x0, y0: y0 * np.exp(np.cos(x0))            ], lambda x, c: c[0] * np.exp(-np.cos(x)))
 ]
 
 # Метод Эйлера
