@@ -9,6 +9,9 @@ functions = [
     ("f(x, y) = sin(x) y"  , lambda x, y: np.sin(x) * y , [lambda x0, y0: y0 * np.exp(np.cos(x0))            ], lambda x, c: c[0] * np.exp(-np.cos(x)))
 ]
 
+def float_eq(a, b):
+    return np.abs(a - b) <= 1e-9
+
 # Метод Эйлера
 def euler_method(f, x0, y0, h, n):
     x = np.zeros(n+1)
@@ -38,7 +41,13 @@ def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
     x2, y2 = method(f, x0, y0, h_initial / 2, n * 2)
     if np.abs(y[-1] - y2[-1]) / (2 ** p - 1) <= eps:
         return x, y
-    return compute_one_step_method(method, f, x0, y0, h_initial / 2, n * 2, eps, p)
+    x1, y1 = compute_one_step_method(method, f, x0, y0, h_initial / 2, n * 2, eps, p)
+    h1 = (x1[1] - x1[0])
+    di = int(h_initial // h1)
+    x_ans = [ x1[i] for i in range(0, len(x1), di) ]
+    y_ans = [ y1[i] for i in range(0, len(x1), di) ]
+    return x_ans, y_ans
+
 
 # Метод Милна (явный многошаговый метод)
 def milne_method(f, x0, y0, h, n, eps, y_precise):
@@ -111,15 +120,26 @@ def main():
     plt.ylabel("y")
     plt.legend()
     plt.title("Численное решение ОДУ")
-    plt.show()
+
+    # assert that X are the same
+    assert( np.all(x_euler - x_rk4 <= 1e-9) )
+    assert( np.all(x_euler - x_precise <= 1e-9) )
+    assert( np.all(x_euler - x_milne <= 1e-9) )
 
     table = PrettyTable()
-    table.field_names = ["X", "Euler", "RK4", "Milne", "Precise"]
+    table.field_names = ["X", "Euler", "RK4", "Milne", "Precise", "Euler Error", "RK4 Error", "Milne Error"]
     for i in range(len(x_precise)):
-        table.add_row([ x_precise[i], y_euler[i], y_rk4[i], y_milne[i], y_precise[i] ])
+        table.add_row([ x_precise[i], y_euler[i], y_rk4[i], y_milne[i], y_precise[i], np.abs(y_euler[i] - y_precise[i]), np.abs(y_rk4[i] - y_precise[i]), np.abs(y_milne[i] - y_precise[i])])
     table.align = "r"
     table.float_format = ".4"
     print(table)
+    euler_std = (y_precise - y_euler).std()
+    rk4_std = (y_precise - y_rk4).std()
+    milne_std = (y_precise - y_milne).std()
+    print(f"Среднеквадратичное отклонение для метода Эйлера: {euler_std:.4f}")
+    print(f"Среднеквадратичное отклонение для метода РК4: {rk4_std:.4f}")
+    print(f"Среднеквадратичное отклонение для метода Милне: {milne_std:.4f}")
+    plt.show()
 
 if __name__ == "__main__":
     main()
