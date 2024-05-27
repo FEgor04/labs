@@ -41,12 +41,8 @@ def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
     x2, y2 = method(f, x0, y0, h_initial / 2, n * 2)
     if np.abs(y[-1] - y2[-1]) / (2 ** p - 1) <= eps:
         return x, y
-    x1, y1 = compute_one_step_method(method, f, x0, y0, h_initial / 2, n * 2, eps, p)
-    h1 = (x1[1] - x1[0])
-    di = int(h_initial // h1)
-    x_ans = [ x1[i] for i in range(0, len(x1), di) ]
-    y_ans = [ y1[i] for i in range(0, len(x1), di) ]
-    return x_ans, y_ans
+    return compute_one_step_method(method, f, x0, y0, h_initial / 2, n * 2, eps, p)
+    
 
 
 # Метод Милна (явный многошаговый метод)
@@ -70,7 +66,7 @@ def milne_method(f, x0, y0, h, n, eps, y_precise):
         y[i+1] = y_corr
         x[i+1] = x[i] + h
 
-    eps_actual = max(np.abs(y_precise - y))
+    eps_actual = max(np.abs(y_precise(x) - y))
     if  eps_actual > eps:
         return milne_method(f, x0, y0, h / 2, n * 2, eps, y_precise)
     return x, y
@@ -88,17 +84,21 @@ def get_initial_conditions():
     eps = float(input("Введите погрешность eps: "))
     return f_index, x0, y0, xn, h, eps
 
+def precise_lambda(index, x0, y0):
+    function = functions[index]
+    constants = function[2]
+    constants_values = [c(x0, y0) for c in constants]
+    return lambda x: function[-1](x, constants_values)
+
 def precise_solution(index, x0, y0, h, n):
     x = np.zeros(n+1)
     y = np.zeros(n+1)
     x[0], y[0] = x0, y0
 
-    function = functions[index]
-    constants = function[2]
-    constants_values = [c(x0, y0) for c in constants]
+    f = precise_lambda(index, x0, y0)
     for i in range(1, len(x)):
         x[i] = x[i-1] + h
-        y[i] = function[-1](x[i], constants_values)
+        y[i] = f(x[i])
     return x, y
 
 def main():
@@ -107,10 +107,11 @@ def main():
     n = int((xn - x0) / h)
     f = functions[f_index-1][1]
 
+    precise = precise_lambda(f_index - 1, x0, y0)
     x_precise, y_precise = precise_solution(f_index - 1, x0, y0, h, n)
     x_euler, y_euler = compute_one_step_method(euler_method, f, x0, y0, h, n, eps, 1)
     x_rk4, y_rk4 = compute_one_step_method(runge_kutta_4, f, x0, y0, h, n, eps, 4)
-    x_milne, y_milne = milne_method(f, x0, y0, h, n, eps, y_precise)
+    x_milne, y_milne = milne_method(f, x0, y0, h, n, eps, precise)
 
     plt.plot(x_euler, y_euler, label="Euler Method")
     plt.plot(x_rk4, y_rk4, label="Runge-Kutta 4 Method")
@@ -121,11 +122,6 @@ def main():
     plt.legend()
     plt.title("Численное решение ОДУ")
 
-    # assert that X are the same
-    assert( np.all(x_euler - x_rk4 <= 1e-9) )
-    assert( np.all(x_euler - x_precise <= 1e-9) )
-    assert( np.all(x_euler - x_milne <= 1e-9) )
-
     table = PrettyTable()
     table.field_names = ["X", "Euler", "RK4", "Milne", "Precise", "Euler Error", "RK4 Error", "Milne Error"]
     for i in range(len(x_precise)):
@@ -133,9 +129,9 @@ def main():
     table.align = "r"
     table.float_format = ".4"
     print(table)
-    euler_std = (y_precise - y_euler).std()
-    rk4_std = (y_precise - y_rk4).std()
-    milne_std = (y_precise - y_milne).std()
+    euler_std = (precise(x_euler) - y_euler).std()
+    rk4_std = (precise(x_rk4) - y_rk4).std()
+    milne_std = (precise(x_milne) - y_milne).std()
     print(f"Среднеквадратичное отклонение для метода Эйлера: {euler_std:.4f}")
     print(f"Среднеквадратичное отклонение для метода РК4: {rk4_std:.4f}")
     print(f"Среднеквадратичное отклонение для метода Милне: {milne_std:.4f}")
