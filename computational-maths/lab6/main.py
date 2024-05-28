@@ -30,11 +30,7 @@ def filter_xs(xs, ys, h, max_x=None):
     h_actual = xs[1] - xs[0]
     di = int(h / h_actual)
     return np.array(
-        [
-            xs[i]
-            for i in range(0, len(xs), di)
-            if max_x is None or xs[i] <= max_x
-        ]
+        [xs[i] for i in range(0, len(xs), di) if max_x is None or xs[i] <= max_x]
     ), np.array(
         [ys[i] for i in range(0, len(ys), di) if max_x is None or xs[i] <= max_x]
     )
