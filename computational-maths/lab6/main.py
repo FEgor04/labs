@@ -62,6 +62,13 @@ def runge_kutta_4(f, x0, y0, h, n):
     return x, y
 
 
+def check_runge_rule(x, y, x2, y2, p, eps):
+    for i in range(len(x)):
+        error_value = np.abs(y[i] - y2[2 * i]) / (2**p - 1)
+        if error_value > eps:
+            return False
+    return True
+
 def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p, iter = 1):
     print("computing method on iteration", iter)
     x, y = method(f, x0, y0, h_initial, n)
@@ -72,11 +79,9 @@ def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p, iter = 1):
     h2 = h_initial / 2
     n2 = compute_n_for_half_h(n)
     x2, y2 = method(f, x0, y0, h_initial / 2, n2)
-    x2f, y2f = filter_xs(x2, y2, h_initial, x[-1])
-    if np.abs(y[-1] - y2f[-1]) / (2**p - 1) <= eps:
-        return x2f, y2f
-    x1, y1 = compute_one_step_method(method, f, x0, y0, h2, n2, eps, p, iter + 1)
-    return filter_xs(x1, y1, h_initial, x[-1])
+    if check_runge_rule(x, y, x2, y2, p, eps):
+        return x, y
+    return compute_one_step_method(method, f, x0, y0, h2, n2, eps, p, iter + 1)
 
 
 # Метод Милна
