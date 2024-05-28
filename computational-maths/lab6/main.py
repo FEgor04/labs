@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from utils import *
 
-MAX_ITERS = 10
+MAX_ITERS = 100
 
 functions = [
     # Name            , y'(x, y) = f(x,y) , constants                                     , precise solution
@@ -70,17 +70,17 @@ def check_runge_rule(x, y, x2, y2, p, eps):
     return True
 
 def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p, iter = 1):
-    print("computing method on iteration", iter)
+    # print("computing method on iteration", iter)
     x, y = method(f, x0, y0, h_initial, n)
     if iter >= MAX_ITERS:
-        print("too much iters, exiting")
+        print("too much iters, exiting on iter ", iter)
         return x, y
     xn = x0 + (n) * h_initial
     h2 = h_initial / 2
     n2 = compute_n_for_half_h(n)
-    x2, y2 = method(f, x0, y0, h_initial / 2, n2)
+    x2, y2 = method(f, x0, y0, h2, n2)
     if check_runge_rule(x, y, x2, y2, p, eps):
-        return x, y
+        return x2, y2
     return compute_one_step_method(method, f, x0, y0, h2, n2, eps, p, iter + 1)
 
 
