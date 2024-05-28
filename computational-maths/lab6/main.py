@@ -89,6 +89,8 @@ def milne_method(f, x0, y0, h, n, eps, y_precise):
     x = np.zeros(n + 1)
     y = np.zeros(n + 1)
     x[0], y[0] = x0, y0
+    h2 = h / 2
+    n2 = compute_n_for_half_h(n)
 
     # Используем метод Рунге-Кутта для первых трех шагов
     for i in range(max(3, n)):
@@ -116,7 +118,7 @@ def milne_method(f, x0, y0, h, n, eps, y_precise):
 
     eps_actual = max(np.abs(y_precise(x) - y))
     if eps_actual > eps:
-        x1, y1 = milne_method(f, x0, y0, h / 2, n * 2, eps, y_precise)
+        x1, y1 = milne_method(f, x0, y0, h2, n2, eps, y_precise)
         return filter_xs(x1, y1, h, x[-1])
     return np.array(x), np.array(y)
 
