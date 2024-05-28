@@ -67,13 +67,13 @@ def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
     n2 = compute_n_for_half_h(n)
     x2, y2 = method(f, x0, y0, h_initial / 2, n2)
     x2f, y2f = filter_xs(x2, y2, h_initial, x[-1])
-    if (np.abs(y[-1] - y2f[-1]) / (2**p - 1) <= eps):
+    if np.abs(y[-1] - y2f[-1]) / (2**p - 1) <= eps:
         return x2f, y2f
     x1, y1 = compute_one_step_method(method, f, x0, y0, h2, n2, eps, p)
     return filter_xs(x1, y1, h_initial, x[-1])
 
 
-# Метод Милна 
+# Метод Милна
 def milne_method(f, x0, y0, h, n, eps, y_precise):
     x, y = runge_kutta_4(f, x0, y0, h, n)
     h2 = h / 2
@@ -81,11 +81,15 @@ def milne_method(f, x0, y0, h, n, eps, y_precise):
 
     for i in range(3, n):
         # Этап предсказания
-        y_predict = y[i-3] + 4 * h / 3 * (2 * f(x[i-2], y[i-2]) - f(x[i-1], y[i-1]) + 2 * f(x[i], y[i]))
+        y_predict = y[i - 3] + 4 * h / 3 * (
+            2 * f(x[i - 2], y[i - 2]) - f(x[i - 1], y[i - 1]) + 2 * f(x[i], y[i])
+        )
         x_next = x[i] + h
-        
+
         # Этап коррекции
-        y[i + 1] = y[i-1] + h / 3 * (f(x[i-1], y[i-1]) + 4 * f(x[i], y[i]) + f(x_next, y_predict))
+        y[i + 1] = y[i - 1] + h / 3 * (
+            f(x[i - 1], y[i - 1]) + 4 * f(x[i], y[i]) + f(x_next, y_predict)
+        )
         x[i + 1] = x_next
 
     eps_actual = max(np.abs(y_precise(x) - y))
@@ -135,10 +139,12 @@ def precise_solution(index, x0, y0, h, n):
         y[i] = f(x[i])
     return x, y
 
+
 def find_y_by_x(xs, ys, x):
     for i in range(len(xs)):
         if np.abs(xs[i] - x) <= 1e-9:
             return ys[i]
+
 
 def main():
     f_index, x0, y0, xn, h, eps = get_initial_conditions()
@@ -174,7 +180,7 @@ def main():
         "Milne Error",
     ]
     for i in range(len(x_precise)):
-        x = x_precise[i],
+        x = (x_precise[i],)
         euler = find_y_by_x(x_euler, y_euler, x)
         rk4 = find_y_by_x(x_rk4, y_rk4, x)
         milne = find_y_by_x(x_milne, y_milne, x)
@@ -187,7 +193,7 @@ def main():
                 milne,
                 precise,
                 np.abs(euler - precise),
-                np.abs(rk4- precise),
+                np.abs(rk4 - precise),
                 np.abs(milne - precise),
             ]
         )
