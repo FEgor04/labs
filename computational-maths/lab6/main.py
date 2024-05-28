@@ -12,7 +12,7 @@ functions = [
 def filter_xs(xs, ys, h):
     h_actual = xs[1] - xs[0]
     di = int(h / h_actual)
-    return [ xs[i] for i in range(0, len(xs), di) ], [ ys[i] for i in range(0, len(ys), di) ]
+    return np.array([ xs[i] for i in range(0, len(xs), di) ]), np.array([ ys[i] for i in range(0, len(ys), di) ])
 
 def float_eq(a, b):
     return np.abs(a - b) <= 1e-9
@@ -76,7 +76,7 @@ def milne_method(f, x0, y0, h, n, eps, y_precise):
     if  eps_actual > eps:
         x1, y1 = milne_method(f, x0, y0, h / 2, n * 2, eps, y_precise)
         return filter_xs(x1, y1, h)
-    return x, y
+    return np.array(x), np.array(y)
 
 # Функция для ввода начальных условий
 def get_initial_conditions():
