@@ -72,8 +72,9 @@ def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
     h2 = h_initial / 2
     n2 = compute_n_for_half_h(n)
     x2, y2 = method(f, x0, y0, h_initial / 2, n2)
-    if np.abs(y[-1] - y2[-1]) / (2**p - 1) <= eps:
-        return x, y
+    x2f, y2f = filter_xs(x2, y2, h_initial, x[-1])
+    if np.all(np.abs(y - y2f) / (2**p - 1) <= eps):
+        return x2f, y2f
     x1, y1 = compute_one_step_method(method, f, x0, y0, h2, n2, eps, p)
     return filter_xs(x1, y1, h_initial, x[-1])
 
