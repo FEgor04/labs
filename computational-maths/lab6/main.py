@@ -27,13 +27,7 @@ functions = [
 
 
 def filter_xs(xs, ys, h, max_x=None):
-    h_actual = xs[1] - xs[0]
-    di = int(h / h_actual)
-    return np.array(
-        [xs[i] for i in range(0, len(xs), di) if max_x is None or xs[i] <= max_x]
-    ), np.array(
-        [ys[i] for i in range(0, len(ys), di) if max_x is None or xs[i] <= max_x]
-    )
+    return xs, ys
 
 
 def float_eq(a, b):
@@ -73,7 +67,7 @@ def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
     n2 = compute_n_for_half_h(n)
     x2, y2 = method(f, x0, y0, h_initial / 2, n2)
     x2f, y2f = filter_xs(x2, y2, h_initial, x[-1])
-    if np.all(np.abs(y - y2f) / (2**p - 1) <= eps):
+    if (np.abs(y[-1] - y2f[-1]) / (2**p - 1) <= eps):
         return x2f, y2f
     x1, y1 = compute_one_step_method(method, f, x0, y0, h2, n2, eps, p)
     return filter_xs(x1, y1, h_initial, x[-1])
@@ -141,6 +135,10 @@ def precise_solution(index, x0, y0, h, n):
         y[i] = f(x[i])
     return x, y
 
+def find_y_by_x(xs, ys, x):
+    for i in range(len(xs)):
+        if np.abs(xs[i] - x) <= 1e-9:
+            return ys[i]
 
 def main():
     f_index, x0, y0, xn, h, eps = get_initial_conditions()
@@ -176,21 +174,27 @@ def main():
         "Milne Error",
     ]
     for i in range(len(x_precise)):
+        x = x_precise[i],
+        euler = find_y_by_x(x_euler, y_euler, x)
+        rk4 = find_y_by_x(x_rk4, y_rk4, x)
+        milne = find_y_by_x(x_milne, y_milne, x)
+        precise = find_y_by_x(x_precise, y_precise, x)
         table.add_row(
             [
                 x_precise[i],
-                y_euler[i],
-                y_rk4[i],
-                y_milne[i],
-                y_precise[i],
-                np.abs(y_euler[i] - y_precise[i]),
-                np.abs(y_rk4[i] - y_precise[i]),
-                np.abs(y_milne[i] - y_precise[i]),
+                euler,
+                rk4,
+                milne,
+                precise,
+                np.abs(euler - precise),
+                np.abs(rk4- precise),
+                np.abs(milne - precise),
             ]
         )
     table.align = "r"
     table.float_format = ".4"
     print(table)
+    precise = precise_lambda(f_index - 1, x0, y0)
     euler_std = (precise(x_euler) - y_euler).std()
     rk4_std = (precise(x_rk4) - y_rk4).std()
     milne_std = (precise(x_milne) - y_milne).std()
