@@ -78,7 +78,7 @@ def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
     return filter_xs(x1, y1, h_initial, x[-1])
 
 
-# Метод Милна (явный многошаговый метод)
+# Метод Милна 
 def milne_method(f, x0, y0, h, n, eps, y_precise):
     x = np.zeros(n + 1)
     y = np.zeros(n + 1)
@@ -210,9 +210,9 @@ def main():
     euler_std = (precise(x_euler) - y_euler).std()
     rk4_std = (precise(x_rk4) - y_rk4).std()
     milne_std = (precise(x_milne) - y_milne).std()
-    print(f"Среднеквадратичное отклонение для метода Эйлера: {euler_std:.4f}")
-    print(f"Среднеквадратичное отклонение для метода РК4: {rk4_std:.4f}")
-    print(f"Среднеквадратичное отклонение для метода Милне: {milne_std:.4f}")
+    print(f"Среднеквадратичное отклонение для метода Эйлера:\t{euler_std:.8f}")
+    print(f"Среднеквадратичное отклонение для метода РК4:\t\t{rk4_std:.8f}")
+    print(f"Среднеквадратичное отклонение для метода Милне:\t\t{milne_std:.8f}")
     plt.show()
 
 
