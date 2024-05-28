@@ -7,6 +7,6 @@ def is_divisable(x0, xn, h):
 
 def compute_n_for_half_h(n):
     if n % 2 == 0:
-        return n * 2 + 1
+        return n * 2
     else:
         return 2 * n

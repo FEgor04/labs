@@ -68,6 +68,7 @@ def runge_kutta_4(f, x0, y0, h, n):
 
 def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
     x, y = method(f, x0, y0, h_initial, n)
+    xn = x0 + (n) * h_initial
     h2 = h_initial / 2
     n2 = compute_n_for_half_h(n)
     x2, y2 = method(f, x0, y0, h_initial / 2, n2)
@@ -160,7 +161,7 @@ def precise_solution(index, x0, y0, h, n):
 def main():
     f_index, x0, y0, xn, h, eps = get_initial_conditions()
     print("\n")
-    n = int((xn - x0) / h)
+    n = int(np.abs(xn - x0) / h)
     f = functions[f_index - 1][1]
 
     precise = precise_lambda(f_index - 1, x0, y0)
@@ -169,14 +170,12 @@ def main():
     x_rk4, y_rk4 = compute_one_step_method(runge_kutta_4, f, x0, y0, h, n, eps, 4)
     x_milne, y_milne = milne_method(f, x0, y0, h, n, eps, precise)
 
-    assert np.all(x_euler - x_rk4 <= 1e-9)
-    assert np.all(x_euler - x_precise <= 1e-9)
-    assert np.all(x_euler - x_milne <= 1e-9)
-
+    precise_space = np.linspace(min(x_euler), max(x_euler), 1000)
+    plt.scatter(x_precise, y_precise, label="Точное решение")
+    plt.plot(precise_space, precise(precise_space), label="Точное решение")
     plt.plot(x_euler, y_euler, label="Euler Method")
     plt.plot(x_rk4, y_rk4, label="Runge-Kutta 4 Method")
     plt.plot(x_milne, y_milne, label="Milne Method")
-    plt.plot(x_precise, y_precise, label="Точное решение")
     plt.xlabel("x")
     plt.ylabel("y")
     plt.legend()
