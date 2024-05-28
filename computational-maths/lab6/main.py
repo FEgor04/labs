@@ -71,11 +71,16 @@ def runge_kutta_4(f, x0, y0, h, n):
 
 
 def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
+    print(f"Trying with h = {h_initial:.4f}")
     x, y = method(f, x0, y0, h_initial, n)
-    x2, y2 = method(f, x0, y0, h_initial / 2, n * 2)
+    h2 = h_initial / 2
+    n2 = compute_n_for_half_h(n)
+    x2, y2 = method(f, x0, y0, h_initial / 2, n2)
     if np.abs(y[-1] - y2[-1]) / (2**p - 1) <= eps:
+        print(f"h = {h_initial:.4f} is fine")
         return x, y
-    x1, y1 = compute_one_step_method(method, f, x0, y0, h_initial / 2, n * 2, eps, p)
+    print(f"h = {h_initial:.4f} is not enough")
+    x1, y1 = compute_one_step_method(method, f, x0, y0, h2, n2, eps, p)
     return filter_xs(x1, y1, h_initial, x[-1])
 
 

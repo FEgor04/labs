@@ -22,3 +22,9 @@ def test_filter_3():
     actual, actual1 = filter_xs(x1, x1, 1, 4)
     assert(np.all(actual == x))
 
+def test_filter_odd():
+    x = [1, 2, 3]
+    x1 = [1, 1.5, 2, 2.5, 3, 3.5]
+    actual, actual1 = filter_xs(x1, x1, 1, 3)
+    assert(np.all(actual == x))
+
