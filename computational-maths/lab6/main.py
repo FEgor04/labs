@@ -9,6 +9,11 @@ functions = [
     ("f(x, y) = sin(x) y"  , lambda x, y: np.sin(x) * y , [lambda x0, y0: y0 * np.exp(np.cos(x0))            ], lambda x, c: c[0] * np.exp(-np.cos(x)))
 ]
 
+def filter_xs(xs, ys, h):
+    h_actual = xs[1] - xs[0]
+    di = int(h / h_actual)
+    return [ xs[i] for i in range(0, len(xs), di) ], [ ys[i] for i in range(0, len(ys), di) ]
+
 def float_eq(a, b):
     return np.abs(a - b) <= 1e-9
 
@@ -41,8 +46,9 @@ def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
     x2, y2 = method(f, x0, y0, h_initial / 2, n * 2)
     if np.abs(y[-1] - y2[-1]) / (2 ** p - 1) <= eps:
         return x, y
-    return compute_one_step_method(method, f, x0, y0, h_initial / 2, n * 2, eps, p)
-    
+    x1, y1 = compute_one_step_method(method, f, x0, y0, h_initial / 2, n * 2, eps, p)
+    return filter_xs(x1, y1, h_initial)
+
 
 
 # Метод Милна (явный многошаговый метод)
@@ -68,7 +74,8 @@ def milne_method(f, x0, y0, h, n, eps, y_precise):
 
     eps_actual = max(np.abs(y_precise(x) - y))
     if  eps_actual > eps:
-        return milne_method(f, x0, y0, h / 2, n * 2, eps, y_precise)
+        x1, y1 = milne_method(f, x0, y0, h / 2, n * 2, eps, y_precise)
+        return filter_xs(x1, y1, h)
     return x, y
 
 # Функция для ввода начальных условий
@@ -112,6 +119,12 @@ def main():
     x_euler, y_euler = compute_one_step_method(euler_method, f, x0, y0, h, n, eps, 1)
     x_rk4, y_rk4 = compute_one_step_method(runge_kutta_4, f, x0, y0, h, n, eps, 4)
     x_milne, y_milne = milne_method(f, x0, y0, h, n, eps, precise)
+
+    print(x_euler)
+    print(x_rk4)
+    assert( np.all(x_euler - x_rk4 <= 1e-9) )
+    assert( np.all(x_euler - x_precise <= 1e-9) )
+    assert( np.all(x_euler - x_milne <= 1e-9) )
 
     plt.plot(x_euler, y_euler, label="Euler Method")
     plt.plot(x_rk4, y_rk4, label="Runge-Kutta 4 Method")
