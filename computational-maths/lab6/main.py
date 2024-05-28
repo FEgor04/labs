@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from utils import *
 
+MAX_ITERS = 10
+
 functions = [
     # Name            , y'(x, y) = f(x,y) , constants                                     , precise solution
     (
@@ -60,8 +62,12 @@ def runge_kutta_4(f, x0, y0, h, n):
     return x, y
 
 
-def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
+def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p, iter = 1):
+    print("computing method on iteration", iter)
     x, y = method(f, x0, y0, h_initial, n)
+    if iter >= MAX_ITERS:
+        print("too much iters, exiting")
+        return x, y
     xn = x0 + (n) * h_initial
     h2 = h_initial / 2
     n2 = compute_n_for_half_h(n)
@@ -69,7 +75,7 @@ def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
     x2f, y2f = filter_xs(x2, y2, h_initial, x[-1])
     if np.abs(y[-1] - y2f[-1]) / (2**p - 1) <= eps:
         return x2f, y2f
-    x1, y1 = compute_one_step_method(method, f, x0, y0, h2, n2, eps, p)
+    x1, y1 = compute_one_step_method(method, f, x0, y0, h2, n2, eps, p, iter + 1)
     return filter_xs(x1, y1, h_initial, x[-1])
 
 
