@@ -173,13 +173,12 @@ def main():
     precise_space = np.linspace(min(x_euler), max(x_euler), 1000)
     plt.scatter(x_precise, y_precise, label="Точное решение")
     plt.plot(precise_space, precise(precise_space), label="Точное решение")
-    plt.plot(x_euler, y_euler, label="Euler Method")
-    plt.plot(x_rk4, y_rk4, label="Runge-Kutta 4 Method")
-    plt.plot(x_milne, y_milne, label="Milne Method")
+    plt.plot(x_euler, y_euler, label="Метод Эйлера")
+    plt.plot(x_rk4, y_rk4, label="Метод Рунге-Кутты")
+    plt.plot(x_milne, y_milne, label="Метод Милна")
     plt.xlabel("x")
     plt.ylabel("y")
     plt.legend()
-    plt.title("Численное решение ОДУ")
 
     table = PrettyTable()
     table.field_names = [
