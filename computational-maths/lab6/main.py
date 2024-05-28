@@ -80,35 +80,18 @@ def compute_one_step_method(method, f, x0, y0, h_initial, n, eps, p):
 
 # Метод Милна 
 def milne_method(f, x0, y0, h, n, eps, y_precise):
-    x = np.zeros(n + 1)
-    y = np.zeros(n + 1)
-    x[0], y[0] = x0, y0
+    x, y = runge_kutta_4(f, x0, y0, h, n)
     h2 = h / 2
     n2 = compute_n_for_half_h(n)
 
-    # Используем метод Рунге-Кутта для первых трех шагов
-    for i in range(max(3, n)):
-        k1 = h * f(x[i], y[i])
-        k2 = h * f(x[i] + h / 2, y[i] + k1 / 2)
-        k3 = h * f(x[i] + h / 2, y[i] + k2 / 2)
-        k4 = h * f(x[i] + h, y[i] + k3)
-        y[i + 1] = y[i] + (k1 + 2 * k2 + 2 * k3 + k4) / 6
-        x[i + 1] = x[i] + h
-
     for i in range(3, n):
-        y_pred = (
-            y[i - 3]
-            + 4
-            * h
-            * (2 * f(x[i - 2], y[i - 2]) - f(x[i - 1], y[i - 1]) + 2 * f(x[i], y[i]))
-            / 3
-        )
-        y_corr = (
-            y[i - 1]
-            + h * (f(x[i - 1], y[i - 1]) + 4 * f(x[i], y[i]) + f(x[i + 1], y_pred)) / 3
-        )
-        y[i + 1] = y_corr
-        x[i + 1] = x[i] + h
+        # Этап предсказания
+        y_predict = y[i-3] + 4 * h / 3 * (2 * f(x[i-2], y[i-2]) - f(x[i-1], y[i-1]) + 2 * f(x[i], y[i]))
+        x_next = x[i] + h
+        
+        # Этап коррекции
+        y[i + 1] = y[i-1] + h / 3 * (f(x[i-1], y[i-1]) + 4 * f(x[i], y[i]) + f(x_next, y_predict))
+        x[i + 1] = x_next
 
     eps_actual = max(np.abs(y_precise(x) - y))
     if eps_actual > eps:
