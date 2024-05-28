@@ -1,6 +1,7 @@
 from prettytable import PrettyTable
 import numpy as np
 import matplotlib.pyplot as plt
+from utils import *
 
 functions = [
     # Name            , y'(x, y) = f(x,y) , constants                                     , precise solution
@@ -89,6 +90,12 @@ def get_initial_conditions():
     xn = float(input("Введите конечное значение xn: "))
     h = float(input("Введите шаг h: "))
     eps = float(input("Введите погрешность eps: "))
+
+    if not is_divisable(x0, xn, h):
+        new_h = (xn - x0) / 10
+        print(f"Отрезок [x0, xn] не делится на целочисленное количетсво отрезков длины h. В качестве h будет взято {new_h:.4f}")
+        h = new_h
+
     return f_index, x0, y0, xn, h, eps
 
 def precise_lambda(index, x0, y0):
