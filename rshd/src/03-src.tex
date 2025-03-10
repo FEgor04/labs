@@ -1,0 +1,66 @@
+\section{Выполнение}
+
+\begin{minted}[breaklines]{sql}
+CREATE OR REPLACE FUNCTION show_table_info(p_table_name TEXT) RETURNS VOID AS
+$$
+DECLARE
+    rec RECORD;
+BEGIN
+    FOR rec IN 
+        SELECT 
+            ordinal_position AS col_no,
+            column_name,
+            data_type || 
+                CASE 
+                    WHEN data_type = 'numeric' THEN '(' || numeric_precision || ',' || numeric_scale || ')'
+                    WHEN data_type IN ('character varying', 'char') THEN '(' || character_maximum_length || ')'
+                    ELSE ''
+                END AS data_type,
+            conname AS constraint_name,
+            confrelid::regclass AS ref_table,
+            af.attname AS ref_column
+        FROM information_schema.columns c
+        LEFT JOIN pg_constraint pc ON c.table_name = p_table_name
+            AND pc.conrelid = c.table_name::regclass
+            AND pc.contype = 'f'
+        LEFT JOIN pg_attribute af ON af.attnum = ANY(pc.confkey) 
+            AND af.attrelid = pc.confrelid
+        WHERE c.table_name = p_table_name
+        ORDER BY ordinal_position
+    LOOP
+        RAISE NOTICE 'No.: %', rec.col_no;
+        RAISE NOTICE 'Имя столбца: %', rec.column_name;
+        RAISE NOTICE 'Атрибуты: Type   : %', rec.data_type;
+        IF rec.constraint_name IS NOT NULL THEN
+            RAISE NOTICE '           Constr : "%" References % (%)', rec.constraint_name, rec.ref_table, rec.ref_column;
+        END IF;
+        RAISE NOTICE '-------------------------------------';
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+\end{minted}
+
+\paragraph{Запуск}
+
+\begin{verbatim}
+studs=> select show_table_info('users');
+NOTICE:  No.: 1
+NOTICE:  Имя столбца: id
+NOTICE:  Атрибуты: Type   : bigint
+NOTICE:  -------------------------------------
+NOTICE:  No.: 2
+NOTICE:  Имя столбца: username
+NOTICE:  Атрибуты: Type   : character varying(255)
+NOTICE:  -------------------------------------
+NOTICE:  No.: 3
+NOTICE:  Имя столбца: password
+NOTICE:  Атрибуты: Type   : character varying(255)
+NOTICE:  -------------------------------------
+NOTICE:  No.: 4
+NOTICE:  Имя столбца: role
+NOTICE:  Атрибуты: Type   : character varying(50)
+NOTICE:  -------------------------------------
+ show_table_info
+-----------------
+\end{verbatim}
