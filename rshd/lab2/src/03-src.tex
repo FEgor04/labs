@@ -1,0 +1,271 @@
+\section{Выполнение}
+
+\begin{enumerate}
+\item \textbf{Инициализация кластера БД}
+
+Подключимся к выделенному узлу через SSH:
+
+\begin{verbatim}
+ssh -J s367581@helios.cs.ifmo.ru:2222 postgres1@pg183
+\end{verbatim}
+
+Создадим директорию для кластера:
+
+\begin{verbatim}
+mkdir -p $HOME/fkc19
+\end{verbatim}
+
+Зададим переменные окружения для инициализации кластера с русской локалью и кодировкой ISO\_8859\_5:
+
+\begin{verbatim}
+export PGDATA=$HOME/fkc19
+export LOCALE=ru_RU.ISO8859-5
+export PGENCODING=ISO_8859_5
+export PG_USERNAME=postgres1
+\end{verbatim}
+
+\begin{verbatim}
+[postgres1@pg183 ~]$ env | sort
+BLOCKSIZE=K
+HOME=/var/db/postgres1
+LANG=ru_RU
+LOCALE=ru_RU.ISO8859-5
+LOGNAME=postgres1
+MAIL=/var/mail/postgres1
+MM_CHARSET=UTF-8
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/var/db/postgres1/bin
+PGDATA=/var/db/postgres1/fkc19
+PGENCODING=ISO_8859_5
+PG_USERNAME=postgres1
+PWD=/var/db/postgres1
+SHELL=/usr/local/bin/bash
+SHLVL=1
+SSH_CLIENT=192.168.10.80 37422 22
+SSH_CONNECTION=192.168.10.80 37422 192.168.11.183 22
+SSH_TTY=/dev/pts/58
+TERM=xterm-256color
+USER=postgres1
+_=/usr/bin/env
+\end{verbatim}
+
+
+Инициализируем кластер БД с использованием переменных окружения:
+
+\begin{verbatim}
+[postgres1@pg183 ~]$ initdb --encoding=$PGENCODING        --locale=$LOCALE        --username=$PG_USERNAME
+The files belonging to this database system will be owned by user "postgres1".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "ru_RU.ISO8859-5".
+The default text search configuration will be set to "russian".
+
+Data page checksums are disabled.
+
+creating directory /var/db/postgres1/fkc19 ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+selecting default time zone ... Europe/Moscow
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+initdb: warning: enabling "trust" authentication for local connections
+initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /var/db/postgres1/fkc19 -l logfile start
+
+\end{verbatim}
+
+\item \textbf{Конфигурация сервера БД}
+
+Для настройки сервера отредактируем конфигурационный файл \texttt{postgresql.conf}:
+
+\begin{verbatim}
+vim $PGDATA/postgresql.conf
+\end{verbatim}
+
+Внесем следующие изменения:
+
+\begin{verbatim}
+# Настройка подключений
+listen_addresses = 'localhost'      # только локальные подключения
+port = 9115                         # номер порта
+unix_socket_directories = '/tmp'    # директория для Unix-сокета
+
+# Настройка производительности для OLTP (1500 транзакций/сек по 16КБ)
+max_connections = 200               # максимальное число соединений
+shared_buffers = 1GB                # размер общего буфера (25% от RAM)
+temp_buffers = 16MB                 # буферы для временных таблиц
+work_mem = 32MB                     # память для операций сортировки
+effective_cache_size = 3GB          # оценка доступной памяти для кэша
+fsync = on                          # обеспечение надежности данных (HA)
+checkpoint_timeout = 5min           # время между контрольными точками
+commit_delay = 1000                 # задержка фиксации (в микросекундах)
+
+# Настройка WAL
+wal_level = replica                 # уровень WAL для обеспечения HA
+wal_directory = 'pg_wal'            # директория для WAL файлов
+
+# Настройка логирования
+log_destination = 'csvlog'          # формат лог-файлов
+logging_collector = on              # включение сборщика логов
+log_directory = 'log'               # директория для логов
+log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
+log_min_messages = WARNING          # минимальный уровень сообщений
+log_connections = on                # логирование подключений
+log_disconnections = on             # логирование отключений
+log_duration = on                   # логирование продолжительности выполнения
+\end{verbatim}
+
+Отредактируем файл pg\_hba.conf для настройки аутентификации:
+
+\begin{verbatim}
+vim $PGDATA/pg_hba.conf
+\end{verbatim}
+
+Заменим содержимое на следующее:
+
+\begin{verbatim}
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# Unix-domain socket connections
+local   all             all                                     peer
+# TCP/IP connections from localhost only with SHA-256 password
+host    all             all             127.0.0.1/32            scram-sha-256
+host    all             all             ::1/128                 scram-sha-256
+\end{verbatim}
+
+\item \textbf{Запуск сервера БД}
+
+Запустим сервер PostgreSQL:
+
+\begin{verbatim}
+pg_ctl -D $PGDATA start
+\end{verbatim}
+
+Проверим статус сервера:
+
+\begin{verbatim}
+pg_ctl -D $PGDATA status
+\end{verbatim}
+
+\item \textbf{Создание табличного пространства для индексов}
+
+Создадим директорию для нового табличного пространства:
+
+\begin{verbatim}
+mkdir -p $HOME/uhx43
+chmod 700 $HOME/uhx43
+\end{verbatim}
+
+Подключимся к серверу PostgreSQL:
+
+\begin{verbatim}
+psql -h localhost -p 9115 postgres
+\end{verbatim}
+
+Создадим табличное пространство для индексов:
+
+\begin{verbatim}
+CREATE TABLESPACE index_space LOCATION '/var/db/postgres1/uhx43';
+\end{verbatim}
+
+\begin{verbatim}
+[postgres1@pg183 ~/uhx43]$ psql -h localhost -p 9115 postgres
+psql (16.4)
+Введите "help", чтобы получить справку.
+
+postgres=# CREATE TABLESPACE index_space LOCATION '/var/db/postgres1/uhx43';
+CREATE TABLESPACE
+\end{verbatim}
+
+\item \textbf{Создание новой базы данных}
+
+Создадим новую базу данных на основе template1:
+
+\begin{verbatim}
+postgres=# CREATE DATABASE fatgreeenidea TEMPLATE template1;
+CREATE DATABASE
+\end{verbatim}
+
+\item \textbf{Создание новой роли}
+
+Создадим новую роль с правом на подключение к базе:
+
+\begin{verbatim}
+postgres=# CREATE ROLE app_user WITH LOGIN PASSWORD 'secure_password';
+CREATE ROLE
+postgres=# GRANT CONNECT ON DATABASE fatgreeenidea TO app_user;
+GRANT
+\end{verbatim}
+
+Подключимся к базе данных fatgreenidea и создадим необходимые схемы и разрешения:
+
+\begin{verbatim}
+\c fatgreenidea
+CREATE SCHEMA app_schema;
+GRANT USAGE ON SCHEMA app_schema TO app_user;
+GRANT CREATE ON SCHEMA app_schema TO app_user;
+\end{verbatim}
+
+\item \textbf{Наполнение базы тестовыми данными}
+
+Подключимся к базе данных от имени созданной роли:
+
+\begin{verbatim}
+psql -h localhost -p 9115 -U app_user fatgreenidea
+\end{verbatim}
+
+Создадим таблицы, указав для индексов использование созданного табличного пространства:
+
+\begin{verbatim}
+CREATE TABLE table1 (id SERIAL PRIMARY KEY, name TEXT);
+INSERT INTO table1 (name) VALUES ('Test Name 1'), ('Test Name 2');
+\end{verbatim}
+
+\item \textbf{Просмотр табличных пространств и их объектов}
+
+Выведем список всех табличных пространств:
+
+\begin{verbatim}
+SELECT * FROM pg_tablespace;
+
+oid  |   spcname   | spcowner | spcacl | spcoptions
+-------+-------------+----------+--------+------------
+  1663 | pg_default  |       10 |        |
+  1664 | pg_global   |       10 |        |
+ 16384 | index_space |       10 |        |
+(3 строки)
+\end{verbatim}
+
+Выведем список объектов, хранящихся в каждом табличном пространстве:
+
+\begin{verbatim}
+SELECT
+    relname, pg_tablespace.spcname
+FROM pg_class
+JOIN pg_tablespace ON pg_class.reltablespace = pg_tablespace.oid
+WHERE pg_class.relkind = 'r';
+
+relname        |  spcname
+-----------------------+-----------
+ pg_authid             | pg_global
+ pg_subscription       | pg_global
+ pg_database           | pg_global
+ pg_db_role_setting    | pg_global
+ pg_tablespace         | pg_global
+ pg_auth_members       | pg_global
+ pg_shdepend           | pg_global
+ pg_shdescription      | pg_global
+ pg_replication_origin | pg_global
+ pg_shseclabel         | pg_global
+ pg_parameter_acl      | pg_global
+(11 строк)
+\end{verbatim}
+
+\end{enumerate}
