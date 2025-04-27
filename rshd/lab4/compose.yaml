@@ -1,0 +1,32 @@
+services:
+  pg-0:
+    image: bitnami/postgresql-repmgr:latest
+    container_name: pg_primary
+    ports:
+      - "5432:5432"
+    environment:
+      REPMGR_NODE_NAME: pg-0
+      REPMGR_NODE_NETWORK_NAME: pg-0
+      REPMGR_PARTNER_NODES: pg-0,pg-1
+      REPMGR_PRIMARY_HOST: pg-0
+      REPMGR_PASSWORD: repmgrpass
+      POSTGRESQL_POSTGRES_PASSWORD: postgres
+      POSTGRESQL_USERNAME: admin
+      POSTGRESQL_PASSWORD: admin
+      POSTGRESQL_DATABASE: admin
+
+  pg-1:
+    image: bitnami/postgresql-repmgr:latest
+    container_name: pg_secondary
+    ports:
+      - "5433:5432"
+    environment:
+      REPMGR_NODE_NAME: pg-1
+      REPMGR_NODE_NETWORK_NAME: pg-1
+      REPMGR_PARTNER_NODES: pg-0,pg-1
+      REPMGR_PRIMARY_HOST: pg-0
+      REPMGR_PASSWORD: repmgrpass
+      POSTGRESQL_POSTGRES_PASSWORD: postgres
+      POSTGRESQL_USERNAME: admin
+      POSTGRESQL_PASSWORD: admin
+      POSTGRESQL_DATABASE: admin
