@@ -1,0 +1,314 @@
+\section{Выполнение}
+
+\subsection{Этап 1. Резервное копирование}
+
+Для выполнения работы был использован скрипт, который выполняет следующие действия:
+
+\begin{itemize}
+    \item Создание временной метки для имени резервной копии в формате год-месяц-день\_час:минута:секунда
+    \item Настройка директории для хранения резервных копий (/var/db/postgres1/backup)
+    \item Создание резервной копии PostgreSQL с помощью утилиты pg\_basebackup
+    \item Архивация резервной копии в tar-файл с применением сжатия
+    \item Передача архива на удалённый сервер (postgres2@pg184) через scp
+    \item Удаление устаревших резервных копий на локальной машине
+    \item Удаление устаревших резервных копий на удалённой машине
+    \item Обработка ошибок на каждом этапе для обеспечения целостности процесса резервного копирования
+\end{itemize}
+
+\inputminted[breaklines,linenos,frame=single]{bash}{backup.sh}
+
+Пример выполнения скрипта:
+
+\begin{verbatim}
+[postgres1@pg183 ~]$ ./backup.sh
+Starting backup...
+Creating backup using pg_basebackup...
+Archiving backup directory into tar file...
+Sending backup files to remote server...
+2025-04-27_20:26:14.tar.gz                                                                                                                             100% 3935KB 139.2MB/s   00:00
+Deleting old backups on host machine
+Deleting old backups on remote machine
+Backup created successfully: /var/db/postgres1/backup/2025-04-27_20:26:14!
+[postgres1@pg183 ~]$ ls -lah backup/
+total 19782
+drwxr-xr-x  7 postgres1 postgres   12B 27 апр.  20:26 .
+drwxr-xr-x  7 postgres1 postgres   12B 27 апр.  20:10 ..
+drwxr-xr-x  2 postgres1 postgres    6B 27 апр.  20:19 2025-04-27_20:19:10
+-rw-r--r--  1 postgres1 postgres  3,8M 27 апр.  20:19 2025-04-27_20:19:10.tar.gz
+drwxr-xr-x  2 postgres1 postgres    6B 27 апр.  20:20 2025-04-27_20:20:46
+-rw-r--r--  1 postgres1 postgres  3,8M 27 апр.  20:20 2025-04-27_20:20:46.tar.gz
+drwxr-xr-x  2 postgres1 postgres    6B 27 апр.  20:25 2025-04-27_20:25:12
+-rw-r--r--  1 postgres1 postgres  3,8M 27 апр.  20:25 2025-04-27_20:25:12.tar.gz
+drwxr-xr-x  2 postgres1 postgres    6B 27 апр.  20:26 2025-04-27_20:26:06
+-rw-r--r--  1 postgres1 postgres  3,8M 27 апр.  20:26 2025-04-27_20:26:06.tar.gz
+drwxr-xr-x  2 postgres1 postgres    6B 27 апр.  20:26 2025-04-27_20:26:14
+-rw-r--r--  1 postgres1 postgres  3,8M 27 апр.  20:26 2025-04-27_20:26:14.tar.gz
+\end{verbatim}
+
+Скопированные данные на `pg184':
+
+\begin{verbatim}
+[postgres2@pg184 ~]$ ls -lah backup/
+total 19732
+drwxr-xr-x  2 postgres2 postgres    7B 27 апр.  20:26 .
+drwxr-xr-x  4 postgres2 postgres    5B 27 апр.  20:18 ..
+-rw-r--r--  1 postgres2 postgres  3,8M 27 апр.  20:19 2025-04-27_20:19:10.tar.gz
+-rw-r--r--  1 postgres2 postgres  3,8M 27 апр.  20:20 2025-04-27_20:20:46.tar.gz
+-rw-r--r--  1 postgres2 postgres  3,8M 27 апр.  20:25 2025-04-27_20:25:12.tar.gz
+-rw-r--r--  1 postgres2 postgres  3,8M 27 апр.  20:26 2025-04-27_20:26:06.tar.gz
+-rw-r--r--  1 postgres2 postgres  3,8M 27 апр.  20:26 2025-04-27_20:26:14.tar.gz
+\end{verbatim}
+
+Для запуска резервирования по расписанию был использован cron.
+
+\begin{verbatim}
+0 0 * * * $HOME/backup.sh >> $HOME/backup.log 2>&1
+0 12 * * * $HOME/backup.sh >> $HOME/backup.log 2>&1
+\end{verbatim}
+
+\subsubsection{Расчет объема резервных копий}
+
+Для расчета объема резервных копий использованы следующие исходные данные:
+\begin{itemize}
+    \item Средний объем новых данных в БД за сутки: 50 МБ
+    \item Средний объем измененных данных за сутки: 950 МБ
+    \item Частота резервного копирования: 2 раза в сутки
+    \item Срок хранения на резервной системе: 1 месяц (30 дней)
+\end{itemize}
+
+Расчет объема:
+\begin{itemize}
+    \item Объем одной копии: 50 МБ + 950 МБ = 1000 МБ = 1 ГБ
+    \item Количество копий за месяц: 2 копии/день $\times$ 30 дней = 60 копий
+    \item Общий объем за месяц: 60 копий $\times$ 1 ГБ = 60 ГБ
+\end{itemize}
+
+Таким образом, через месяц работы системы на резервном узле будет храниться 60 ГБ резервных копий. Это расчетное значение, которое может варьироваться в зависимости от реального объема изменений в базе данных.
+
+\subsection{Этап 2. Потеря основного узла}
+
+Этот сценарий подразумевает полную недоступность основного узла. Необходимо восстановить работу СУБД на РЕЗЕРВНОМ узле, продемонстрировать успешный запуск СУБД и доступность данных.
+
+\inputminted[breaklines,linenos,frame=single]{bash}{restore.sh}
+
+До выполнения скрипта:
+
+\begin{verbatim}
+[postgres1@pg183 ~]$ psql -h localhost -p 9115 postgres
+psql (16.4)
+Введите "help", чтобы получить справку.
+
+postgres=# create table test(id serial);
+CREATE TABLE
+postgres=# insert into test(id) values (1), (2), (3);
+INSERT 0 3
+postgres=#
+\q
+\end{verbatim}
+
+После выполнения скрипта на резервном узле:
+
+\begin{verbatim}
+[postgres2@pg184 ~]$ psql -h localhost -p 9115 -U postgres1 postgres
+psql (16.4)
+Введите "help", чтобы получить справку.
+
+postgres=# \dt
+            Список отношений
+    Схема  | Имя  |   Тип   | Владелец
+--------+------+---------+-----------
+    public | test | таблица | postgres1
+(1 строка)
+
+postgres=# select * from test;
+    id
+----
+    1
+    2
+    3
+(3 строки)
+\end{verbatim}
+
+\subsection{Этап 3. Повреждение файлов БД}
+
+Повреждение данных:
+\begin{verbatim}
+[postgres1@pg183 ~]$ rm -rf fkc19/pg_tblspc/16384/
+\end{verbatim}
+
+После удаления данных БД сохраняет работоспособность:
+
+\begin{verbatim}
+[postgres1@pg183 ~]$ psql -h localhost -p 9115 postgres
+psql (16.4)
+Введите "help", чтобы получить справку.
+
+postgres=# \dt
+            Список отношений
+    Схема  | Имя  |   Тип   | Владелец
+--------+------+---------+-----------
+    public | test | таблица | postgres1
+(1 строка)
+
+postgres=# select * from test;
+    id
+----
+    1
+    2
+    3
+(3 строки)
+
+postgres=#
+\end{verbatim}
+
+При этом в логах появляются сообщения о том, что каталог не найден.
+
+\begin{verbatim}
+[postgres1@pg183 ~]$ pg_ctl restart
+ожидание завершения работы сервера.... готово
+сервер остановлен
+ожидание запуска сервера....2025-04-27 21:37:17.334 MSK [17052] СООБЩЕНИЕ:  передача вывода в протокол процессу сбора протоколов
+2025-04-27 21:37:17.334 MSK [17052] ПОДСКАЗКА:  В дальнейшем протоколы будут выводиться в каталог "log".
+    готово
+сервер запущен
+[postgres1@pg183 ~]$ pg_ctl status
+pg_ctl: сервер работает (PID: 17052)
+/usr/local/bin/postgres
+
+[postgres1@pg183 ~]$ cat fkc19/log/postgresql-2025-04-27_213717.csv
+2025-04-27 21:37:17.334 MSK,,,17052,,680e795d.429c,1,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,00000,"завершение вывода в stderr",,"В дальнейшем протокол будет выводиться в ""csvlog"".",,,,,,,"","postmaster",,0
+2025-04-27 21:37:17.334 MSK,,,17052,,680e795d.429c,2,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,00000,"запускается PostgreSQL 16.4 on amd64-portbld-freebsd14.1, compiled by FreeBSD clang version 18.1.6 (https://github.com/llvm/llvm-project.git llvmorg-18.1.6-0-g1118c2e05e67), 64-bit",,,,,,,,,"","postmaster",,0
+2025-04-27 21:37:17.334 MSK,,,17052,,680e795d.429c,3,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,00000,"для приёма подключений по адресу IPv6 ""::1"" открыт порт 9115",,,,,,,,,"","postmaster",,0
+2025-04-27 21:37:17.334 MSK,,,17052,,680e795d.429c,4,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,00000,"для приёма подключений по адресу IPv4 ""127.0.0.1"" открыт порт 9115",,,,,,,,,"","postmaster",,0
+2025-04-27 21:37:17.358 MSK,,,17052,,680e795d.429c,5,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,00000,"для приёма подключений открыт Unix-сокет ""/tmp/.s.PGSQL.9115""",,,,,,,,,"","postmaster",,0
+2025-04-27 21:37:17.378 MSK,,,17052,,680e795d.429c,6,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,58P01,"не удалось открыть каталог ""pg_tblspc/16384/PG_16_202307071"": No such file or directory",,,,,,,,,"","postmaster",,0
+2025-04-27 21:37:17.409 MSK,,,17057,,680e795d.42a1,1,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,00000,"система БД была выключена: 2025-04-27 21:37:17 MSK",,,,,,,,,"","startup",,0
+2025-04-27 21:37:17.410 MSK,,,17057,,680e795d.42a1,2,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,58P01,"не удалось открыть каталог ""pg_tblspc/16384/PG_16_202307071"": No such file or directory",,,,,,,,,"","startup",,0
+2025-04-27 21:37:17.440 MSK,,,17052,,680e795d.429c,7,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,00000,"система БД готова принимать подключения",,,,,,,,,"","postmaster",,0
+\end{verbatim}
+
+После восстановления данных с помощью скрипта в новой базе ошибка не воспроизводится.
+
+\begin{verbatim}
+[postgres1@pg183 ~]$ cat pgdata/log/postgresql-2025-04-27_214120.csv
+2025-04-27 21:41:20.967 MSK,,,19297,,680e7a50.4b61,1,,2025-04-27 21:41:20 MSK,,0,СООБЩЕНИЕ,00000,"завершение вывода в stderr",,"В дальнейшем протокол будет выводиться в ""csvlog"".",,,,,,,"","postmaster",,0
+2025-04-27 21:41:20.967 MSK,,,19297,,680e7a50.4b61,2,,2025-04-27 21:41:20 MSK,,0,СООБЩЕНИЕ,00000,"запускается PostgreSQL 16.4 on amd64-portbld-freebsd14.1, compiled by FreeBSD clang version 18.1.6 (https://github.com/llvm/llvm-project.git llvmorg-18.1.6-0-g1118c2e05e67), 64-bit",,,,,,,,,"","postmaster",,0
+2025-04-27 21:41:20.968 MSK,,,19297,,680e7a50.4b61,3,,2025-04-27 21:41:20 MSK,,0,СООБЩЕНИЕ,00000,"для приёма подключений по адресу IPv6 ""::1"" открыт порт 9115",,,,,,,,,"","postmaster",,0
+2025-04-27 21:41:20.968 MSK,,,19297,,680e7a50.4b61,4,,2025-04-27 21:41:20 MSK,,0,СООБЩЕНИЕ,00000,"для приёма подключений по адресу IPv4 ""127.0.0.1"" открыт порт 9115",,,,,,,,,"","postmaster",,0
+2025-04-27 21:41:20.989 MSK,,,19297,,680e7a50.4b61,5,,2025-04-27 21:41:20 MSK,,0,СООБЩЕНИЕ,00000,"для приёма подключений открыт Unix-сокет ""/tmp/.s.PGSQL.9115""",,,,,,,,,"","postmaster",,0
+2025-04-27 21:41:21.055 MSK,,,19302,,680e7a51.4b66,1,,2025-04-27 21:41:21 MSK,,0,СООБЩЕНИЕ,00000,"система БД была выключена: 2025-04-27 21:41:18 MSK",,,,,,,,,"","startup",,0
+2025-04-27 21:41:21.073 MSK,,,19297,,680e7a50.4b61,6,,2025-04-27 21:41:20 MSK,,0,СООБЩЕНИЕ,00000,"система БД готова принимать подключения",,,,,,,,,"","postmaster",,0
+\end{verbatim}
+
+\subsection{Этап 4. Логирование повреждение данных}
+
+Данные до повреждения:
+\begin{verbatim}
+[postgres1@pg183 ~]$ psql -h localhost -p 9115 postgres
+psql (16.4)
+Введите "help", чтобы получить справку.
+
+postgres=# \dt
+            Список отношений
+    Схема  |  Имя  |   Тип   | Владелец
+--------+-------+---------+-----------
+    public | test  | таблица | postgres1
+    public | test1 | таблица | postgres1
+(2 строки)
+
+postgres=# select * from test;
+    id
+----
+    1
+    2
+    3
+(3 строки)
+
+postgres=# select * from test1;
+    id | key
+----+-----
+    1 |   1
+    2 |   2
+    3 |   3
+(3 строки)
+\end{verbatim}
+
+После повреждения данных:
+\begin{verbatim}
+[postgres1@pg183 ~]$ psql -h localhost -p 9115 postgres
+psql (16.4)
+Введите "help", чтобы получить справку.
+
+postgres=# update test1 set key = 1;
+UPDATE 3
+postgres=# select * from test1;
+id | key
+----+-----
+1 |   1
+2 |   1
+3 |   1
+(3 строки)
+\end{verbatim}
+
+Для восстановления данных создадим дамп на резервном узле:
+
+\begin{verbatim}
+[postgres2@pg184 ~]$ pg_dump -Fc -U postgres1 -h localhost -p 9115 postgres -f pgdump
+\end{verbatim}
+
+Перенесем дамп но основной узел:
+
+\begin{verbatim}
+[postgres1@pg183 ~]$ scp postgres2@pg184:~/pgdump
+pgdump.sql       100% 3025     2.5MB/s   00:00
+\end{verbatim}
+
+Восстановим данные в новой базе:
+
+\begin{verbatim}
+[postgres1@pg183 ~]$ dropdb -h localhost -p 9115 postgres
+[postgres1@pg183 ~]$ createdb -h localhost -p 9115 postgres
+[postgres1@pg183 ~]$ pg_restore -h localhost -p 9115 -d postgres pgdump
+\end{verbatim}
+
+После восстановления данных:
+
+\begin{verbatim}
+[postgres1@pg183 ~]$ psql -h localhost -p 9115 postgres
+psql (16.4)
+Введите "help", чтобы получить справку.
+
+postgres=# \d
+                    Список отношений
+    Схема  |     Имя      |        Тип         | Владелец
+--------+--------------+--------------------+-----------
+    public | test         | таблица            | postgres1
+    public | test1        | таблица            | postgres1
+    public | test1_id_seq | последовательность | postgres1
+    public | test_id_seq  | последовательность | postgres1
+(4 строки)
+
+postgres=# \dt
+            Список отношений
+    Схема  |  Имя  |   Тип   | Владелец
+--------+-------+---------+-----------
+    public | test  | таблица | postgres1
+    public | test1 | таблица | postgres1
+(2 строки)
+
+postgres=# select * from test;
+    id
+----
+    1
+    2
+    3
+(3 строки)
+
+postgres=# select * from test1;
+    id | key
+----+-----
+    1 |   1
+    2 |   2
+    3 |   3
+(3 строки)
+\end{verbatim}
