@@ -5,21 +5,20 @@
 Для выполнения работы был использован скрипт, который выполняет следующие действия:
 
 \begin{itemize}
-    \item Создание временной метки для имени резервной копии в формате год-месяц-день\_час:минута:секунда
+    \item Создание временной метки для имени резервной копии в формате год-месяц-день\-\_час:минута:секунда
     \item Настройка директории для хранения резервных копий (/var/db/postgres1/backup)
     \item Создание резервной копии PostgreSQL с помощью утилиты pg\_basebackup
     \item Архивация резервной копии в tar-файл с применением сжатия
     \item Передача архива на удалённый сервер (postgres2@pg184) через scp
     \item Удаление устаревших резервных копий на локальной машине
     \item Удаление устаревших резервных копий на удалённой машине
-    \item Обработка ошибок на каждом этапе для обеспечения целостности процесса резервного копирования
 \end{itemize}
 
 \inputminted[breaklines,linenos,frame=single]{bash}{backup.sh}
 
 Пример выполнения скрипта:
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres1@pg183 ~]$ ./backup.sh
 Starting backup...
 Creating backup using pg_basebackup...
@@ -43,11 +42,11 @@ drwxr-xr-x  2 postgres1 postgres    6B 27 апр.  20:26 2025-04-27_20:26:06
 -rw-r--r--  1 postgres1 postgres  3,8M 27 апр.  20:26 2025-04-27_20:26:06.tar.gz
 drwxr-xr-x  2 postgres1 postgres    6B 27 апр.  20:26 2025-04-27_20:26:14
 -rw-r--r--  1 postgres1 postgres  3,8M 27 апр.  20:26 2025-04-27_20:26:14.tar.gz
-\end{verbatim}
+\end{minted}
 
 Скопированные данные на `pg184':
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres2@pg184 ~]$ ls -lah backup/
 total 19732
 drwxr-xr-x  2 postgres2 postgres    7B 27 апр.  20:26 .
@@ -57,33 +56,51 @@ drwxr-xr-x  4 postgres2 postgres    5B 27 апр.  20:18 ..
 -rw-r--r--  1 postgres2 postgres  3,8M 27 апр.  20:25 2025-04-27_20:25:12.tar.gz
 -rw-r--r--  1 postgres2 postgres  3,8M 27 апр.  20:26 2025-04-27_20:26:06.tar.gz
 -rw-r--r--  1 postgres2 postgres  3,8M 27 апр.  20:26 2025-04-27_20:26:14.tar.gz
-\end{verbatim}
+\end{minted}
 
 Для запуска резервирования по расписанию был использован cron.
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 0 0 * * * $HOME/backup.sh >> $HOME/backup.log 2>&1
 0 12 * * * $HOME/backup.sh >> $HOME/backup.log 2>&1
-\end{verbatim}
+\end{minted}
 
 \subsubsection{Расчет объема резервных копий}
 
 Для расчета объема резервных копий использованы следующие исходные данные:
 \begin{itemize}
-    \item Средний объем новых данных в БД за сутки: 50 МБ
-    \item Средний объем измененных данных за сутки: 950 МБ
+    \item Объем первой копии: 1 ГБ
+    \item Прирост объема в день: 1 ГБ
     \item Частота резервного копирования: 2 раза в сутки
+    \item Срок хранения на основной системе: 1 неделя (7 дней)
     \item Срок хранения на резервной системе: 1 месяц (30 дней)
 \end{itemize}
 
-Расчет объема:
+Расчет объема с использованием формулы суммы арифметической прогрессии \(S = n/2 * (a_1 + a_n)\):
+
 \begin{itemize}
-    \item Объем одной копии: 50 МБ + 950 МБ = 1000 МБ = 1 ГБ
-    \item Количество копий за месяц: 2 копии/день $\times$ 30 дней = 60 копий
-    \item Общий объем за месяц: 60 копий $\times$ 1 ГБ = 60 ГБ
+    \item Основная система (7 дней):
+    \begin{itemize}
+        \item Количество копий: 2 копии/день $\times$ 7 дней = 14 копий
+        \item Первая копия (\(a_1\)): 1 ГБ
+        \item Последняя копия (\(a_n\)): 7 ГБ
+        \item Общий объем: 14/2 $\times$ (1 + 7) = 56 ГБ
+    \end{itemize}
+    
+    \item Резервная система (30 дней):
+    \begin{itemize}
+        \item Количество копий: 2 копии/день $\times$ 30 дней = 60 копий
+        \item Первая копия (\(a_1\)): 1 ГБ
+        \item Последняя копия (\(a_n\)): 30 ГБ
+        \item Общий объем: 60/2 $\times$ (1 + 30) = 930 ГБ
+    \end{itemize}
 \end{itemize}
 
-Таким образом, через месяц работы системы на резервном узле будет храниться 60 ГБ резервных копий. Это расчетное значение, которое может варьироваться в зависимости от реального объема изменений в базе данных.
+Таким образом:
+\begin{itemize}
+    \item На основной системе будет храниться \emph{56 ГБ} резервных копий
+    \item На резервной системе будет храниться \emph{930 ГБ} резервных копий
+\end{itemize}
 
 \subsection{Этап 2. Потеря основного узла}
 
@@ -93,7 +110,7 @@ drwxr-xr-x  4 postgres2 postgres    5B 27 апр.  20:18 ..
 
 До выполнения скрипта:
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres1@pg183 ~]$ psql -h localhost -p 9115 postgres
 psql (16.4)
 Введите "help", чтобы получить справку.
@@ -104,11 +121,11 @@ postgres=# insert into test(id) values (1), (2), (3);
 INSERT 0 3
 postgres=#
 \q
-\end{verbatim}
+\end{minted}
 
 После выполнения скрипта на резервном узле:
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres2@pg184 ~]$ psql -h localhost -p 9115 -U postgres1 postgres
 psql (16.4)
 Введите "help", чтобы получить справку.
@@ -127,18 +144,18 @@ postgres=# select * from test;
     2
     3
 (3 строки)
-\end{verbatim}
+\end{minted}
 
 \subsection{Этап 3. Повреждение файлов БД}
 
 Повреждение данных:
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres1@pg183 ~]$ rm -rf fkc19/pg_tblspc/16384/
-\end{verbatim}
+\end{minted}
 
 После удаления данных БД сохраняет работоспособность:
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres1@pg183 ~]$ psql -h localhost -p 9115 postgres
 psql (16.4)
 Введите "help", чтобы получить справку.
@@ -159,11 +176,11 @@ postgres=# select * from test;
 (3 строки)
 
 postgres=#
-\end{verbatim}
+\end{minted}
 
 При этом в логах появляются сообщения о том, что каталог не найден.
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres1@pg183 ~]$ pg_ctl restart
 ожидание завершения работы сервера.... готово
 сервер остановлен
@@ -185,11 +202,11 @@ pg_ctl: сервер работает (PID: 17052)
 2025-04-27 21:37:17.409 MSK,,,17057,,680e795d.42a1,1,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,00000,"система БД была выключена: 2025-04-27 21:37:17 MSK",,,,,,,,,"","startup",,0
 2025-04-27 21:37:17.410 MSK,,,17057,,680e795d.42a1,2,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,58P01,"не удалось открыть каталог ""pg_tblspc/16384/PG_16_202307071"": No such file or directory",,,,,,,,,"","startup",,0
 2025-04-27 21:37:17.440 MSK,,,17052,,680e795d.429c,7,,2025-04-27 21:37:17 MSK,,0,СООБЩЕНИЕ,00000,"система БД готова принимать подключения",,,,,,,,,"","postmaster",,0
-\end{verbatim}
+\end{minted}
 
 После восстановления данных с помощью скрипта в новой базе ошибка не воспроизводится.
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres1@pg183 ~]$ cat pgdata/log/postgresql-2025-04-27_214120.csv
 2025-04-27 21:41:20.967 MSK,,,19297,,680e7a50.4b61,1,,2025-04-27 21:41:20 MSK,,0,СООБЩЕНИЕ,00000,"завершение вывода в stderr",,"В дальнейшем протокол будет выводиться в ""csvlog"".",,,,,,,"","postmaster",,0
 2025-04-27 21:41:20.967 MSK,,,19297,,680e7a50.4b61,2,,2025-04-27 21:41:20 MSK,,0,СООБЩЕНИЕ,00000,"запускается PostgreSQL 16.4 on amd64-portbld-freebsd14.1, compiled by FreeBSD clang version 18.1.6 (https://github.com/llvm/llvm-project.git llvmorg-18.1.6-0-g1118c2e05e67), 64-bit",,,,,,,,,"","postmaster",,0
@@ -198,12 +215,12 @@ pg_ctl: сервер работает (PID: 17052)
 2025-04-27 21:41:20.989 MSK,,,19297,,680e7a50.4b61,5,,2025-04-27 21:41:20 MSK,,0,СООБЩЕНИЕ,00000,"для приёма подключений открыт Unix-сокет ""/tmp/.s.PGSQL.9115""",,,,,,,,,"","postmaster",,0
 2025-04-27 21:41:21.055 MSK,,,19302,,680e7a51.4b66,1,,2025-04-27 21:41:21 MSK,,0,СООБЩЕНИЕ,00000,"система БД была выключена: 2025-04-27 21:41:18 MSK",,,,,,,,,"","startup",,0
 2025-04-27 21:41:21.073 MSK,,,19297,,680e7a50.4b61,6,,2025-04-27 21:41:20 MSK,,0,СООБЩЕНИЕ,00000,"система БД готова принимать подключения",,,,,,,,,"","postmaster",,0
-\end{verbatim}
+\end{minted}
 
 \subsection{Этап 4. Логирование повреждение данных}
 
 Данные до повреждения:
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres1@pg183 ~]$ psql -h localhost -p 9115 postgres
 psql (16.4)
 Введите "help", чтобы получить справку.
@@ -231,10 +248,10 @@ postgres=# select * from test1;
     2 |   2
     3 |   3
 (3 строки)
-\end{verbatim}
+\end{minted}
 
 После повреждения данных:
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres1@pg183 ~]$ psql -h localhost -p 9115 postgres
 psql (16.4)
 Введите "help", чтобы получить справку.
@@ -248,32 +265,32 @@ id | key
 2 |   1
 3 |   1
 (3 строки)
-\end{verbatim}
+\end{minted}
 
 Для восстановления данных создадим дамп на резервном узле:
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres2@pg184 ~]$ pg_dump -Fc -U postgres1 -h localhost -p 9115 postgres -f pgdump
-\end{verbatim}
+\end{minted}
 
 Перенесем дамп но основной узел:
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres1@pg183 ~]$ scp postgres2@pg184:~/pgdump
 pgdump.sql       100% 3025     2.5MB/s   00:00
-\end{verbatim}
+\end{minted}
 
 Восстановим данные в новой базе:
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres1@pg183 ~]$ dropdb -h localhost -p 9115 postgres
 [postgres1@pg183 ~]$ createdb -h localhost -p 9115 postgres
 [postgres1@pg183 ~]$ pg_restore -h localhost -p 9115 -d postgres pgdump
-\end{verbatim}
+\end{minted}
 
 После восстановления данных:
 
-\begin{verbatim}
+\begin{minted}[breaklines]{bash}
 [postgres1@pg183 ~]$ psql -h localhost -p 9115 postgres
 psql (16.4)
 Введите "help", чтобы получить справку.
@@ -311,4 +328,4 @@ postgres=# select * from test1;
     2 |   2
     3 |   3
 (3 строки)
-\end{verbatim}
+\end{minted}

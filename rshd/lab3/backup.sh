@@ -39,7 +39,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Deleting old backups on host machine"
-# find "$BACKUP_DIR" -type d -mtime +7 -exec rm -rf {} \;
+find "$BACKUP_DIR" -type d -mtime +7 -exec rm -rf {} \;
 if [ $? -ne 0 ]; then
     echo "Unable to delete old backups on host machine"
     terminate_backup
